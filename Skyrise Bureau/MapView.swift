@@ -11,7 +11,18 @@ import MapKit
 struct MapView: View {
     var body: some View {
         Map {
-            
+            ForEach(AirportDatabase.shared.allAirports, id: \.id) { airport in
+                
+                Annotation(airport.name, coordinate: CLLocationCoordinate2D(latitude: airport.latitude, longitude: airport.longitude)) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 5)
+                            .fill(Color.cyan)
+                        Text(airport.iata)
+                            .padding(5)
+                            .fontWidth(.compressed)
+                    }
+                }
+            }
         }
     }
 }

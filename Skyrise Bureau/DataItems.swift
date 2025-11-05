@@ -90,6 +90,7 @@ enum Region: String, Codable, CaseIterable {
     case africa = "Africa"
     case northAmerica = "North America"
     case southAmerica = "South America"
+    case australiaAndOceania = "Australia and Oceania"
 }
 
 struct Airport: Codable, Identifiable, Hashable {
