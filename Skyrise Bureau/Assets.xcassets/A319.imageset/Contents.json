@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "United_Airbus_A319_(13942617705).jpg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "compression-type" : "lossless"
+  }
+}

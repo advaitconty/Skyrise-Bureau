@@ -11,7 +11,8 @@ import SwiftUI
 struct Skyrise_BureauApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            AirplaneDatabaseTestView()
+                .frame(width: 350, height: 700)
         }
     }
 }

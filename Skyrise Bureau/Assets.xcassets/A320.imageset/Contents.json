@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "Lufthansa_Airbus_A320-211_D-AIQT_01.jpg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "compression-type" : "lossless"
+  }
+}

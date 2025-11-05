@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "KLM_Cityhopper_-_Embraer_190LR_-_AN2571563.jpg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "compression-type" : "lossless"
+  }
+}

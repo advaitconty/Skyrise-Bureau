@@ -1,0 +1,232 @@
+import SwiftUI
+import AppKit
+
+struct AirplaneDatabaseTestView: View {
+    @State var searchTerm: String = ""
+    @State var selectedType: String? = nil
+    @Environment(\.colorScheme) var colorScheme
+    let cornerRadius = 10.0
+    @State var showPlaneStats: Aircraft? = nil
+    @State var showPlane: Bool = false
+    
+    var filteredPlanes: [Aircraft] {
+        AircraftDatabase.shared.allAircraft.filter { plane in
+            let matchesSearch = searchTerm.isEmpty || plane.name.localizedCaseInsensitiveContains(searchTerm) || plane.manufacturer.rawValue.localizedCaseInsensitiveContains(searchTerm)
+            
+            let matchesType = selectedType == nil
+            
+            return matchesSearch && matchesType
+        }
+    }
+    
+    func littleSmallBoxThingy(icon: String, item: String) -> some View {
+        HStack {
+            Image(systemName: icon)
+            Text(item)
+                .fontWidth(.condensed)
+        }
+        .padding(5)
+        .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
+        .clipShape(RoundedRectangle(cornerRadius: 4.0))
+    }
+    
+    func buttonLabel(plane: Aircraft) -> some View {
+        VStack {
+            VStack {
+                Image(plane.modelCode)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(minWidth: 350 - 50, maxHeight: CGFloat(plane.customImageHeight))
+                    .padding(10)
+                    .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
+                    .shadow(color: colorScheme == .dark ? .white.opacity(0.01) : .black.opacity(0.1), radius: 15, x: 0, y: 5)
+                    .aspectRatio(3/2, contentMode: .fit)
+            }
+            .padding(3)
+            
+            
+            HStack {
+                Text(plane.name)
+                    .font(.system(size: 24))
+                    .fontWidth(.expanded)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+                Spacer()
+                
+            }
+            .padding(3)
+            
+            HStack {
+                Text("$\(Int(plane.purchasePrice))")
+                    .font(.system(size: 16))
+                    .fontWidth(.compressed)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+                Spacer()
+            }
+            .padding(3)
+            
+            HStack {
+                littleSmallBoxThingy(icon: "ruler", item: "\(plane.maxRange)km")
+                
+                littleSmallBoxThingy(icon: "gauge.with.dots.needle.33percent", item: "\(plane.cruiseSpeed)km/h")
+                
+                littleSmallBoxThingy(icon: "carseat.right.fill", item: "\(plane.maxSeats)")
+            }
+            .padding(3)
+            
+        }
+        .padding(3)
+        .buttonStyle(.borderless)
+        .background(colorScheme == .dark ? Color(red: 18/225, green: 18/225, blue: 18/225) : Color(red: 237/225, green: 237/225, blue: 237/225))
+        .frame(width: 350 - 50)
+        .shadow(color: colorScheme == .dark ? .white.opacity(0.01) : .black.opacity(0.1), radius: 15, x: 0, y: 5)
+        .foregroundStyle(colorScheme == .dark ? .white : .black)
+        .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
+    }
+    
+    func shopView() -> some View {
+        VStack {
+            HStack {
+                Text("Store")
+                    .font(.system(size: 24))
+                    .fontWidth(.expanded)
+                Spacer()
+            }
+            HStack {
+                Text("Available Cash: $1,000,000")
+                    .font(.system(size: 14))
+                    .fontWidth(.condensed)
+                Spacer()
+            }
+            TextField("Search for a plane...", text: $searchTerm)
+                .font(.system(size: 16))
+                .fontWidth(.condensed)
+                .textFieldStyle(.roundedBorder)
+            
+            ScrollView {
+                LazyVStack(spacing: 0, pinnedViews: []) {
+                    ForEach(filteredPlanes, id: \.id) { plane in
+                        Button {
+                            withAnimation {
+                                showPlaneStats = plane
+                                showPlane = true
+                            }
+                        } label: {
+                            buttonLabel(plane: plane)
+                        }
+                        .buttonStyle(.borderless)
+                        
+                    }
+                }
+            }
+            .scrollIndicators(.hidden)
+            .padding(.top, -8)
+            .scrollContentBackground(.hidden)
+        }
+        .padding()
+        .frame(width: 350, height: 700)
+    }
+    
+    func planeStatsView(plane: Aircraft) -> some View {
+        VStack {
+            HStack {
+                Button {
+                    withAnimation {
+                        showPlane = false
+                    }
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 12))
+                    Text("Back")
+                        .font(.system(size: 12))
+                        .fontWidth(.condensed)
+                }
+                Spacer()
+            }
+            Image(plane.modelCode)
+                .resizable()
+                .scaledToFit()
+                .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            VStack {
+                HStack {
+                    Text(plane.name)
+                        .font(.system(size: 36))
+                        .fontWidth(.expanded)
+                    Spacer()
+                }
+                Text(plane.description)
+                    .font(.system(size: 16))
+                    .fontWidth(.condensed)
+            }
+            .padding(5)
+            .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            
+            HStack {
+                littleSmallBoxThingy(icon: "ruler", item: "\(plane.maxRange)km")
+                littleSmallBoxThingy(icon: "gauge.with.dots.needle.33percent", item: "\(plane.cruiseSpeed)km/h")
+                littleSmallBoxThingy(icon: "carseat.right.fill", item: "\(plane.maxSeats)")
+            }
+            HStack {
+                littleSmallBoxThingy(icon: "fuelpump", item: "\(plane.fuelBurnRate)L/km")
+                littleSmallBoxThingy(icon: "road.lanes", item: "\(plane.minRunwayLength)m")
+                littleSmallBoxThingy(icon: "dollarsign.circle", item: "$\(plane.maintenanceCostPerHour)/km")
+            }
+            VStack {
+                HStack {
+                    Text("Normal seating arrangement")
+                        .fontWidth(.condensed)
+                    Spacer()
+                }
+                HStack {
+                    Image(systemName: "carseat.right")
+                        .font(.system(size: 12))
+                    Text("\(plane.defaultSeating.economy)")
+                        .font(.system(size: 12))
+                        .fontWidth(.condensed)
+                    Divider()
+                    Image(systemName: "star")
+                        .font(.system(size: 12))
+                    Text("\(plane.defaultSeating.premiumEconomy)")
+                        .font(.system(size: 12))
+                        .fontWidth(.condensed)
+                    Divider()
+                    Image(systemName: "briefcase")
+                        .font(.system(size: 12))
+                    Text("\(plane.defaultSeating.business)")
+                        .font(.system(size: 12))
+                        .fontWidth(.condensed)
+                    Divider()
+                    Image(systemName: "crown")
+                        .font(.system(size: 12))
+                    Text("\(plane.defaultSeating.first)")
+                        .font(.system(size: 12))
+                        .fontWidth(.condensed)
+                }
+            }
+            .frame(maxWidth: 250, maxHeight: 50)
+            .padding(5)
+            .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            
+        }
+        .padding()
+    }
+    
+    var body: some View {
+        if showPlane == false {
+            shopView()
+                .transition(.move(edge: .leading))
+        } else {
+            if let plane = showPlaneStats {
+                planeStatsView(plane: plane)
+                    .transition(.move(edge: .trailing))
+            }
+        }
+    }
+}
+
+#Preview {
+    AirplaneDatabaseTestView()
+}
