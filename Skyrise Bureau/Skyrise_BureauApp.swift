@@ -12,7 +12,7 @@ struct Skyrise_BureauApp: App {
     var body: some Scene {
         WindowGroup {
             MapView()
-                .frame(width: 700, height: 700)
+                .frame(width: 1600, height: 900)
         }
     }
 }

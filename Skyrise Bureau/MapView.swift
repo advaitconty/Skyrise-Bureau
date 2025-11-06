@@ -16,13 +16,21 @@ struct MapView: View {
                 Annotation(airport.name, coordinate: CLLocationCoordinate2D(latitude: airport.latitude, longitude: airport.longitude)) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 5)
-                            .fill(Color.cyan)
+                            .fill(Color.black)
                         Text(airport.iata)
+                            .foregroundStyle(.cyan)
                             .padding(5)
                             .fontWidth(.compressed)
                     }
                 }
             }
+        }
+        .mapControls {
+            MapPitchToggle()
+            MapCompass()
+            MapScaleView()
+            MapUserLocationButton()
+            MapZoomStepper()
         }
     }
 }
