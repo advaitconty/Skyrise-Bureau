@@ -134,7 +134,7 @@ struct AirportFacilities: Codable, Hashable {
  
  // Get specific aircraft
  if let a380 = AircraftDatabase.shared.aircraft(byCode: "A380-800") {
-     print("Found: \(a380.name)")
+ print("Found: \(a380.name)")
  }
  
  // Get all narrow body aircraft
@@ -151,28 +151,28 @@ struct AirportFacilities: Codable, Hashable {
  
  // Get aircraft suitable for a specific route
  let suitablePlanes = AircraftDatabase.shared.aircraftForRoute(
-     distance: 5000,
-     runwayLength: 2500
+ distance: 5000,
+ runwayLength: 2500
  )
  
  // When player purchases aircraft, create FleetItem
  if let selectedAircraft = AircraftDatabase.shared.aircraft(byCode: "A320NEO") {
-     let newPlane = FleetItem(
-         aircraftID: selectedAircraft.modelCode,
-         name: selectedAircraft.name,
-         registration: "N123AB",
-         hoursFlown: 0,
-         condition: 100.0,
-         isAirborne: false,
-         assignedRoute: nil,
-         seatingLayout: [
-             selectedAircraft.defaultSeating.economy,
-             selectedAircraft.defaultSeating.premiumEconomy,
-             selectedAircraft.defaultSeating.business,
-             selectedAircraft.defaultSeating.first
-         ]
-     )
-     // Add to player's fleet
+ let newPlane = FleetItem(
+ aircraftID: selectedAircraft.modelCode,
+ name: selectedAircraft.name,
+ registration: "N123AB",
+ hoursFlown: 0,
+ condition: 100.0,
+ isAirborne: false,
+ assignedRoute: nil,
+ seatingLayout: [
+ selectedAircraft.defaultSeating.economy,
+ selectedAircraft.defaultSeating.premiumEconomy,
+ selectedAircraft.defaultSeating.business,
+ selectedAircraft.defaultSeating.first
+ ]
+ )
+ // Add to player's fleet
  }
  */
 
@@ -193,28 +193,48 @@ struct FleetItem: Codable, Identifiable {
     var registration: String
     var hoursFlown: Int
     var condition: Double = 1
-    var isAirbone: Bool = false
+    var isAirborne: Bool = false
+    var estimatedLandingTime: Date?
+    var takeoffTime: Date?
     var assignedRoute: Route? = nil
-    var seatingLayout: [Int]
-    /// Index 0 will be economy, and so on.............
+    var seatingLayout: SeatingConfig
     var kilometersTravelledSinceLastMaintainence: Int
+    var currentAirportLocation: Airport?
 }
 
 @Model
 class UserData {
     var name: String
+    var airlineName: String
+    var airlineIataCode: String
     var planes: [FleetItem]
     var xp: Int = 0
     var levels: Int = 0
     var airlineReputation: Double = 0.5
-    var reliabilityIndex: Int = 5
+    var reliabilityIndex: Double = 0.7
     var fuelDiscountMultiplier: Double = 1
     var lastFuelPrice: Double = 0.75 // Starting at this price, lowest will be 0.45, max will be 1.4, based on how much fuel user purchases
     var pilots: Int = 3
     var flightAttendents: Int = 6
+    var maintainanceCrew: Int = 4 // 4 for each plane - fixed amount
+    var currentlyHoldingFuel: Int = 1_000_000
+    var maxFuelHoldable: Int = 4_000_000
+    var weeklyPilotSalary: Int = 400
+    var weeklyFlightAttendentSalary: Int = 300
+    var weeklyFlightMaintainanceCrewSalary: Int = 250
+    var pilotHappiness: Double = 0.95
+    var flightAttendentHappiness: Double = 0.95
+    var maintainanceCrewHappiness: Double = 0.95
+    var campaignRunning: Bool = false
+    var campaignEffectiveness: Double?
+    var deliveryHubs: [Airport]
+    // Percentage airline improves during campaign. After campaign, airline improves reputation by 1% of their improvement during the campaign
+    // airline also looses reputation when their maintainance or happiness drops below 0.7
     
-    init(name: String, planes: [FleetItem], xp: Int, levels: Int, airlineReputation: Double, reliabilityIndex: Int, fuelDiscountMultiplier: Double, lastFuelPrice: Double, pilots: Int, flightAttendents: Int) {
+    init(name: String, airlineName: String, airlineIataCode: String, planes: [FleetItem], xp: Int, levels: Int, airlineReputation: Double, reliabilityIndex: Double, fuelDiscountMultiplier: Double, lastFuelPrice: Double, pilots: Int, flightAttendents: Int, maintainanceCrew: Int, currentlyHoldingFuel: Int, maxFuelHoldable: Int, weeklyPilotSalary: Int, weeklyFlightAttendentSalary: Int, weeklyFlightMaintainanceCrewSalary: Int, pilotHappiness: Double, flightAttendentHappiness: Double, maintainanceCrewHappiness: Double, campaignRunning: Bool, campaignEffectiveness: Double? = nil, deliveryHubs: [Airport]) {
         self.name = name
+        self.airlineName = airlineName
+        self.airlineIataCode = airlineIataCode
         self.planes = planes
         self.xp = xp
         self.levels = levels
@@ -224,5 +244,157 @@ class UserData {
         self.lastFuelPrice = lastFuelPrice
         self.pilots = pilots
         self.flightAttendents = flightAttendents
+        self.maintainanceCrew = maintainanceCrew
+        self.currentlyHoldingFuel = currentlyHoldingFuel
+        self.maxFuelHoldable = maxFuelHoldable
+        self.weeklyPilotSalary = weeklyPilotSalary
+        self.weeklyFlightAttendentSalary = weeklyFlightAttendentSalary
+        self.weeklyFlightMaintainanceCrewSalary = weeklyFlightMaintainanceCrewSalary
+        self.pilotHappiness = pilotHappiness
+        self.flightAttendentHappiness = flightAttendentHappiness
+        self.maintainanceCrewHappiness = maintainanceCrewHappiness
+        self.campaignRunning = campaignRunning
+        self.campaignEffectiveness = campaignEffectiveness
+        self.deliveryHubs = deliveryHubs
     }
 }
+
+let testUserData = UserData(name: "Advait",
+                            airlineName: "IndiGo Atlantic",
+                            airlineIataCode: "6E",
+                            planes: [
+                                FleetItem(aircraftID: "IL96-400M",
+                                          aircraftname: "SUKA BLYAT",
+                                          registration: "VT-SBL",
+                                          hoursFlown: 3,
+                                          assignedRoute: Route(destinationAirport: Airport(
+                                            name: "London Heathrow Airport",
+                                            city: "London",
+                                            country: "United Kingdom",
+                                            iata: "LHR",
+                                            icao: "EGLL",
+                                            region: .europe,
+                                            latitude: 51.4700,
+                                            longitude: -0.4543,
+                                            runwayLength: 3902,
+                                            elevation: 25,
+                                            demand: AirportDemand(passengerDemand: 10.0, cargoDemand: 8.8, businessTravelRatio: 0.80, tourismBoost: 0.85),
+                                            facilities: AirportFacilities(terminalCapacity: 225000, cargoCapacity: 3800, gatesAvailable: 115, slotEfficiency: 0.93)
+                                          ), arrivalAirport: Airport(
+                                            name: "Adolfo Suárez Madrid-Barajas Airport",
+                                            city: "Madrid",
+                                            country: "Spain",
+                                            iata: "MAD",
+                                            icao: "LEMD",
+                                            region: .europe,
+                                            latitude: 40.4719,
+                                            longitude: -3.5626,
+                                            runwayLength: 4179,
+                                            elevation: 610,
+                                            demand: AirportDemand(passengerDemand: 8.8, cargoDemand: 7.8, businessTravelRatio: 0.65, tourismBoost: 0.88),
+                                            facilities: AirportFacilities(terminalCapacity: 165000, cargoCapacity: 3000, gatesAvailable: 90, slotEfficiency: 0.88)
+                                          )),
+                                          seatingLayout: SeatingConfig(economy: 258, premiumEconomy: 54, business: 28, first: 6),
+                                          kilometersTravelledSinceLastMaintainence: 3200,
+                                          currentAirportLocation: Airport(
+                                            name: "Adolfo Suárez Madrid-Barajas Airport",
+                                            city: "Madrid",
+                                            country: "Spain",
+                                            iata: "MAD",
+                                            icao: "LEMD",
+                                            region: .europe,
+                                            latitude: 40.4719,
+                                            longitude: -3.5626,
+                                            runwayLength: 4179,
+                                            elevation: 610,
+                                            demand: AirportDemand(passengerDemand: 8.8, cargoDemand: 7.8, businessTravelRatio: 0.65, tourismBoost: 0.88),
+                                            facilities: AirportFacilities(terminalCapacity: 165000, cargoCapacity: 3000, gatesAvailable: 90, slotEfficiency: 0.88)
+                                          )),
+                                FleetItem(aircraftID: "IL96-400M",
+                                          aircraftname: "SUKA BLYAT",
+                                          registration: "VT-SBL",
+                                          hoursFlown: 3,
+                                          seatingLayout: SeatingConfig(economy: 258, premiumEconomy: 54, business: 28, first: 6),
+                                          kilometersTravelledSinceLastMaintainence: 3200,
+                                          currentAirportLocation: Airport(
+                                            name: "Adolfo Suárez Madrid-Barajas Airport",
+                                            city: "Madrid",
+                                            country: "Spain",
+                                            iata: "MAD",
+                                            icao: "LEMD",
+                                            region: .europe,
+                                            latitude: 40.4719,
+                                            longitude: -3.5626,
+                                            runwayLength: 4179,
+                                            elevation: 610,
+                                            demand: AirportDemand(passengerDemand: 8.8, cargoDemand: 7.8, businessTravelRatio: 0.65, tourismBoost: 0.88),
+                                            facilities: AirportFacilities(terminalCapacity: 165000, cargoCapacity: 3000, gatesAvailable: 90, slotEfficiency: 0.88)
+                                          )),
+                                FleetItem(aircraftID: "IL96-400M",
+                                          aircraftname: "SUKA BLYAT",
+                                          registration: "VT-SBL",
+                                          hoursFlown: 3,
+                                          seatingLayout: SeatingConfig(economy: 258, premiumEconomy: 54, business: 28, first: 6),
+                                          kilometersTravelledSinceLastMaintainence: 3200,
+                                          currentAirportLocation: Airport(
+                                            name: "Stockholm Arlanda Airport",
+                                            city: "Stockholm",
+                                            country: "Sweden",
+                                            iata: "ARN",
+                                            icao: "ESSA",
+                                            region: .europe,
+                                            latitude: 59.6498,
+                                            longitude: 17.9238,
+                                            runwayLength: 3301,
+                                            elevation: 42,
+                                            demand: AirportDemand(passengerDemand: 8.4, cargoDemand: 7.5, businessTravelRatio: 0.70, tourismBoost: 0.78),
+                                            facilities: AirportFacilities(terminalCapacity: 155000, cargoCapacity: 2800, gatesAvailable: 75, slotEfficiency: 0.89)
+                                          ))
+                            ],
+                            xp: 32,
+                            levels: 2,
+                            airlineReputation: 0.8,
+                            reliabilityIndex: 0.76,
+                            fuelDiscountMultiplier: 0.99,
+                            lastFuelPrice: 900,
+                            pilots: 9,
+                            flightAttendents: 27,
+                            maintainanceCrew: 12,
+                            currentlyHoldingFuel: 3_000_000,
+                            maxFuelHoldable: 5_000_000,
+                            weeklyPilotSalary: 500,
+                            weeklyFlightAttendentSalary: 400,
+                            weeklyFlightMaintainanceCrewSalary: 350,
+                            pilotHappiness: 0.98,
+                            flightAttendentHappiness: 0.97,
+                            maintainanceCrewHappiness: 0.96,
+                            campaignRunning: false,
+                            deliveryHubs: [
+                                Airport(
+                                    name: "Stockholm Arlanda Airport",
+                                    city: "Stockholm",
+                                    country: "Sweden",
+                                    iata: "ARN",
+                                    icao: "ESSA",
+                                    region: .europe,
+                                    latitude: 59.6498,
+                                    longitude: 17.9238,
+                                    runwayLength: 3301,
+                                    elevation: 42,
+                                    demand: AirportDemand(passengerDemand: 8.4, cargoDemand: 7.5, businessTravelRatio: 0.70, tourismBoost: 0.78),
+                                    facilities: AirportFacilities(terminalCapacity: 155000, cargoCapacity: 2800, gatesAvailable: 75, slotEfficiency: 0.89)
+                                ),
+                                Airport(
+                                    name: "Adolfo Suárez Madrid-Barajas Airport",
+                                    city: "Madrid",
+                                    country: "Spain",
+                                    iata: "MAD",
+                                    icao: "LEMD",
+                                    region: .europe,
+                                    latitude: 40.4719,
+                                    longitude: -3.5626,
+                                    runwayLength: 4179,
+                                    elevation: 610,
+                                    demand: AirportDemand(passengerDemand: 8.8, cargoDemand: 7.8, businessTravelRatio: 0.65, tourismBoost: 0.88),
+                                    facilities: AirportFacilities(terminalCapacity: 165000, cargoCapacity: 3000, gatesAvailable: 90, slotEfficiency: 0.88)
+                                )])
