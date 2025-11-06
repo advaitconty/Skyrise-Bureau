@@ -17,6 +17,7 @@ struct MapView: View {
     @Environment(\.colorScheme) var colorScheme
     @State var showSidebar: Bool = true
     @State var sidebarWidth: Int = 200
+    @State var aircraftItem: FleetItem? = nil
     
     func mapSelectView() -> some View {
         VStack {
@@ -98,11 +99,75 @@ struct MapView: View {
             }
             
             VStack {
+                ScrollView {
+                    ForEach(testUserData.planes, id: \.id) { plane in
+                        Button {
+                            aircraftItem = plane
+                        } label: {
+                            VStack {
+                                HStack {
+                                    VStack {
+                                        HStack {
+                                            Text(plane.aircraftname)
+                                                .fontWidth(.condensed)
+                                            Spacer()
+                                        }
+                                        HStack {
+                                            Text(plane.aircraftID)
+                                                .fontWidth(.condensed)
+                                                .font(.system(size: 12))
+                                            Spacer()
+                                        }
+                                    }
+                                    Spacer()
+                                    
+                                    Text(plane.registration)
+                                        .fontWidth(.compressed)
+                                }
+                                .onAppear {
+                                    print(plane.assignedRoute)
+                                }
+                                VStack {
+                                    if let assignedRoute = plane.assignedRoute {
+                                        if let currentAirportLocation = plane.currentAirportLocation {
+                                            if let stopoverAirport = assignedRoute.stopoverAirport {
+                                            } else {
+                                                HStack {
+                                                    Text("_Flying from \(assignedRoute.destinationAirport.iata) to \(assignedRoute.arrivalAirport.iata)_")
+                                                        .fontWidth(.condensed)
+                                                    Spacer()
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                    
+                                    if let currentAirportLocation = plane.currentAirportLocation {
+                                        HStack {
+                                            Text("_Plane is sitting at \(currentAirportLocation.iata)_")
+                                                .fontWidth(.condensed)
+                                            Spacer()
+                                        }
+                                    }
+                                }
+                            }
+                            .padding(1)
+                        }
+                    }
+                }
+                //                .popover(item: $aircraftItem, arrowEdge: .leading) { item in
+                //                    VStack {
+                //                        Text(item.aircraftID)
+                //                    }
+                //                }
+                .listStyle(.bordered)
+                Spacer()
             }
         }
         .padding()
         .transition(.move(edge: .leading))
         .frame(width: CGFloat(sidebarWidth))
+        .background(.ultraThinMaterial)
     }
     
     var body: some View {
