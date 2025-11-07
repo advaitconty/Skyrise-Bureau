@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F1B94CB52EBE005C002A260A /* CompactSlider in Frameworks */ = {isa = PBXBuildFile; productRef = F1B94CB42EBE005C002A260A /* CompactSlider */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		F1BA0D342EBAF3150019BC2A /* Skyrise Bureau.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Skyrise Bureau.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F1B94CB52EBE005C002A260A /* CompactSlider in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = "Skyrise Bureau";
 			packageProductDependencies = (
+				F1B94CB42EBE005C002A260A /* CompactSlider */,
 			);
 			productName = "Skyrise Bureau";
 			productReference = F1BA0D342EBAF3150019BC2A /* Skyrise Bureau.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = F1BA0D2B2EBAF3150019BC2A;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F1B94CB32EBE005C002A260A /* XCRemoteSwiftPackageReference "CompactSlider" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F1BA0D352EBAF3150019BC2A /* Products */;
 			projectDirPath = "";
@@ -367,6 +376,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F1B94CB32EBE005C002A260A /* XCRemoteSwiftPackageReference "CompactSlider" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/buh/CompactSlider.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.9;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F1B94CB42EBE005C002A260A /* CompactSlider */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F1B94CB32EBE005C002A260A /* XCRemoteSwiftPackageReference "CompactSlider" */;
+			productName = CompactSlider;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F1BA0D2C2EBAF3150019BC2A /* Project object */;
 }

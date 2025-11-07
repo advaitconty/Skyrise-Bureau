@@ -11,9 +11,7 @@ import SwiftUI
 struct Skyrise_BureauApp: App {
     var body: some Scene {
         WindowGroup {
-            GeometryReader { reader in
-                MapView()
-            }
+            AirplaneDatabaseTestView()
         }
     }
 }

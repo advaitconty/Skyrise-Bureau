@@ -1,5 +1,6 @@
 import SwiftUI
 import AppKit
+import CompactSlider
 
 struct AirplaneDatabaseTestView: View {
     @State var searchTerm: String = ""
@@ -8,6 +9,7 @@ struct AirplaneDatabaseTestView: View {
     let cornerRadius = 10.0
     @State var showPlaneStats: Aircraft? = nil
     @State var showPlane: Bool = false
+    @State var preferedSeatingConfig: SeatingConfig = SeatingConfig(economy: 0, premiumEconomy: 0, business: 0, first: 0)
     
     var filteredPlanes: [Aircraft] {
         AircraftDatabase.shared.allAircraft.filter { plane in
@@ -85,6 +87,59 @@ struct AirplaneDatabaseTestView: View {
         .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
     }
     
+    func configuator(plane: Aircraft) -> some View {
+        VStack {
+            HStack {
+                Spacer()
+                Image(systemName: "carseat.right")
+                Text("Economy class seats")
+                    .fontWidth(.condensed)
+                TextField("\(plane.defaultSeating.economy)", value: $preferedSeatingConfig.economy, format: .number)
+                    .fontWidth(.compressed)
+                    .textFieldStyle(.roundedBorder)
+                Stepper("", value: $preferedSeatingConfig.economy)
+                Spacer()
+            }
+            
+            HStack {
+                Spacer()
+                Image(systemName: "star")
+                Text("Premium economy class seats")
+                    .fontWidth(.condensed)
+                TextField("\(plane.defaultSeating.premiumEconomy)", value: $preferedSeatingConfig.premiumEconomy, format: .number)
+                    .fontWidth(.compressed)
+                    .textFieldStyle(.roundedBorder)
+                Stepper("", value: $preferedSeatingConfig.premiumEconomy)
+                Spacer()
+            }
+            
+            
+            HStack {
+                Spacer()
+                Image(systemName: "briefcase")
+                Text("Business class seats")
+                    .fontWidth(.condensed)
+                TextField("\(plane.defaultSeating.business)", value: $preferedSeatingConfig.business, format: .number)
+                    .fontWidth(.compressed)
+                    .textFieldStyle(.roundedBorder)
+                Stepper("", value: $preferedSeatingConfig.business)
+                Spacer()
+            }
+            
+            HStack {
+                Spacer()
+                Image(systemName: "crown")
+                Text("First class seats")
+                    .fontWidth(.condensed)
+                TextField("\(plane.defaultSeating.first)", value: $preferedSeatingConfig.first, format: .number)
+                    .fontWidth(.compressed)
+                    .textFieldStyle(.roundedBorder)
+                Stepper("", value: $preferedSeatingConfig.first)
+                Spacer()
+            }
+        }
+    }
+    
     func shopView() -> some View {
         VStack {
             HStack {
@@ -103,9 +158,10 @@ struct AirplaneDatabaseTestView: View {
                 .font(.system(size: 16))
                 .fontWidth(.condensed)
                 .textFieldStyle(.roundedBorder)
+                .padding([.bottom], 7)
             
             ScrollView {
-                LazyVStack(spacing: 0, pinnedViews: []) {
+                LazyVStack(spacing: 7, pinnedViews: []) {
                     ForEach(filteredPlanes, id: \.id) { plane in
                         Button {
                             withAnimation {
@@ -210,6 +266,11 @@ struct AirplaneDatabaseTestView: View {
             .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
             
+            
+            configuator(plane: plane)
+                .onAppear {
+                    preferedSeatingConfig = plane.defaultSeating
+                }
         }
         .padding()
     }
