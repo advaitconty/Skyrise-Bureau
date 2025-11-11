@@ -76,6 +76,10 @@ struct SeatingConfig: Codable, Hashable {
     var premiumEconomy: Int
     var business: Int
     var first: Int
+    
+    var seatsUsed: Double {
+        return Double(economy) + Double(premiumEconomy) * 1.5 + Double(business) * 2.0 + Double(first) * 4.0
+    }
 }
 
 // MARK: - Airport Enums and Models

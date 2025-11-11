@@ -10,6 +10,11 @@ struct AirplaneDatabaseTestView: View {
     @State var showPlaneStats: Aircraft? = nil
     @State var showPlane: Bool = false
     @State var preferedSeatingConfig: SeatingConfig = SeatingConfig(economy: 0, premiumEconomy: 0, business: 0, first: 0)
+    @State var showContextScreen: Bool = false
+    @State var showNotAllSeatsFilled: Bool = false
+    @State var showAllSeatsFileld: Bool = false
+    @State var registration: String = "SB-"
+    @State var aircraftName: String = "Horizon Jet"
     
     var filteredPlanes: [Aircraft] {
         AircraftDatabase.shared.allAircraft.filter { plane in
@@ -87,57 +92,226 @@ struct AirplaneDatabaseTestView: View {
         .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
     }
     
-    func configuator(plane: Aircraft) -> some View {
-        VStack {
+    func explainationOnConfigurator() -> some View {
+        ScrollView {
             HStack {
-                Spacer()
-                Image(systemName: "carseat.right")
-                Text("Economy class seats")
-                    .fontWidth(.condensed)
-                TextField("\(plane.defaultSeating.economy)", value: $preferedSeatingConfig.economy, format: .number)
-                    .fontWidth(.compressed)
-                    .textFieldStyle(.roundedBorder)
-                Stepper("", value: $preferedSeatingConfig.economy)
+                Text("How does plane configuration work?")
+                    .fontWidth(.expanded)
                 Spacer()
             }
-            
             HStack {
-                Spacer()
-                Image(systemName: "star")
-                Text("Premium economy class seats")
+                Text("Plane configuration works based on the types of classes you can fit a plane with, similar to real life. These classes are classified into 4 classes:")
                     .fontWidth(.condensed)
-                TextField("\(plane.defaultSeating.premiumEconomy)", value: $preferedSeatingConfig.premiumEconomy, format: .number)
-                    .fontWidth(.compressed)
-                    .textFieldStyle(.roundedBorder)
-                Stepper("", value: $preferedSeatingConfig.premiumEconomy)
                 Spacer()
             }
-            
-            
             HStack {
-                Spacer()
-                Image(systemName: "briefcase")
-                Text("Business class seats")
+                Text("1. Economy class, the most basic of the bunch, and it costs the cheapest\n2. Premium economy class, the higher end economy. It often is a minor bump in price, but for slightly more roomier seats and nice food. However, these take up the space of 1.5 economy seats.\n3. Business class, where it really starts getting pricy. Passengers get to enjoy a nice lie-flat bed, the second largest entertainment screen in the sky and a lot more privacy compared to economy and premium economy. However, due to the lie-flat bed, this takes up the space of 3 economy class seats, or 2 premium economy class seats.\n4. First class, for the elite and VIPs. These passengers often get to enjoy private suites in the skies, entertainment screens the size of your home TV, full floor to cabin curtains and even their own personal minibar. However, this comes at the expense of taking up the place of 4 economy seats, or 2 business class seats.")
                     .fontWidth(.condensed)
-                TextField("\(plane.defaultSeating.business)", value: $preferedSeatingConfig.business, format: .number)
-                    .fontWidth(.compressed)
-                    .textFieldStyle(.roundedBorder)
-                Stepper("", value: $preferedSeatingConfig.business)
                 Spacer()
             }
-            
             HStack {
-                Spacer()
-                Image(systemName: "crown")
-                Text("First class seats")
+                Text("Of course as the class increases, the amount of people willing to fly on that class decreases. Economy and premium economy tend to get the most amount of passengers.")
                     .fontWidth(.condensed)
-                TextField("\(plane.defaultSeating.first)", value: $preferedSeatingConfig.first, format: .number)
-                    .fontWidth(.compressed)
-                    .textFieldStyle(.roundedBorder)
-                Stepper("", value: $preferedSeatingConfig.first)
                 Spacer()
             }
         }
+        .padding()
+    }
+    
+    func configuator(plane: Aircraft) -> some View {
+        ScrollView {
+            HStack {
+                Text("Purchase Options")
+                    .fontWidth(.expanded)
+                Spacer()
+            }
+            
+            // Seating
+            VStack {
+                HStack {
+                    Spacer()
+                    Image(systemName: "carseat.right")
+                    Text("Economy class seats")
+                        .fontWidth(.condensed)
+                    TextField("\(plane.defaultSeating.economy)", value: $preferedSeatingConfig.economy, format: .number)
+                        .fontWidth(.compressed)
+                        .textFieldStyle(.roundedBorder)
+                        .onChange(of: preferedSeatingConfig.economy) {
+                            if preferedSeatingConfig.seatsUsed < Double(plane.maxSeats) {
+                                withAnimation {
+                                    showNotAllSeatsFilled = true
+                                }
+                            } else if preferedSeatingConfig.seatsUsed > Double(plane.maxSeats) {
+                                withAnimation {
+                                    showAllSeatsFileld = true
+                                }
+                            } else {
+                                withAnimation {
+                                    showNotAllSeatsFilled = false
+                                    showAllSeatsFileld = false
+                                }
+                            }
+                        }
+                    Stepper("", value: $preferedSeatingConfig.economy)
+                    Spacer()
+                }
+                
+                HStack {
+                    Spacer()
+                    Image(systemName: "star")
+                    Text("Premium economy class seats")
+                        .fontWidth(.condensed)
+                    TextField("\(plane.defaultSeating.premiumEconomy)", value: $preferedSeatingConfig.premiumEconomy, format: .number)
+                        .fontWidth(.compressed)
+                        .textFieldStyle(.roundedBorder)
+                        .onChange(of: preferedSeatingConfig.premiumEconomy) {
+                            if preferedSeatingConfig.seatsUsed < Double(plane.maxSeats) {
+                                withAnimation {
+                                    showNotAllSeatsFilled = true
+                                }
+                            } else if preferedSeatingConfig.seatsUsed > Double(plane.maxSeats) {
+                                withAnimation {
+                                    showAllSeatsFileld = true
+                                }
+                            } else {
+                                withAnimation {
+                                    showNotAllSeatsFilled = false
+                                    showAllSeatsFileld = false
+                                }
+                            }
+                        }
+                    Stepper("", value: $preferedSeatingConfig.premiumEconomy)
+                    Spacer()
+                }
+                
+                
+                HStack {
+                    Spacer()
+                    Image(systemName: "briefcase")
+                    Text("Business class seats")
+                        .fontWidth(.condensed)
+                    TextField("\(plane.defaultSeating.business)", value: $preferedSeatingConfig.business, format: .number)
+                        .fontWidth(.compressed)
+                        .textFieldStyle(.roundedBorder)
+                        .onChange(of: preferedSeatingConfig.business) {
+                            if preferedSeatingConfig.seatsUsed < Double(plane.maxSeats) {
+                                withAnimation {
+                                    showNotAllSeatsFilled = true
+                                }
+                            } else if preferedSeatingConfig.seatsUsed > Double(plane.maxSeats) {
+                                withAnimation {
+                                    showAllSeatsFileld = true
+                                }
+                            } else {
+                                withAnimation {
+                                    showNotAllSeatsFilled = false
+                                    showAllSeatsFileld = false
+                                }
+                            }
+                        }
+                    Stepper("", value: $preferedSeatingConfig.business)
+                    Spacer()
+                }
+                
+                HStack {
+                    Spacer()
+                    Image(systemName: "crown")
+                    Text("First class seats")
+                        .fontWidth(.condensed)
+                    TextField("\(plane.defaultSeating.first)", value: $preferedSeatingConfig.first, format: .number)
+                        .fontWidth(.compressed)
+                        .textFieldStyle(.roundedBorder)
+                        .onChange(of: preferedSeatingConfig.first) {
+                            if preferedSeatingConfig.seatsUsed < Double(plane.maxSeats) {
+                                withAnimation {
+                                    showNotAllSeatsFilled = true
+                                }
+                            } else if preferedSeatingConfig.seatsUsed > Double(plane.maxSeats) {
+                                withAnimation {
+                                    showAllSeatsFileld = true
+                                }
+                            } else {
+                                withAnimation {
+                                    showNotAllSeatsFilled = false
+                                    showAllSeatsFileld = false
+                                }
+                            }
+                        }
+                    Stepper("", value: $preferedSeatingConfig.first)
+                    Spacer()
+                }
+                
+                if showNotAllSeatsFilled {
+                    VStack {
+                        HStack {
+                            Image(systemName: "exclamationmark.triangle.fill")
+                                .symbolRenderingMode(.multicolor)
+                            Text("WARNING")
+                                .fontWidth(.expanded)
+                                
+                        }
+                        Text("Not all seats have been filled. There are \(String(format: "%.1f", Double(plane.maxSeats) - preferedSeatingConfig.seatsUsed)) worth of economy seats that you can fill up.")
+                            .fontWidth(.condensed)
+                    }
+                    .transition(.blurReplace)
+                }
+                
+                if showAllSeatsFileld {
+                    VStack {
+                        HStack {
+                            Image(systemName: "exclamationmark.octagon.fill")
+                                .symbolRenderingMode(.multicolor)
+                            Text("ERROR")
+                                .fontWidth(.expanded)
+                        }
+                        Text("All seats have been filled up. Please remove \(String(format: "%.1f", abs(Double(plane.maxSeats) - preferedSeatingConfig.seatsUsed))) worth of economy seats to purchase this plane.")
+                            .fontWidth(.condensed)
+                    }
+                    .transition(.blurReplace)
+                }
+                
+                if showAllSeatsFileld || showNotAllSeatsFilled {
+                    Button {
+                        showContextScreen = true
+                    } label: {
+                        Image(systemName: "questionmark")
+                    }
+                    .popover(isPresented: $showContextScreen, arrowEdge: .bottom) {
+                        explainationOnConfigurator()
+                            .frame(maxWidth: 600, maxHeight: 600)
+                    }
+                }
+            }
+            
+            // Miscellanous
+            VStack {
+                HStack {
+                    Text("Registration")
+                        .fontWidth(.condensed)
+                    TextField("SK-YBR", text: $registration)
+                        .fontWidth(.condensed)
+                        .textFieldStyle(.roundedBorder)
+                }
+                
+                HStack {
+                    Text("Aircraft name")
+                        .fontWidth(.condensed)
+                    TextField("City of Birmingham...", text: $aircraftName)
+                        .fontWidth(.condensed)
+                        .textFieldStyle(.roundedBorder)
+                }
+            }
+            
+            Button {
+                
+            } label: {
+                Text("Purchase jet for $\(Int(plane.purchasePrice))")
+                    .fontWidth(.condensed)
+            }
+        }
+        .padding(8)
+        .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
+        .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
     }
     
     func shopView() -> some View {
