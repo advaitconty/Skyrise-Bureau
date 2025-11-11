@@ -228,10 +228,11 @@ class UserData {
     var campaignRunning: Bool = false
     var campaignEffectiveness: Double?
     var deliveryHubs: [Airport]
+    var accountBalance: Double  
     // Percentage airline improves during campaign. After campaign, airline improves reputation by 1% of their improvement during the campaign
     // airline also looses reputation when their maintainance or happiness drops below 0.7
     
-    init(name: String, airlineName: String, airlineIataCode: String, planes: [FleetItem], xp: Int, levels: Int, airlineReputation: Double, reliabilityIndex: Double, fuelDiscountMultiplier: Double, lastFuelPrice: Double, pilots: Int, flightAttendents: Int, maintainanceCrew: Int, currentlyHoldingFuel: Int, maxFuelHoldable: Int, weeklyPilotSalary: Int, weeklyFlightAttendentSalary: Int, weeklyFlightMaintainanceCrewSalary: Int, pilotHappiness: Double, flightAttendentHappiness: Double, maintainanceCrewHappiness: Double, campaignRunning: Bool, campaignEffectiveness: Double? = nil, deliveryHubs: [Airport]) {
+    init(name: String, airlineName: String, airlineIataCode: String, planes: [FleetItem], xp: Int, levels: Int, airlineReputation: Double, reliabilityIndex: Double, fuelDiscountMultiplier: Double, lastFuelPrice: Double, pilots: Int, flightAttendents: Int, maintainanceCrew: Int, currentlyHoldingFuel: Int, maxFuelHoldable: Int, weeklyPilotSalary: Int, weeklyFlightAttendentSalary: Int, weeklyFlightMaintainanceCrewSalary: Int, pilotHappiness: Double, flightAttendentHappiness: Double, maintainanceCrewHappiness: Double, campaignRunning: Bool, campaignEffectiveness: Double? = nil, deliveryHubs: [Airport], accountBalance: Double) {
         self.name = name
         self.airlineName = airlineName
         self.airlineIataCode = airlineIataCode
@@ -256,6 +257,7 @@ class UserData {
         self.campaignRunning = campaignRunning
         self.campaignEffectiveness = campaignEffectiveness
         self.deliveryHubs = deliveryHubs
+        self.accountBalance = accountBalance
     }
 }
 
@@ -397,4 +399,4 @@ let testUserData = UserData(name: "Advait",
                                     elevation: 610,
                                     demand: AirportDemand(passengerDemand: 8.8, cargoDemand: 7.8, businessTravelRatio: 0.65, tourismBoost: 0.88),
                                     facilities: AirportFacilities(terminalCapacity: 165000, cargoCapacity: 3000, gatesAvailable: 90, slotEfficiency: 0.88)
-                                )])
+                                )], accountBalance: 100_000_000)

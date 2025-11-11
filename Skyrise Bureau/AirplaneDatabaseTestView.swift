@@ -3,6 +3,7 @@ import AppKit
 import CompactSlider
 
 struct AirplaneDatabaseTestView: View {
+    @Binding var userData: UserData
     @State var searchTerm: String = ""
     @State var selectedType: String? = nil
     @Environment(\.colorScheme) var colorScheme
@@ -445,6 +446,12 @@ struct AirplaneDatabaseTestView: View {
                 .onAppear {
                     preferedSeatingConfig = plane.defaultSeating
                 }
+            
+            Button {
+            // Processing for purchasing
+            } label: {
+                Text("Purchase for $\(String(format: ".%2f", plane.purchasePrice))")
+            }
         }
         .padding()
     }
@@ -460,8 +467,4 @@ struct AirplaneDatabaseTestView: View {
             }
         }
     }
-}
-
-#Preview {
-    AirplaneDatabaseTestView()
 }
