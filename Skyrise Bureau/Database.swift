@@ -2079,7 +2079,7 @@ class AirportDatabase {
                 name: "N'djili International Airport",
                 city: "Kinshasa",
                 country: "Democratic Republic of Congo",
-                               iata: "FIH",
+                iata: "FIH",
                 icao: "FZAA",
                 region: .africa,
                 latitude: -4.3857,
