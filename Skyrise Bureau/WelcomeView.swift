@@ -15,6 +15,8 @@ struct WelcomeView: View {
     @State var newAirlineName: String = ""
     @State var airlineIATACode: String = ""
     @State var viewPage: Int = 3
+    @Environment(\.colorScheme) var colorScheme
+    @State var carousellItem: Int = 1
     @State var selectedHomeBase: Airport = Airport(
         name: "Dubai International Airport",
         city: "Dubai",
@@ -141,12 +143,98 @@ struct WelcomeView: View {
         .transition(.slide)
     }
     
-    func pageThreeView() -> some View {
+    func carousell(jet1: String, jet2: String) -> some View {
         VStack {
-            HStack {
-                Text("Select your starter pack")
-                    .font(.title)
-                    .fontWidth(.expanded)
+            if carousellItem == 1 {
+                Image(jet1)
+                    .resizable()
+                    .scaledToFit()
+                    .clipShape(RoundedRectangle(cornerRadius: 4.0))
+                    .transition(.asymmetric(insertion: .slide, removal: .scale))
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 7.0) {
+                            withAnimation {
+                                carousellItem = 2
+                            }
+                        }
+                    }
+            } else if carousellItem == 2 {
+                Image(jet2)
+                    .resizable()
+                    .scaledToFit()
+                    .clipShape(RoundedRectangle(cornerRadius: 4.0))
+                    .transition(.asymmetric(insertion: .slide, removal: .scale))
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 7.0) {
+                            withAnimation {
+                                carousellItem = 1
+                            }
+                        }
+                    }
+            }
+        }
+        .frame(width: 160, height: 90)
+    }
+    
+    func option(icon: String, name: String, jet1: String, jet2: String, jet1Full: String, jet2Full: String, startingCapital: String, focus: String) -> some View {
+            VStack {
+                HStack {
+                    Image(systemName: icon)
+                        .font(.title)
+                    Text(name)
+                        .font(.title)
+                        .fontWidth(.expanded)
+                }
+                carousell(jet1: jet1, jet2: jet2)
+                Text(focus)
+                    .fontWidth(.condensed)
+                HStack {
+                    Image(systemName: "airplane")
+                    Text("Starting fleet")
+                        .font(.title2)
+                        .fontWidth(.expanded)
+                    Spacer()
+                }
+                .frame(maxWidth: 160)
+
+
+                Text(jet1Full)
+                    .fontWidth(.condensed)
+                Text(jet2Full)
+                    .fontWidth(.condensed)
+                HStack {
+                    Text("Starting capital")
+                        .font(.title2)
+                        .fontWidth(.expanded)
+                    Text(startingCapital)
+                        .font(.title2)
+                        .fontWidth(.condensed)
+                }
+            }
+            .padding()
+            .background(colorScheme == .dark ? Color(red: 18/255, green: 18/255, blue: 18/255) : Color(red: 237/255, green: 237/255, blue: 237/255))
+            .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
+            .frame(width: 350 - 50, height: 300)
+            .shadow(color: colorScheme == .dark ? .white.opacity(0.01) : .black.opacity(0.1), radius: 15, x: 0, y: 5)
+    }
+    func pageThreeView() -> some View {
+        GeometryReader { reader in
+            VStack {
+                HStack {
+                    Image(systemName: "backpack")
+                    Text("Select your starter pack")
+                        .font(.title)
+                        .fontWidth(.expanded)
+                    Spacer()
+                }
+                ScrollView(.horizontal) {
+                    HStack {
+                        option(icon: "point.bottomleft.forward.to.point.topright.scurvepath", name: "Option 1: The Regional Specialist", jet1: "CRJ900", jet2: "E175E2", jet1Full: "2x Bombardier CRJ900", jet2Full: "2x Embraer E175-E2", startingCapital: "$32.5M", focus: "Efficient connections of small, regional airports")
+                        option(icon: "american.football", name: "Option 2: The American Special", jet1: "B737-800NG", jet2: "E175E2", jet1Full: "1x Boeing 737-800NG", jet2Full: "2x Embraer E175-E2", startingCapital: "$31.0M", focus: "Operations around a reliable, well-known workhorse.")
+                        option(icon: "star", name: "Option 3: The Eurasian Special", jet1: "A319", jet2: "CRJ900", jet1Full: "1x Airbus A319-100", jet2Full: "2x Bombardier CRJ900", startingCapital: "$30.5M", focus: "The perfect fleet for the European and Asian market.")
+// TO ADD: 2 MORE OPTIONS
+                    }
+                }
             }
         }
         .transition(.slide)

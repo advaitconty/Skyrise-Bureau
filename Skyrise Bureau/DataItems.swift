@@ -29,6 +29,7 @@ enum AircraftManufacturer: String, Codable {
     case irkut = "Irkut"
     case mcdonnellDouglas = "McDonnell Douglas"
     case ilyushin = "Ilyushin"
+    case bombardier = "Bombardier"
 }
 
 // MARK: - Aircraft Model
@@ -228,7 +229,7 @@ class UserData {
     var campaignRunning: Bool = false
     var campaignEffectiveness: Double?
     var deliveryHubs: [Airport]
-    var accountBalance: Double  
+    var accountBalance: Double
     // Percentage airline improves during campaign. After campaign, airline improves reputation by 1% of their improvement during the campaign
     // airline also looses reputation when their maintainance or happiness drops below 0.7
     

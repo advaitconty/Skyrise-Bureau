@@ -303,7 +303,28 @@ class AircraftDatabase {
                 pilots: 2,
                 flightAttendents: 3
             ),
-            
+            Aircraft(
+                modelCode: "CRJ900",
+                name: "Bombardier CRJ900",
+                manufacturer: .bombardier,
+                category: .regionalJet,
+                description: "A versatile 90-seat regional jet offering excellent range and reliability. Popular with regional carriers for its passenger comfort and operational efficiency.",
+                maxRange: 3704,
+                cruiseSpeed: 870,
+                maxSeats: 90,
+                fuelCapacity: 10705,
+                fuelBurnRate: 1.6,
+                minRunwayLength: 1645,
+                defaultSeating: SeatingConfig(economy: 70, premiumEconomy: 10, business: 5, first: 0),
+                purchasePrice: 48_000_000,
+                maintenanceCostPerHour: 1900,
+                yearIntroduced: 2003,
+                isEndgame: false,
+                isSupersonic: false,
+                customImageHeight: 145,
+                pilots: 2,
+                flightAttendents: 2
+            ),
             // NARROW BODY
             Aircraft(
                 modelCode: "A318",
