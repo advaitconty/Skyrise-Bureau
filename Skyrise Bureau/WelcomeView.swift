@@ -14,7 +14,22 @@ struct WelcomeView: View {
     @State var errorText: String = ""
     @State var newAirlineName: String = ""
     @State var airlineIATACode: String = ""
-
+    @State var viewPage: Int = 3
+    @State var selectedHomeBase: Airport = Airport(
+        name: "Dubai International Airport",
+        city: "Dubai",
+        country: "United Arab Emirates",
+        iata: "DXB",
+        icao: "OMDB",
+        region: .asia,
+        latitude: 25.2532,
+        longitude: 55.3657,
+        runwayLength: 4000,
+        elevation: 19,
+        demand: AirportDemand(passengerDemand: 10.0, cargoDemand: 9.0, businessTravelRatio: 0.78, tourismBoost: 0.88),
+        facilities: AirportFacilities(terminalCapacity: 230000, cargoCapacity: 4800, gatesAvailable: 120, slotEfficiency: 0.94)
+    )
+    
     @State var airlineHomeBase: Airport = Airport(
         name: "Los Angeles International Airport",
         city: "Los Angeles",
@@ -32,7 +47,7 @@ struct WelcomeView: View {
     
     @State var showNextForAirport: Bool = false
     
-    var body: some View {
+    func pageOneView() -> some View {
         VStack {
             if showLogo {
                 HStack {
@@ -95,7 +110,7 @@ struct WelcomeView: View {
                             showNextForAirport = false
                         }
                     }
-
+                    
                 }
                 .onChange(of: newAirlineName) {
                     if !newAirlineName.isEmpty && !airlineIATACode.isEmpty && airlineIATACode.count == 2 {
@@ -111,16 +126,42 @@ struct WelcomeView: View {
             }
             if showNextForAirport {
                 Button {
-                    
+                    withAnimation(.default, completionCriteria: .removed) {
+                        viewPage = 2
+                    } completion: {
+                        print("Done")
+                    }
                 } label: {
                     Text("Next (select your airport)")
                         .fontWidth(.condensed)
                 }
                 .transition(.blurReplace)
             }
-            
-            /// TO DO FOR NEXT SCREEN:
-            /// Ensure that there is a proper airport picker. YOu will do this tmw
+        }
+        .transition(.slide)
+    }
+    
+    func pageThreeView() -> some View {
+        VStack {
+            HStack {
+                Text("Select your starter pack")
+                    .font(.title)
+                    .fontWidth(.expanded)
+            }
+        }
+        .transition(.slide)
+    }
+    
+    var body: some View {
+        VStack {
+            if viewPage == 1 {
+                pageOneView()
+            } else if viewPage == 2 {
+                AirportPickerView(maxRange: 0, moveOn: Binding(get: {viewPage == 2}, set: { if $0 == true { withAnimation(completionCriteria: .removed) { viewPage = 3 } completion: { print("Completed") } } else { withAnimation { viewPage = 2 } } }), finalAirportSelected: $selectedHomeBase)
+                    .transition(.slide)
+            } else if viewPage == 3 {
+                pageThreeView()
+            }
         }
         .padding()
         .frame(minWidth: 700, minHeight: 400)

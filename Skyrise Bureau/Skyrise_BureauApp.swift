@@ -11,10 +11,7 @@ import SwiftUI
 struct Skyrise_BureauApp: App {
     var body: some Scene {
         WindowGroup {
-
-            AirportPickerView()
-                .padding()
-                .frame(minWidth: 700, minHeight: 400)
+            WelcomeView()
         }
     }
 }

@@ -13,7 +13,7 @@ class AircraftDatabase {
     
     let allAircraft: [Aircraft]
     
-    private init() {
+    init() {
         allAircraft = [
             // EXTRAS
             Aircraft(
@@ -1186,7 +1186,7 @@ class AirportDatabase {
     
     let allAirports: [Airport]
     
-    private init() {
+    init() {
         allAirports = [
             // ASIA
             Airport(

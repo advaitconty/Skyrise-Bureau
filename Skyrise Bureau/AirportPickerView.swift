@@ -10,7 +10,22 @@ import MapKit
 
 struct AirportPickerView: View {
     @State var airportText: String = "Please select your starting airport"
-    @State var maxRange: Int = 0
+    @State var maxRange: Int
+    let startAirport: Airport? = Airport(
+        name: "Ngurah Rai International Airport",
+        city: "Denpasar",
+        country: "Indonesia",
+        iata: "DPS",
+        icao: "WADD",
+        region: .asia,
+        latitude: -8.7482,
+        longitude: 115.1672,
+        runwayLength: 3000,
+        elevation: 4,
+        demand: AirportDemand(passengerDemand: 8.5, cargoDemand: 6.0, businessTravelRatio: 0.40, tourismBoost: 0.98),
+        facilities: AirportFacilities(terminalCapacity: 150000, cargoCapacity: 2000, gatesAvailable: 70, slotEfficiency: 0.87)
+    )
+    @Binding var moveOn: Bool
     @State var searchTerm: String = ""
     @State var showMapForSelection: Bool = true
     @Environment(\.colorScheme) var colorScheme
@@ -20,10 +35,21 @@ struct AirportPickerView: View {
     @State var savedMapType: String = "Normal"
     @State var mapType: MapStyle = .standard(elevation: .realistic, pointsOfInterest: .all)
     @State var cameraPosition: MapCameraPosition = .automatic
+    @Binding var finalAirportSelected: Airport
+    var airportDatabase: AirportDatabase = AirportDatabase()
+    
     var filteredAirports: [Airport] {
         AirportDatabase.shared.allAirports.filter { airport in
             let matchesSearch = searchTerm.isEmpty || airport.iata.localizedCaseInsensitiveContains(searchTerm) || airport.icao.localizedCaseInsensitiveContains(searchTerm) || airport.country.localizedCaseInsensitiveContains(searchTerm) || airport.city.localizedCaseInsensitiveContains(searchTerm) || airport.name.localizedCaseInsensitiveContains(searchTerm) ||    airport.region.rawValue.localizedCaseInsensitiveContains(searchTerm)
-            return matchesSearch
+            
+            let rangeMax: Bool
+            if maxRange != 0 && startAirport != nil {
+                rangeMax = airportDatabase.calculateDistance(from: startAirport!, to: airport) <= maxRange
+            } else {
+                rangeMax = true
+            }
+            
+            return rangeMax && matchesSearch
         }
     }
     
@@ -102,9 +128,20 @@ struct AirportPickerView: View {
     var body: some View {
         VStack {
             HStack {
+                Image(systemName: "airplane.departure")
                 Text(airportText)
                     .fontWidth(.expanded)
                 Spacer()
+                if selectedAirport != nil {
+                    Button {
+                        finalAirportSelected = selectedAirport!
+                        moveOn = true
+                    } label: {
+                        Image(systemName: "arrow.right")
+                        Text("Next")
+                            .fontWidth(.condensed)
+                    }
+                }
             }
             TextField("Search for various airports...", text: $searchTerm)
                 .fontWidth(.condensed)
@@ -129,8 +166,8 @@ struct AirportPickerView: View {
                             }
                         }
                         .padding(5)
-                        .background(selectedAirport == airport ? .indigo : (colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1)))
-                        .clipShape(RoundedRectangle(cornerRadius: 4.0))
+                        .background(selectedAirport == airport ? .blue : (colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1)))
+                        .clipShape(RoundedRectangle(cornerRadius: 10.0))
                         .onTapGesture {
                             withAnimation {
                                 selectedAirport = airport
@@ -141,7 +178,7 @@ struct AirportPickerView: View {
                 if showMapForSelection {
                     ZStack(alignment: .topLeading) {
                         Map(position: $cameraPosition) {
-                            ForEach(AirportDatabase.shared.allAirports, id: \.id) { airport in
+                            ForEach(filteredAirports, id: \.id) { airport in
                                 
                                 Annotation(airport.name, coordinate: CLLocationCoordinate2D(latitude: airport.latitude, longitude: airport.longitude)) {
                                     ZStack {
@@ -205,10 +242,4 @@ struct AirportPickerView: View {
             }
         }
     }
-}
-
-#Preview {
-    AirportPickerView()
-        .padding()
-        .frame(minWidth: 700, minHeight: 400)
 }
