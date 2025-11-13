@@ -201,6 +201,8 @@ struct FleetItem: Codable, Identifiable {
     var seatingLayout: SeatingConfig
     var kilometersTravelledSinceLastMaintainence: Int
     var currentAirportLocation: Airport?
+    var inMaintainance: Bool = false
+    var endMaintainanceDate: Date? = nil
 }
 
 @Model

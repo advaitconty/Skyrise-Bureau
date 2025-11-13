@@ -6,15 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct WelcomeView: View {
     @State var showLogo: Bool = true
     @State var showBody: Bool = false
     @State var error: Bool = false
     @State var errorText: String = ""
-    @State var newAirlineName: String = ""
-    @State var airlineIATACode: String = ""
-    @State var userCEOName: String = ""
+    @Environment(\.openWindow) var openWindow
     @State var viewPage: Int = 1
     @Environment(\.colorScheme) var colorScheme
     @State var carousellItem: Int = 1
@@ -34,7 +33,6 @@ struct WelcomeView: View {
         demand: AirportDemand(passengerDemand: 10.0, cargoDemand: 9.0, businessTravelRatio: 0.78, tourismBoost: 0.88),
         facilities: AirportFacilities(terminalCapacity: 230000, cargoCapacity: 4800, gatesAvailable: 120, slotEfficiency: 0.94)
     )
-    
     @State var airlineHomeBase: Airport = Airport(
         name: "Los Angeles International Airport",
         city: "Los Angeles",
@@ -49,8 +47,12 @@ struct WelcomeView: View {
         demand: AirportDemand(passengerDemand: 10.0, cargoDemand: 9.0, businessTravelRatio: 0.72, tourismBoost: 0.88),
         facilities: AirportFacilities(terminalCapacity: 240000, cargoCapacity: 4500, gatesAvailable: 130, slotEfficiency: 0.92)
     )
-    
+    @Query var originalUserData: [UserData]
+    @Environment(\.modelContext) var modelContext
     @State var showNextForAirport: Bool = false
+    let debug: Bool = false // For debugging
+    // If above value is true, modelcontext will be cleared at start
+    @State var closeWindow: Bool = false
     
     func pageOneView() -> some View {
         VStack {
@@ -58,7 +60,7 @@ struct WelcomeView: View {
                 HStack {
                     Image(systemName: "airplane")
                         .font(.title)
-                    Text("Welcome to Skyrise Bureau!    ")
+                    Text("Welcome to Skyrise Bureau!")
                         .font(.title)
                         .fontWidth(.expanded)
                         .onAppear {
@@ -85,7 +87,7 @@ struct WelcomeView: View {
                         Text("Airline name")
                             .fontWidth(.expanded)
                         Spacer()
-                        TextField("IndiGo Atlantic", text: $newAirlineName)
+                        TextField("IndiGo Atlantic", text: $userDataForAddition.airlineName)
                             .textFieldStyle(.roundedBorder)
                             .monospaced()
                     }
@@ -94,7 +96,7 @@ struct WelcomeView: View {
                         Text("Airline CEO")
                             .fontWidth(.expanded)
                         Spacer()
-                        TextField("Pieters Elbiers", text: $userCEOName)
+                        TextField("Pieters Elbiers", text: $userDataForAddition.name)
                             .textFieldStyle(.roundedBorder)
                             .monospaced()
                     }
@@ -103,19 +105,19 @@ struct WelcomeView: View {
                         Text("IATA Code")
                             .fontWidth(.expanded)
                         Spacer()
-                        TextField("2-letter airline code (e.g., 6E, BA, SQ)", text: $airlineIATACode)
+                        TextField("2-letter airline code (e.g., 6E, BA, SQ)", text: $userDataForAddition.airlineIataCode)
                             .textFieldStyle(.roundedBorder)
                             .monospaced()
-                            .onChange(of: airlineIATACode) { oldValue, newValue in
+                            .onChange(of: userDataForAddition.airlineIataCode) { oldValue, newValue in
                                 if newValue.count > 2 {
-                                    airlineIATACode = String(newValue.prefix(2))
+                                    userDataForAddition.airlineIataCode = String(newValue.prefix(2))
                                 }
                             }
                     }
                 }
                 .transition(.blurReplace)
-                .onChange(of: airlineIATACode) {
-                    if !newAirlineName.isEmpty && !airlineIATACode.isEmpty && airlineIATACode.count == 2 {
+                .onChange(of: userDataForAddition.airlineIataCode) {
+                    if !userDataForAddition.airlineName.isEmpty && !userDataForAddition.airlineIataCode.isEmpty && userDataForAddition.airlineIataCode.count == 2 && !userDataForAddition.name.isEmpty {
                         withAnimation {
                             showNextForAirport = true
                         }
@@ -126,8 +128,8 @@ struct WelcomeView: View {
                     }
                     
                 }
-                .onChange(of: newAirlineName) {
-                    if !newAirlineName.isEmpty && !airlineIATACode.isEmpty && airlineIATACode.count == 2 {
+                .onChange(of: userDataForAddition.airlineName) {
+                    if !userDataForAddition.airlineName.isEmpty && !userDataForAddition.airlineIataCode.isEmpty && userDataForAddition.airlineIataCode.count == 2 && !userDataForAddition.name.isEmpty {
                         withAnimation {
                             showNextForAirport = true
                         }
@@ -136,6 +138,19 @@ struct WelcomeView: View {
                             showNextForAirport = false
                         }
                     }
+                    
+                }
+                .onChange(of: userDataForAddition.name) {
+                    if !userDataForAddition.airlineName.isEmpty && !userDataForAddition.airlineIataCode.isEmpty && userDataForAddition.airlineIataCode.count == 2 && !userDataForAddition.name.isEmpty {
+                        withAnimation {
+                            showNextForAirport = true
+                        }
+                    } else {
+                        withAnimation {
+                            showNextForAirport = false
+                        }
+                    }
+                    
                 }
             }
             if showNextForAirport {
@@ -146,6 +161,7 @@ struct WelcomeView: View {
                         print("Done")
                     }
                 } label: {
+                    Image(systemName: "arrow.right")
                     Text("Next (select your airport)")
                         .fontWidth(.condensed)
                 }
@@ -245,7 +261,41 @@ struct WelcomeView: View {
                     Spacer()
                     if fleetChoice != 0 {
                         Button {
-                            
+                            if fleetChoice == 1 {
+                                // CRJ 900
+                                userDataForAddition.planes.append(FleetItem(aircraftID: "CRJ900", aircraftname: "The Puddle Jumper", registration: "N-SMOL1", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 70, premiumEconomy: 10, business: 5, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
+                                userDataForAddition.planes.append(FleetItem(aircraftID: "CRJ900", aircraftname: "The Flying Pencil", registration: "N-TINY2", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 70, premiumEconomy: 10, business: 5, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
+                                // E175-E2
+                                userDataForAddition.planes.append(FleetItem(aircraftID: "E175E2", aircraftname: "Middle Management", registration: "N-RGNL1", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 70, premiumEconomy: 8, business: 4, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
+                                userDataForAddition.planes.append(FleetItem(aircraftID: "E175E2", aircraftname: "The Commuter Special", registration: "N-REG01", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 70, premiumEconomy: 8, business: 4, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
+                            } else if fleetChoice == 2 {
+                                // Boeing 737-800 (New Generation)
+                                userDataForAddition.planes.append(FleetItem(aircraftID: "B737-800NG", aircraftname: "Good Ol' Reliable", registration: "N-MERICA", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 138, premiumEconomy: 18, business: 10, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
+                                // E175-E2
+                                userDataForAddition.planes.append(FleetItem(aircraftID: "E175E2", aircraftname: "The Ranch Hand", registration: "N-YEEHAW", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 70, premiumEconomy: 8, business: 4, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
+                                userDataForAddition.planes.append(FleetItem(aircraftID: "E175E2", aircraftname: "Stars and Stripes", registration: "N-EAGLE1", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 70, premiumEconomy: 8, business: 4, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
+                            } else if fleetChoice == 3 {
+                                // Airbus A319
+                                userDataForAddition.planes.append(FleetItem(aircraftID: "A319", aircraftname: "Le Continental", registration: "N-FANCY1", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 114, premiumEconomy: 16, business: 8, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
+                                // CRJ900
+                                userDataForAddition.planes.append(FleetItem(aircraftID: "CRJ900", aircraftname: "Tea and Crumpets", registration: "N-POSH01", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 70, premiumEconomy: 10, business: 5, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
+                                userDataForAddition.planes.append(FleetItem(aircraftID: "CRJ900", aircraftname: "The Sophisticate", registration: "N-CLASSY", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 70, premiumEconomy: 10, business: 5, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
+                            } else if fleetChoice == 4 {
+                                // Airbus A320
+                                userDataForAddition.planes.append(FleetItem(aircraftID: "A320", aircraftname: "Bread and Butter", registration: "N-BASIC1", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 132, premiumEconomy: 18, business: 10, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
+                                // Boeing 737-800 (New Generation)
+                                userDataForAddition.planes.append(FleetItem(aircraftID: "B737-800NG", aircraftname: "The Minivan", registration: "N-SAFE1", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 138, premiumEconomy: 18, business: 10, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
+                            } else if fleetChoice == 5 {
+                                // E175-E2
+                                userDataForAddition.planes.append(FleetItem(aircraftID: "E175E2", aircraftname: "Fresh Off The Lot", registration: "N-NEWB01", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 70, premiumEconomy: 8, business: 4, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
+                                userDataForAddition.planes.append(FleetItem(aircraftID: "E175E2", aircraftname: "The Dawn of the Millenium", registration: "N-TECH01", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 70, premiumEconomy: 8, business: 4, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
+                                // E190-E2
+                                userDataForAddition.planes.append(FleetItem(aircraftID: "E190E2", aircraftname: "Actually has WiFi", registration: "N-FANCY2", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 88, premiumEconomy: 12, business: 4, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
+                            }
+                            modelContext.insert(userDataForAddition)
+                            try? modelContext.save()
+                            openWindow(id: "main")
+                            closeWindow = true
                         } label: {
                             Image(systemName: "checkmark")
                             Text("Finish setup!")
@@ -260,7 +310,6 @@ struct WelcomeView: View {
                         option(icon: "star", name: "The Eurasian Special", jet1: "A319", jet2: "CRJ900", jet1Full: "1x Airbus A319-100", jet2Full: "2x Bombardier CRJ900", startingCapital: "$30.5M", focus: "The perfect fleet for the European and Asian market.", option: 3)
                         option(icon: "person.3", name: "The Domestic", jet1: "A320", jet2: "B737-800NG", jet1Full: "1x Airbus A320-200", jet2Full: "1x Boeing 737-800NG", startingCapital: "$30.5M", focus: "A fleet that maximises profits with modernity.", option: 4)
                         option(icon: "star", name: "The Modern Pioneer", jet1: "E175E2", jet2: "E190E2", jet1Full: "2x Embraer E175-E2", jet2Full: "1x Embraer E190-E2", startingCapital: "$34.0M", focus: "Jets designed around efficiency and modernity.", option: 5)
-// TO ADD: 2 MORE OPTIONS
                     }
                 }
             }
@@ -278,13 +327,28 @@ struct WelcomeView: View {
             } else if viewPage == 3 {
                 pageThreeView()
                     .transition(.slide)
+                    .onAppear {
+                        userDataForAddition.deliveryHubs.append(selectedHomeBase)
+                    }
             }
         }
         .padding()
         .frame(minWidth: 700, minHeight: 400)
+        .onAppear {
+            if debug {
+                for item in originalUserData {
+                    modelContext.delete(item)
+                }
+                try? modelContext.save()
+            } else {
+                if originalUserData.count >= 1 {
+                    modelContext.insert(userDataForAddition)
+                    try? modelContext.save()
+                    openWindow(id: "main")
+                    closeWindow = true
+                }
+            }
+        }
+        .background(AnyView(closeWindow ? WindowCloser() : nil))
     }
-}
-
-#Preview {
-    WelcomeView()
 }

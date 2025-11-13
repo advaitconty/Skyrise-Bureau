@@ -6,14 +6,16 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
+    @State var moidifiableUserdata: UserData = testUserData
+    @Environment(\.modelContext) var modelContext
+    @Query var userData: [UserData]
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            MapView()
         }
         .padding()
     }

@@ -2,7 +2,7 @@ import SwiftUI
 import AppKit
 import CompactSlider
 
-struct AirplaneDatabaseTestView: View {
+struct AirplaneStoreView: View {
     @Binding var userData: UserData
     @State var searchTerm: String = ""
     @State var selectedType: String? = nil
