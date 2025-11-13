@@ -15,9 +15,13 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            MapView()
+            MapView(userData: $moidifiableUserdata)
         }
-        .padding()
+        .onAppear {
+            if let item = userData.first {
+                moidifiableUserdata = item
+            }
+        }
     }
 }
 

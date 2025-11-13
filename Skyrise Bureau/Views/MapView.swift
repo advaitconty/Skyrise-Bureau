@@ -18,6 +18,7 @@ struct MapView: View {
     @State var showSidebar: Bool = true
     @State var sidebarWidth: Int = 200
     @State var aircraftItem: FleetItem? = nil
+    @Binding var userData: UserData
     
     func mapSelectView() -> some View {
         VStack {
@@ -100,7 +101,7 @@ struct MapView: View {
             
             VStack {
                 ScrollView {
-                    ForEach(testUserData.planes, id: \.id) { plane in
+                    ForEach(userData.planes, id: \.id) { plane in
                         Button {
                             aircraftItem = plane
                         } label: {
@@ -187,7 +188,6 @@ struct MapView: View {
             ZStack(alignment: .topLeading) {
                 Map {
                     ForEach(AirportDatabase.shared.allAirports, id: \.id) { airport in
-                        
                         Annotation(airport.name, coordinate: CLLocationCoordinate2D(latitude: airport.latitude, longitude: airport.longitude)) {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 5)
@@ -197,6 +197,32 @@ struct MapView: View {
                                     .padding(5)
                                     .fontWidth(.compressed)
                             }
+                        }
+                    }
+//                    ForEach(userData.planes) { plane in
+//                        if let location = plane.currentAirportLocation {
+//                            MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)) {
+//                                Image(systemName: "airplane")
+//                                    .font(.system(size: 15))
+//                                    .rotationEffect(Angle(degrees: plane.assignedRoute != nil ? getBearing(from: location, to: plane.assignedRoute!.arrivalAirport) : 45))
+//                                    .shadow(radius: 10)
+//                                    .foregroundStyle(.blue)
+//                                    .offset(x: 15, y: 15)
+//                            }
+//                        }
+//                    }
+                    // swift on drugs bro, how tf does this work but not what's above
+                    ForEach(userData.planes.compactMap { plane -> (FleetItem, Airport)? in
+                        guard let location = plane.currentAirportLocation else { return nil }
+                        return (plane, location)
+                    }, id: \.0.id) { plane, location in
+                        Annotation(plane.aircraftname, coordinate: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)) {
+                            Image(systemName: "airplane")
+                                .font(.system(size: 15))
+                                .rotationEffect(Angle(degrees: plane.assignedRoute != nil ? getBearing(from: location, to: plane.assignedRoute!.arrivalAirport) : 45))
+                                .shadow(radius: 10)
+                                .foregroundStyle(.blue)
+                                .offset(x: 15, y: 15)
                         }
                     }
                 }
@@ -246,8 +272,24 @@ struct MapView: View {
             }
         }
     }
+    
+    func getBearing(from: Airport, to: Airport) -> Double {
+        let lat1 = from.latitude * .pi / 180
+        let lon1 = from.longitude * .pi / 180
+        
+        let lat2 = to.latitude * .pi / 180
+        let lon2 = to.longitude * .pi / 180
+        
+        let dLon = lon2 - lon1
+        
+        let y = sin(dLon) * cos(lat2)
+        let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon)
+        let radiansBearing = atan2(y, x)
+        
+        return radiansBearing * 180 / .pi
+    }
 }
 
 #Preview {
-    MapView()
+    MapView(userData: .constant(testUserData))
 }
