@@ -211,7 +211,7 @@ class UserData {
     var planes: [FleetItem]
     var xp: Int = 0
     var levels: Int = 0
-    var airlineReputation: Double = 0.5
+    var airlineReputation: Double = 0.6
     var reliabilityIndex: Double = 0.7
     var fuelDiscountMultiplier: Double = 1
     var lastFuelPrice: Double = 0.75 // Starting at this price, lowest will be 0.45, max will be 1.4, based on how much fuel user purchases
