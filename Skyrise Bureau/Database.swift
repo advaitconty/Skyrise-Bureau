@@ -3242,7 +3242,19 @@ class AirportDatabase {
                 elevation: 591,
                 demand: AirportDemand(passengerDemand: 7.2, cargoDemand: 6.5, businessTravelRatio: 0.70, tourismBoost: 0.60),
                 facilities: AirportFacilities(terminalCapacity: 120000, cargoCapacity: 2200, gatesAvailable: 52, slotEfficiency: 0.84)
-            )
+            ),
+            Airport(name: "Kasimir International Airport",
+                    city: "Leosia City",
+                    country: "Leosia",
+                    iata: "LKW",
+                    icao: "LKMW",
+                    region: .australiaAndOceania,
+                    latitude: 24.15444,
+                    longitude: 160.76127,
+                    runwayLength: 3000,
+                    elevation: 200,
+                    demand: AirportDemand(passengerDemand: 7.2, cargoDemand: 6.5, businessTravelRatio: 0.70, tourismBoost: 0.60),
+                    facilities: AirportFacilities(terminalCapacity: 120000, cargoCapacity: 2200, gatesAvailable: 52, slotEfficiency: 0.84))
         ]
     }
     
