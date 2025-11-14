@@ -107,26 +107,20 @@ struct MapView: View {
                     }
                 }
                 Spacer()
-                    .onChange(of: userDoneSelectedAirport) {
-                        switch airportType {
-                        case .departure:
-                            userData.planes[planeFleetItemToChangeIndex].assignedRoute?.destinationAirport = temporarilySelectedAirportHolderVariableThingamajik
-                        case .arrival:
-                            userData.planes[planeFleetItemToChangeIndex].assignedRoute?.arrivalAirport = temporarilySelectedAirportHolderVariableThingamajik
-                        case .stopover:
-                            userData.planes[planeFleetItemToChangeIndex].assignedRoute?.stopoverAirport = temporarilySelectedAirportHolderVariableThingamajik
-
-                        }
-                    }
             }
             
             VStack {
-                Text("Change airports")
+                HStack {
+                    Text("Change airports")                            .fontWidth(.condensed)
+                    Spacer()
+                    
+                }
                 HStack {
                     Button {
                         planeFleetItemToChangeIndex = userData.planes.firstIndex(of: plane)!
                         airportType = .arrival
                         maxRangeOfSelectedJet = Int(aircraftDatabase.aircraft(byCode: plane.aircraftID)!.maxRange)
+                        currentLocationOfPlane = plane.currentAirportLocation!
                         withAnimation {
                             showAirportPicker = true
                         }
@@ -138,7 +132,9 @@ struct MapView: View {
                     
                     Button {
                         planeFleetItemToChangeIndex = userData.planes.firstIndex(of: plane)!
+                        print(planeFleetItemToChangeIndex)
                         airportType = .stopover
+                        currentLocationOfPlane = plane.currentAirportLocation!
                         withAnimation {
                             showAirportPicker = true
                         }
@@ -413,18 +409,64 @@ struct MapView: View {
     }
     
     var body: some View {
-        if !showAirportPicker {
-            regularMapView()
-                .transition(.move(edge: .top))
-        } else {
-            AirportPickerView(maxRange: maxRangeOfSelectedJet, startAirport: currentLocationOfPlane, moveOn: $userDoneSelectedAirport, finalAirportSelected: $temporarilySelectedAirportHolderVariableThingamajik)
-                .transition(.move(edge: .top))
-                .onChange(of: userDoneSelectedAirport) {
-                    withAnimation {
-                        showAirportPicker = false
-                    }
+        VStack {
+            if !showAirportPicker {
+                regularMapView()
+                    .transition(.move(edge: .top))
+            } else {
+                AirportPickerView(maxRange: maxRangeOfSelectedJet, startAirport: currentLocationOfPlane, moveOn: $userDoneSelectedAirport, finalAirportSelected: $temporarilySelectedAirportHolderVariableThingamajik)
+                    .transition(.move(edge: .top))
+                    .padding()
+            }
+        }
+        .onChange(of: userDoneSelectedAirport) {
+            print(userData)
+            withAnimation {
+                showAirportPicker = false
+            }
+        }
+        .onChange(of: userDoneSelectedAirport) { originalValue, newValue in
+            if originalValue {
+                if userData.planes[planeFleetItemToChangeIndex].assignedRoute == nil {
+                    userData.planes[planeFleetItemToChangeIndex].assignedRoute = Route(destinationAirport: Airport(
+                        name: "Toronto Pearson International Airport",
+                        city: "Toronto",
+                        country: "Canada",
+                        iata: "YYZ",
+                        icao: "CYYZ",
+                        region: .northAmerica,
+                        latitude: 43.6777,
+                        longitude: -79.6248,
+                        runwayLength: 3389,
+                        elevation: 173,
+                        demand: AirportDemand(passengerDemand: 9.3, cargoDemand: 8.5, businessTravelRatio: 0.75, tourismBoost: 0.78),
+                        facilities: AirportFacilities(terminalCapacity: 195000, cargoCapacity: 3800, gatesAvailable: 105, slotEfficiency: 0.90)
+                    ), arrivalAirport: Airport(
+                        name: "Toronto Pearson International Airport",
+                        city: "Toronto",
+                        country: "Canada",
+                        iata: "YYZ",
+                        icao: "CYYZ",
+                        region: .northAmerica,
+                        latitude: 43.6777,
+                        longitude: -79.6248,
+                        runwayLength: 3389,
+                        elevation: 173,
+                        demand: AirportDemand(passengerDemand: 9.3, cargoDemand: 8.5, businessTravelRatio: 0.75, tourismBoost: 0.78),
+                        facilities: AirportFacilities(terminalCapacity: 195000, cargoCapacity: 3800, gatesAvailable: 105, slotEfficiency: 0.90)
+                    ))
                 }
-                .padding()
+                switch airportType {
+                case .departure:
+                    userData.planes[planeFleetItemToChangeIndex].assignedRoute?.destinationAirport = temporarilySelectedAirportHolderVariableThingamajik
+                case .arrival:
+                    userData.planes[planeFleetItemToChangeIndex].assignedRoute?.arrivalAirport = temporarilySelectedAirportHolderVariableThingamajik
+                case .stopover:
+                    userData.planes[planeFleetItemToChangeIndex].assignedRoute?.stopoverAirport = temporarilySelectedAirportHolderVariableThingamajik
+                }
+                userData.planes[planeFleetItemToChangeIndex].assignedRoute?.destinationAirport = userData.planes[planeFleetItemToChangeIndex].currentAirportLocation!
+                print(userData.planes[planeFleetItemToChangeIndex].assignedRoute)
+            }
         }
     }
     
