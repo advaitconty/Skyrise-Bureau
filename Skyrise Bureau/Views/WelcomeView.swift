@@ -50,7 +50,7 @@ struct WelcomeView: View {
     @Query var originalUserData: [UserData]
     @Environment(\.modelContext) var modelContext
     @State var showNextForAirport: Bool = false
-    let debug: Bool = true // For debugging
+    let debug: Bool = false // For debugging
     // If above value is true, modelcontext will be cleared at start
     @State var closeWindow: Bool = false
     

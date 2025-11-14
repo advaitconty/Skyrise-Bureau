@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import _LocationEssentials
 
 // MARK: - Aircraft Enums
 
@@ -108,6 +109,9 @@ struct Airport: Codable, Identifiable, Hashable {
     let elevation: Int // in meters
     var demand: AirportDemand
     var facilities: AirportFacilities
+    var clLocationCoordinateItemForLocation: CLLocationCoordinate2D {
+        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
 }
 
 struct AirportDemand: Codable, Hashable {

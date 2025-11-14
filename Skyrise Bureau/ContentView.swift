@@ -9,46 +9,44 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @State var moidifiableUserdata: UserData = testUserData
+    var moidifiableUserdata: Binding<UserData> {
+        Binding {
+            userData.first ?? testUserData
+        } set: { value in
+            if let item = userData.first {
+                item.planes = value.planes
+                item.deliveryHubs = value.deliveryHubs
+                item.airlineIataCode = value.airlineIataCode
+                item.airlineName = value.airlineName
+                item.name = value.name
+                item.accountBalance = value.accountBalance
+                item.airlineReputation = value.airlineReputation
+                item.campaignEffectiveness = value.campaignEffectiveness
+                item.campaignRunning = value.campaignRunning
+                item.currentlyHoldingFuel = value.currentlyHoldingFuel
+                item.flightAttendentHappiness = value.flightAttendentHappiness
+                item.flightAttendents = value.flightAttendents
+                item.fuelDiscountMultiplier = value.fuelDiscountMultiplier
+                item.lastFuelPrice = value.lastFuelPrice
+                item.levels = value.levels
+                item.maintainanceCrew = value.maintainanceCrew
+                item.maintainanceCrewHappiness = value.maintainanceCrewHappiness
+                item.maxFuelHoldable = value.maxFuelHoldable
+                item.pilotHappiness = value.pilotHappiness
+                item.pilots = value.pilots
+                item.pilotHappiness = value.pilotHappiness
+                item.xp = value.xp
+                
+                try? modelContext.save()
+            }
+        }
+    }
     @Environment(\.modelContext) var modelContext
     @Query var userData: [UserData]
     
     var body: some View {
         VStack {
-            MapView(userData: $moidifiableUserdata)
-        }
-        .onAppear {
-            if let item = userData.first {
-                moidifiableUserdata = item
-            }
-        }
-        .onChange(of: moidifiableUserdata) {
-            if let item = userData.first {
-                item.planes = moidifiableUserdata.planes
-                item.deliveryHubs = moidifiableUserdata.deliveryHubs
-                item.airlineIataCode = moidifiableUserdata.airlineIataCode
-                item.airlineName = moidifiableUserdata.airlineName
-                item.name = moidifiableUserdata.name
-                item.accountBalance = moidifiableUserdata.accountBalance
-                item.airlineReputation = moidifiableUserdata.airlineReputation
-                item.campaignEffectiveness = moidifiableUserdata.campaignEffectiveness
-                item.campaignRunning = moidifiableUserdata.campaignRunning
-                item.currentlyHoldingFuel = moidifiableUserdata.currentlyHoldingFuel
-                item.flightAttendentHappiness = moidifiableUserdata.flightAttendentHappiness
-                item.flightAttendents = moidifiableUserdata.flightAttendents
-                item.fuelDiscountMultiplier = moidifiableUserdata.fuelDiscountMultiplier
-                item.lastFuelPrice = moidifiableUserdata.lastFuelPrice
-                item.levels = moidifiableUserdata.levels
-                item.maintainanceCrew = moidifiableUserdata.maintainanceCrew
-                item.maintainanceCrewHappiness = moidifiableUserdata.maintainanceCrewHappiness
-                item.maxFuelHoldable = moidifiableUserdata.maxFuelHoldable
-                item.pilotHappiness = moidifiableUserdata.pilotHappiness
-                item.pilots = moidifiableUserdata.pilots
-                item.pilotHappiness = moidifiableUserdata.pilotHappiness
-                item.xp = moidifiableUserdata.xp
-                
-                try? modelContext.save()
-            }
+            MapView(userData: moidifiableUserdata)
         }
     }
 }

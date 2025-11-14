@@ -111,13 +111,14 @@ struct MapView: View {
             
             VStack {
                 HStack {
-                    Text("Change airports")                            .fontWidth(.condensed)
+                    Text("Change airports")
+                        .fontWidth(.expanded)
                     Spacer()
                     
                 }
                 HStack {
                     Button {
-                        planeFleetItemToChangeIndex = userData.planes.firstIndex(of: plane)!
+                        planeFleetItemToChangeIndex = userData.planes.firstIndex(of: plane) ?? planeFleetItemToChangeIndex
                         airportType = .arrival
                         maxRangeOfSelectedJet = Int(aircraftDatabase.aircraft(byCode: plane.aircraftID)!.maxRange)
                         currentLocationOfPlane = plane.currentAirportLocation!
@@ -130,18 +131,7 @@ struct MapView: View {
                         
                     }
                     
-                    Button {
-                        planeFleetItemToChangeIndex = userData.planes.firstIndex(of: plane)!
-                        print(planeFleetItemToChangeIndex)
-                        airportType = .stopover
-                        currentLocationOfPlane = plane.currentAirportLocation!
-                        withAnimation {
-                            showAirportPicker = true
-                        }
-                    } label: {
-                        Text("Stopover")
-                            .fontWidth(.condensed)
-                    }
+                    // For future implementations, add the stopover
                 }
             }
             
@@ -359,6 +349,10 @@ struct MapView: View {
                                 .foregroundStyle(plane == selectedPlane ? .indigo : .blue)
                                 .offset(x: 15, y: 15)
                         }
+                        if plane.assignedRoute != nil {
+                            MapPolyline(coordinates: [plane.assignedRoute!.destinationAirport.clLocationCoordinateItemForLocation, plane.assignedRoute!.arrivalAirport.clLocationCoordinateItemForLocation])
+                                .stroke(.blue, lineWidth: 5) // Customize color and width
+                        }
                     }
                 }
                 .mapStyle(mapType)
@@ -419,14 +413,8 @@ struct MapView: View {
                     .padding()
             }
         }
-        .onChange(of: userDoneSelectedAirport) {
-            print(userData)
-            withAnimation {
-                showAirportPicker = false
-            }
-        }
         .onChange(of: userDoneSelectedAirport) { originalValue, newValue in
-            if originalValue {
+            if newValue {
                 if userData.planes[planeFleetItemToChangeIndex].assignedRoute == nil {
                     userData.planes[planeFleetItemToChangeIndex].assignedRoute = Route(destinationAirport: Airport(
                         name: "Toronto Pearson International Airport",
@@ -466,6 +454,10 @@ struct MapView: View {
                 }
                 userData.planes[planeFleetItemToChangeIndex].assignedRoute?.destinationAirport = userData.planes[planeFleetItemToChangeIndex].currentAirportLocation!
                 print(userData.planes[planeFleetItemToChangeIndex].assignedRoute)
+                userDoneSelectedAirport = false
+            }
+            withAnimation {
+                showAirportPicker = false
             }
         }
     }
