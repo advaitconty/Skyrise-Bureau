@@ -181,13 +181,13 @@ enum SeatingType: Codable {
     case economy, premiumEconomy, business, firstClass
 }
 
-struct Route: Codable {
+struct Route: Codable, Equatable {
     var destinationAirport: Airport
     var arrivalAirport: Airport
     var stopoverAirport: Airport?
 }
 
-struct FleetItem: Codable, Identifiable {
+struct FleetItem: Codable, Identifiable, Equatable {
     var id: UUID = UUID()
     var aircraftID: String
     var aircraftname: String
@@ -205,6 +205,9 @@ struct FleetItem: Codable, Identifiable {
     var endMaintainanceDate: Date? = nil
 }
 
+/// SwiftData class
+/// name --> CEO name, airlineName --> name of the airline, airlineIataCode --> Airline IATA code, that will be used at the start of all
+/// flights under that airline, planes [FleetItem] --> Contains a list of the planes
 @Model
 class UserData {
     var name: String
@@ -264,6 +267,7 @@ class UserData {
     }
 }
 
+/// Test user data
 let testUserData = UserData(name: "Advait",
                             airlineName: "IndiGo Atlantic",
                             airlineIataCode: "6E",
@@ -273,19 +277,6 @@ let testUserData = UserData(name: "Advait",
                                           registration: "VT-SBL",
                                           hoursFlown: 3,
                                           assignedRoute: Route(destinationAirport: Airport(
-                                            name: "London Heathrow Airport",
-                                            city: "London",
-                                            country: "United Kingdom",
-                                            iata: "LHR",
-                                            icao: "EGLL",
-                                            region: .europe,
-                                            latitude: 51.4700,
-                                            longitude: -0.4543,
-                                            runwayLength: 3902,
-                                            elevation: 25,
-                                            demand: AirportDemand(passengerDemand: 10.0, cargoDemand: 8.8, businessTravelRatio: 0.80, tourismBoost: 0.85),
-                                            facilities: AirportFacilities(terminalCapacity: 225000, cargoCapacity: 3800, gatesAvailable: 115, slotEfficiency: 0.93)
-                                          ), arrivalAirport: Airport(
                                             name: "Adolfo Suárez Madrid-Barajas Airport",
                                             city: "Madrid",
                                             country: "Spain",
@@ -298,6 +289,19 @@ let testUserData = UserData(name: "Advait",
                                             elevation: 610,
                                             demand: AirportDemand(passengerDemand: 8.8, cargoDemand: 7.8, businessTravelRatio: 0.65, tourismBoost: 0.88),
                                             facilities: AirportFacilities(terminalCapacity: 165000, cargoCapacity: 3000, gatesAvailable: 90, slotEfficiency: 0.88)
+                                          ), arrivalAirport: Airport(
+                                            name: "London Heathrow Airport",
+                                            city: "London",
+                                            country: "United Kingdom",
+                                            iata: "LHR",
+                                            icao: "EGLL",
+                                            region: .europe,
+                                            latitude: 51.4700,
+                                            longitude: -0.4543,
+                                            runwayLength: 3902,
+                                            elevation: 25,
+                                            demand: AirportDemand(passengerDemand: 10.0, cargoDemand: 8.8, businessTravelRatio: 0.80, tourismBoost: 0.85),
+                                            facilities: AirportFacilities(terminalCapacity: 225000, cargoCapacity: 3800, gatesAvailable: 115, slotEfficiency: 0.93)
                                           )),
                                           seatingLayout: SeatingConfig(economy: 258, premiumEconomy: 54, business: 28, first: 6),
                                           kilometersTravelledSinceLastMaintainence: 3200,
@@ -403,3 +407,10 @@ let testUserData = UserData(name: "Advait",
                                     demand: AirportDemand(passengerDemand: 8.8, cargoDemand: 7.8, businessTravelRatio: 0.65, tourismBoost: 0.88),
                                     facilities: AirportFacilities(terminalCapacity: 165000, cargoCapacity: 3000, gatesAvailable: 90, slotEfficiency: 0.88)
                                 )], accountBalance: 100_000_000)
+
+
+/// Exists for the sole purpose of maps
+/// Selects the type of the airport that needs to be changed
+enum AirportType: Codable {
+    case departure, arrival, stopover
+}

@@ -17,8 +17,142 @@ struct MapView: View {
     @Environment(\.colorScheme) var colorScheme
     @State var showSidebar: Bool = true
     @State var sidebarWidth: Int = 200
-    @State var aircraftItem: FleetItem? = nil
     @Binding var userData: UserData
+    @State var selectedPlane: FleetItem? = nil
+    @State var showAirportPicker: Bool = false
+    @State var userDoneSelectedAirport: Bool = false
+    @State var aircraftDatabase: AircraftDatabase = AircraftDatabase()
+    @State var temporarilySelectedAirportHolderVariableThingamajik: Airport = Airport(
+        name: "Toronto Pearson International Airport",
+        city: "Toronto",
+        country: "Canada",
+        iata: "YYZ",
+        icao: "CYYZ",
+        region: .northAmerica,
+        latitude: 43.6777,
+        longitude: -79.6248,
+        runwayLength: 3389,
+        elevation: 173,
+        demand: AirportDemand(passengerDemand: 9.3, cargoDemand: 8.5, businessTravelRatio: 0.75, tourismBoost: 0.78),
+        facilities: AirportFacilities(terminalCapacity: 195000, cargoCapacity: 3800, gatesAvailable: 105, slotEfficiency: 0.90)
+    )
+    @State var planeFleetItemToChangeIndex: Int = 0
+    /// Temporarily held like this
+    @State var airportType: AirportType = .arrival
+    @State var maxRangeOfSelectedJet: Int = 0
+    @State var currentLocationOfPlane: Airport = Airport(
+        name: "Toronto Pearson International Airport",
+        city: "Toronto",
+        country: "Canada",
+        iata: "YYZ",
+        icao: "CYYZ",
+        region: .northAmerica,
+        latitude: 43.6777,
+        longitude: -79.6248,
+        runwayLength: 3389,
+        elevation: 173,
+        demand: AirportDemand(passengerDemand: 9.3, cargoDemand: 8.5, businessTravelRatio: 0.75, tourismBoost: 0.78),
+        facilities: AirportFacilities(terminalCapacity: 195000, cargoCapacity: 3800, gatesAvailable: 105, slotEfficiency: 0.90)
+    )
+    
+    
+    func sidebarItemView(plane: FleetItem) -> some View {
+        VStack {
+            HStack {
+                Button {
+                    withAnimation {
+                        selectedPlane = nil
+                    }
+                } label: {
+                    Image(systemName: "chevron.left")
+                }
+                Button {
+                    withAnimation {
+                        showSidebar = false
+                    }
+                } label: {
+                    Image(systemName: "sidebar.left")
+                        .padding(2)
+                }
+                .buttonStyle(.bordered)
+                .background(.ultraThickMaterial)
+                .matchedGeometryEffect(id: "sidebarBtn", in: namespace)
+                Text(plane.aircraftID)
+                    .fontWidth(.condensed)
+                Spacer()
+            }
+            
+            Image(plane.aircraftID)
+                .resizable()
+                .scaledToFit()
+            
+            HStack {
+                Text(plane.registration)
+                    .fontWidth(.condensed)
+                Spacer()
+                Text(plane.aircraftname)
+                    .fontWidth(.condensed)
+            }
+            HStack {
+                if plane.assignedRoute == nil {
+                    Text("No assigned route")
+                        .fontWidth(.condensed)
+                } else {
+                    if plane.assignedRoute!.stopoverAirport == nil {
+                        Text("Plane flies from \(plane.assignedRoute!.destinationAirport.iata) to \(plane.assignedRoute!.arrivalAirport.iata)")
+                            .fontWidth(.condensed)
+                    } else {
+                        Text("Plane flies from \(plane.assignedRoute!.destinationAirport.iata) to \(plane.assignedRoute!.arrivalAirport.iata) via \(plane.assignedRoute!.stopoverAirport)")
+                            .fontWidth(.condensed)
+                    }
+                }
+                Spacer()
+                    .onChange(of: userDoneSelectedAirport) {
+                        switch airportType {
+                        case .departure:
+                            userData.planes[planeFleetItemToChangeIndex].assignedRoute?.destinationAirport = temporarilySelectedAirportHolderVariableThingamajik
+                        case .arrival:
+                            userData.planes[planeFleetItemToChangeIndex].assignedRoute?.arrivalAirport = temporarilySelectedAirportHolderVariableThingamajik
+                        case .stopover:
+                            userData.planes[planeFleetItemToChangeIndex].assignedRoute?.stopoverAirport = temporarilySelectedAirportHolderVariableThingamajik
+
+                        }
+                    }
+            }
+            
+            VStack {
+                Text("Change airports")
+                HStack {
+                    Button {
+                        planeFleetItemToChangeIndex = userData.planes.firstIndex(of: plane)!
+                        airportType = .arrival
+                        maxRangeOfSelectedJet = Int(aircraftDatabase.aircraft(byCode: plane.aircraftID)!.maxRange)
+                        withAnimation {
+                            showAirportPicker = true
+                        }
+                    } label: {
+                        Text("Arrival")
+                            .fontWidth(.condensed)
+                        
+                    }
+                    
+                    Button {
+                        planeFleetItemToChangeIndex = userData.planes.firstIndex(of: plane)!
+                        airportType = .stopover
+                        withAnimation {
+                            showAirportPicker = true
+                        }
+                    } label: {
+                        Text("Stopover")
+                            .fontWidth(.condensed)
+                    }
+                }
+            }
+            
+            Spacer()
+            
+        }
+    }
     
     func mapSelectView() -> some View {
         VStack {
@@ -82,87 +216,92 @@ struct MapView: View {
     
     func sidebarView() -> some View {
         VStack {
-            HStack {
-                Button {
-                    withAnimation {
-                        showSidebar = false
-                    }
-                } label: {
-                    Image(systemName: "sidebar.left")
-                        .padding(2)
-                }
-                .buttonStyle(.bordered)
-                .background(.ultraThickMaterial)
-                .matchedGeometryEffect(id: "sidebarBtn", in: namespace)
-                Text("Planes")
-                    .fontWidth(.expanded)
-                Spacer()
-            }
-            
-            VStack {
-                ScrollView {
-                    ForEach(userData.planes, id: \.id) { plane in
+            if selectedPlane == nil {
+                Group {
+                    HStack {
                         Button {
-                            aircraftItem = plane
+                            withAnimation {
+                                showSidebar = false
+                            }
                         } label: {
-                            VStack {
-                                HStack {
+                            Image(systemName: "sidebar.left")
+                                .padding(2)
+                        }
+                        .buttonStyle(.bordered)
+                        .background(.ultraThickMaterial)
+                        .matchedGeometryEffect(id: "sidebarBtn", in: namespace)
+                        Text("Planes")
+                            .fontWidth(.expanded)
+                        Spacer()
+                    }
+                    
+                    VStack {
+                        ScrollView {
+                            ForEach(userData.planes, id: \.id) { plane in
+                                Button {
+                                    withAnimation {
+                                        selectedPlane = plane
+                                    }
+                                } label: {
                                     VStack {
                                         HStack {
-                                            Text(plane.aircraftname)
-                                                .fontWidth(.condensed)
-                                            Spacer()
-                                        }
-                                        HStack {
-                                            Text(plane.aircraftID)
-                                                .fontWidth(.condensed)
-                                                .font(.system(size: 12))
-                                            Spacer()
-                                        }
-                                    }
-                                    Spacer()
-                                    
-                                    Text(plane.registration)
-                                        .fontWidth(.compressed)
-                                }
-                                .onAppear {
-                                    print(plane.assignedRoute)
-                                }
-                                VStack {
-                                    if let assignedRoute = plane.assignedRoute {
-                                        if let currentAirportLocation = plane.currentAirportLocation {
-                                            if let stopoverAirport = assignedRoute.stopoverAirport {
-                                            } else {
+                                            VStack {
                                                 HStack {
-                                                    Text("_Flying from \(assignedRoute.destinationAirport.iata) to \(assignedRoute.arrivalAirport.iata)_")
+                                                    Text("\(plane.aircraftname)")
+                                                        .fontWidth(.condensed)
+                                                    Spacer()
+                                                }
+                                                HStack {
+                                                    Text(plane.aircraftID)
+                                                        .fontWidth(.condensed)
+                                                        .font(.system(size: 12))
+                                                    Spacer()
+                                                }
+                                            }
+                                            Spacer()
+                                            
+                                            Text(plane.registration)
+                                                .fontWidth(.compressed)
+                                        }
+                                        .onAppear {
+                                            print(plane.assignedRoute)
+                                        }
+                                        VStack {
+                                            if let assignedRoute = plane.assignedRoute {
+                                                if let currentAirportLocation = plane.currentAirportLocation {
+                                                    if let stopoverAirport = assignedRoute.stopoverAirport {
+                                                    } else {
+                                                        HStack {
+                                                            Text("_Flying from \(assignedRoute.destinationAirport.iata) to \(assignedRoute.arrivalAirport.iata)_")
+                                                                .fontWidth(.condensed)
+                                                            Spacer()
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            
+                                            
+                                            if let currentAirportLocation = plane.currentAirportLocation {
+                                                HStack {
+                                                    Text("_Plane is sitting at \(currentAirportLocation.iata)_")
                                                         .fontWidth(.condensed)
                                                     Spacer()
                                                 }
                                             }
                                         }
                                     }
-                                    
-                                    
-                                    if let currentAirportLocation = plane.currentAirportLocation {
-                                        HStack {
-                                            Text("_Plane is sitting at \(currentAirportLocation.iata)_")
-                                                .fontWidth(.condensed)
-                                            Spacer()
-                                        }
-                                    }
+                                    .padding(1)
                                 }
                             }
-                            .padding(1)
                         }
+                        .listStyle(.bordered)
+                        Spacer()
                     }
                 }
-                //                .popover(item: $aircraftItem, arrowEdge: .leading) { item in
-                //                    VStack {
-                //                        Text(item.aircraftID)
-                //                    }
-                //                }
-                .listStyle(.bordered)
-                Spacer()
+                .transition(.asymmetric(insertion: .slide, removal: .scale))
+            } else {
+                sidebarItemView(plane: selectedPlane!)
+                    .transition(.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .leading)))
             }
         }
         .padding()
@@ -171,7 +310,7 @@ struct MapView: View {
         .background(.ultraThinMaterial)
     }
     
-    var body: some View {
+    func regularMapView() -> some View {
         HStack(spacing: 0) {
             if showSidebar {
                 sidebarView()
@@ -199,18 +338,18 @@ struct MapView: View {
                             }
                         }
                     }
-//                    ForEach(userData.planes) { plane in
-//                        if let location = plane.currentAirportLocation {
-//                            MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)) {
-//                                Image(systemName: "airplane")
-//                                    .font(.system(size: 15))
-//                                    .rotationEffect(Angle(degrees: plane.assignedRoute != nil ? getBearing(from: location, to: plane.assignedRoute!.arrivalAirport) : 45))
-//                                    .shadow(radius: 10)
-//                                    .foregroundStyle(.blue)
-//                                    .offset(x: 15, y: 15)
-//                            }
-//                        }
-//                    }
+                    //                    ForEach(userData.planes) { plane in
+                    //                        if let location = plane.currentAirportLocation {
+                    //                            MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)) {
+                    //                                Image(systemName: "airplane")
+                    //                                    .font(.system(size: 15))
+                    //                                    .rotationEffect(Angle(degrees: plane.assignedRoute != nil ? getBearing(from: location, to: plane.assignedRoute!.arrivalAirport) : 45))
+                    //                                    .shadow(radius: 10)
+                    //                                    .foregroundStyle(.blue)
+                    //                                    .offset(x: 15, y: 15)
+                    //                            }
+                    //                        }
+                    //                    }
                     // swift on drugs bro, how tf does this work but not what's above
                     ForEach(userData.planes.compactMap { plane -> (FleetItem, Airport)? in
                         guard let location = plane.currentAirportLocation else { return nil }
@@ -219,9 +358,9 @@ struct MapView: View {
                         Annotation(plane.aircraftname, coordinate: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)) {
                             Image(systemName: "airplane")
                                 .font(.system(size: 15))
-                                .rotationEffect(Angle(degrees: plane.assignedRoute != nil ? getBearing(from: location, to: plane.assignedRoute!.arrivalAirport) : 45))
+                                .rotationEffect(Angle(degrees: plane.assignedRoute != nil ? getBearing(from: location, to: plane.assignedRoute!.arrivalAirport) : Double.random(in: 0...360)))
                                 .shadow(radius: 10)
-                                .foregroundStyle(.blue)
+                                .foregroundStyle(plane == selectedPlane ? .indigo : .blue)
                                 .offset(x: 15, y: 15)
                         }
                     }
@@ -270,6 +409,22 @@ struct MapView: View {
                     mapType = .hybrid(elevation: .realistic, pointsOfInterest: .all)
                 }
             }
+        }
+    }
+    
+    var body: some View {
+        if !showAirportPicker {
+            regularMapView()
+                .transition(.move(edge: .top))
+        } else {
+            AirportPickerView(maxRange: maxRangeOfSelectedJet, startAirport: currentLocationOfPlane, moveOn: $userDoneSelectedAirport, finalAirportSelected: $temporarilySelectedAirportHolderVariableThingamajik)
+                .transition(.move(edge: .top))
+                .onChange(of: userDoneSelectedAirport) {
+                    withAnimation {
+                        showAirportPicker = false
+                    }
+                }
+                .padding()
         }
     }
     

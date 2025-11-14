@@ -11,20 +11,7 @@ import MapKit
 struct AirportPickerView: View {
     @State var airportText: String = "Please select your starting airport"
     @State var maxRange: Int
-    let startAirport: Airport? = Airport(
-        name: "Ngurah Rai International Airport",
-        city: "Denpasar",
-        country: "Indonesia",
-        iata: "DPS",
-        icao: "WADD",
-        region: .asia,
-        latitude: -8.7482,
-        longitude: 115.1672,
-        runwayLength: 3000,
-        elevation: 4,
-        demand: AirportDemand(passengerDemand: 8.5, cargoDemand: 6.0, businessTravelRatio: 0.40, tourismBoost: 0.98),
-        facilities: AirportFacilities(terminalCapacity: 150000, cargoCapacity: 2000, gatesAvailable: 70, slotEfficiency: 0.87)
-    )
+    let startAirport: Airport?
     @Binding var moveOn: Bool
     @State var searchTerm: String = ""
     @State var showMapForSelection: Bool = true
