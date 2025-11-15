@@ -269,6 +269,18 @@ class UserData {
         self.deliveryHubs = deliveryHubs
         self.accountBalance = accountBalance
     }
+    
+    func amountOfNotDepartedPlanes() -> Int {
+        var numberOfunDepartedPlanes: Int = 0
+        
+        for plane in planes {
+            if !plane.isAirborne && plane.assignedRoute != nil {
+                numberOfunDepartedPlanes = numberOfunDepartedPlanes + 1
+            }
+        }
+        
+        return numberOfunDepartedPlanes
+    }
 }
 
 /// Test user data

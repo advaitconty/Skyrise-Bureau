@@ -114,9 +114,6 @@ struct MapView: View {
                     Text("Change airports")
                         .fontWidth(.expanded)
                     Spacer()
-                    
-                }
-                HStack {
                     Button {
                         planeFleetItemToChangeIndex = userData.planes.firstIndex(of: plane) ?? planeFleetItemToChangeIndex
                         airportType = .arrival
@@ -130,7 +127,8 @@ struct MapView: View {
                             .fontWidth(.condensed)
                         
                     }
-                    
+                }
+                HStack {
                     // For future implementations, add the stopover
                 }
             }
@@ -222,6 +220,18 @@ struct MapView: View {
                     }
                     
                     VStack {
+                        if userData.amountOfNotDepartedPlanes() > 0 {
+                            Button {
+                                
+                            } label: {
+                                HStack {
+                                    Spacer()
+                                    Text("Depart all (\(userData.amountOfNotDepartedPlanes()) to depart)")
+                                        .fontWidth(.condensed)
+                                    Spacer()
+                                }
+                            }
+                        }
                         ScrollView {
                             ForEach(userData.planes, id: \.id) { plane in
                                 Button {
