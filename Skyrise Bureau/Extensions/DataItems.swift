@@ -9,6 +9,80 @@ import Foundation
 import SwiftData
 import _LocationEssentials
 
+// MARK: Calculate Passenger Demand between Airports
+struct RoutePassengerDistribution: Codable {
+    var firstClass: Int
+    var business: Int
+    var premiumEconomy: Int
+    var economy: Int
+    var total: Int {
+        return firstClass + business + premiumEconomy + economy
+    }
+}
+
+/// The special stuff that calculates passenger demand
+/// DO NOT TOUCH THIS cus if it works it works
+/// ts took 3 days im dying now
+extension AirportDatabase {
+    func calculatePassengerDistribution(from origin: Airport, to destination: Airport, aircraftCapacity: Int, userData: UserData) -> RoutePassengerDistribution {
+        let avergeBusinessRatio = (origin.demand.businessTravelRatio + destination.demand.businessTravelRatio) / 2
+        let distance = calculateDistance(from: origin, to: destination)
+        let longHaulRoute = distance > 5000
+        let averageDemand = (origin.demand.passengerDemand + destination.demand.passengerDemand) / 2
+        let averageTourism = (origin.demand.tourismBoost + destination.demand.tourismBoost) / 2
+        
+        // Base percentages
+        var firstPercentage = 0.06
+        var businessPercentage = 0.14
+        var premiumEconomyPercentage = 0.21
+        var economyPercentage = 0.59
+        
+        if longHaulRoute {
+            firstPercentage = 0.05 * avergeBusinessRatio
+            businessPercentage = businessPercentage * avergeBusinessRatio + 0.05
+            premiumEconomyPercentage = premiumEconomyPercentage + 0.05
+            economyPercentage = 1 - firstPercentage - businessPercentage - premiumEconomyPercentage
+        } else {
+            businessPercentage = 0.10 * avergeBusinessRatio
+            premiumEconomyPercentage = 0.08
+            economyPercentage = 1 - firstPercentage - businessPercentage - premiumEconomyPercentage
+        }
+        
+        if averageTourism > 0.85 {
+            let touristBoost = (averageTourism - 0.85) * 0.5
+            economyPercentage = economyPercentage + touristBoost
+            premiumEconomyPercentage = premiumEconomyPercentage + touristBoost
+            businessPercentage = (1 - touristBoost) * businessPercentage
+            firstPercentage = (1 - touristBoost) * firstPercentage
+        }
+        
+        if averageDemand > 9.0 {
+            let demandMultiplier = 1.2
+            businessPercentage = businessPercentage * demandMultiplier
+            firstPercentage = firstPercentage * demandMultiplier
+        }
+        
+        // Normalize percentages FIRST
+        let total = firstPercentage + businessPercentage + premiumEconomyPercentage + economyPercentage
+        firstPercentage /= total
+        businessPercentage /= total
+        premiumEconomyPercentage /= total
+        economyPercentage /= total
+        
+        // THEN apply randomization to final seat counts
+        let randomMultiplier = Double.random(in: userData.airlineReputation...1.0)
+        
+        // Calculate seats with randomization
+        let first = max(0, Int(Double(aircraftCapacity) * firstPercentage * randomMultiplier))
+        let business = max(0, Int(Double(aircraftCapacity) * businessPercentage * randomMultiplier))
+        let premiumEconomy = max(0, Int(Double(aircraftCapacity) * premiumEconomyPercentage * randomMultiplier))
+        
+        // Economy fills the remainder to ensure total = aircraftCapacity
+        let economy = max(0, aircraftCapacity - first - business - premiumEconomy)
+        
+        return RoutePassengerDistribution(firstClass: first, business: business, premiumEconomy: premiumEconomy, economy: economy)
+    }
+}
 // MARK: - Aircraft Enums
 
 enum AircraftCategory: String, Codable, CaseIterable {
@@ -139,6 +213,13 @@ struct Route: Codable, Equatable {
     var stopoverAirport: Airport?
 }
 
+struct DepartureDoneSuccessfullyItems: Codable {
+    var departedSuccessfully: Bool
+    var moneyMade: Double?
+    var seatsUsedInPlane: Double?
+    var seatingConfigOfJet: Double?
+}
+
 struct FleetItem: Codable, Identifiable, Equatable {
     var id: UUID = UUID()
     var aircraftID: String
@@ -175,20 +256,21 @@ struct FleetItem: Codable, Identifiable, Equatable {
             return currentAirportLocation?.clLocationCoordinateItemForLocation ?? CLLocationCoordinate2D(latitude: 0, longitude: 0)
         }
     }
+    var assignedPricing: SeatingConfig? = nil
+    var passengerSeatsUsed: SeatingConfig? = nil
     
-    mutating func departJet() -> Bool {
-        /// Steps to perform
-        /// 1. Calculate required jet fuel
-        /// 2. Perform checks for jet fuel and what not
-        /// 3. Return fuel required for final handling
+    mutating func departJet() -> DepartureDoneSuccessfullyItems {
+        /// TO FINISH TMW
+        /// Document steps of calculation here
         let planeSelected = AircraftDatabase.shared.allAircraft.first(where: { $0.id == aircraftID })!
         if Double(planeSelected.fuelBurnRate * Double(AirportDatabase.shared.calculateDistance(from: assignedRoute!.destinationAirport, to: assignedRoute!.arrivalAirport))) > Double(planeSelected.maxRange * planeSelected.maxRange) && !self.isAirborne && !(self.condition <= 0.25) {
             isAirborne = true
             takeoffTime = Date()
             landingTime = takeoffTime!.adding(hours: Double(AirportDatabase.shared.calculateDistance(from: assignedRoute!.destinationAirport, to: assignedRoute!.arrivalAirport)) / Double(planeSelected.cruiseSpeed))
-            return true
+            assignedRoute
+            return DepartureDoneSuccessfullyItems(departedSuccessfully: true, moneyMade: <#T##Double?#>)
         }
-        return false
+        return false, 0.0
     }
 }
 
