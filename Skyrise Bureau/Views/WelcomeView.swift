@@ -50,8 +50,10 @@ struct WelcomeView: View {
     @Query var originalUserData: [UserData]
     @Environment(\.modelContext) var modelContext
     @State var showNextForAirport: Bool = false
-    let debug: Bool = false // For debugging
-    // If above value is true, modelcontext will be cleared at start
+    var debug: Bool
+    ///For debugging
+    ///If above value is true, modelcontext will be cleared at start
+    ///Now controlled from the main App Definition
     @State var closeWindow: Bool = false
     
     func pageOneView() -> some View {
@@ -336,7 +338,8 @@ struct WelcomeView: View {
         .frame(minWidth: 700, minHeight: 400)
         .onAppear {
             if debug {
-                for item in originalUserData {
+                for item in originalUserData {item
+                    print(item)
                     modelContext.delete(item)
                 }
                 try? modelContext.save()

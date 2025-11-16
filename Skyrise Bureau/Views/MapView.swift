@@ -17,6 +17,7 @@ struct MapView: View {
     @Environment(\.colorScheme) var colorScheme
     @State var showSidebar: Bool = true
     @State var sidebarWidth: Int = 200
+    @State var cameraPosition: MapCameraPosition = .automatic
     @Binding var userData: UserData
     @State var selectedPlane: FleetItem? = nil
     @State var showAirportPicker: Bool = false
@@ -38,7 +39,7 @@ struct MapView: View {
     )
     @State var planeFleetItemToChangeIndex: Int = 0
     /// Temporarily held like this
-    @State var airportType: AirportType = .arrival
+    @State var airportType:  AirportType = .arrival
     @State var maxRangeOfSelectedJet: Int = 0
     @State var currentLocationOfPlane: Airport = Airport(
         name: "Toronto Pearson International Airport",
@@ -220,13 +221,13 @@ struct MapView: View {
                     }
                     
                     VStack {
-                        if userData.amountOfNotDepartedPlanes() > 0 {
+                        if amountOfNotDepartedPlanes(userData) > 0 {
                             Button {
                                 
                             } label: {
                                 HStack {
                                     Spacer()
-                                    Text("Depart all (\(userData.amountOfNotDepartedPlanes()) to depart)")
+                                    Text("Depart all (\(amountOfNotDepartedPlanes(userData)) to depart)")
                                         .fontWidth(.condensed)
                                     Spacer()
                                 }
@@ -311,7 +312,7 @@ struct MapView: View {
             if showSidebar {
                 sidebarView()
             }
-            // Handle for resizing:
+            // Handle for resizing: (this shit not working rn)
             Divider()
                 .opacity(0)
                 .gesture(DragGesture().onChanged { value in
@@ -321,9 +322,9 @@ struct MapView: View {
                 })
             
             ZStack(alignment: .topLeading) {
-                Map {
+                Map(position: $cameraPosition) {
                     ForEach(AirportDatabase.shared.allAirports, id: \.id) { airport in
-                        Annotation(airport.name, coordinate: CLLocationCoordinate2D(latitude: airport.latitude, longitude: airport.longitude)) {
+                        Annotation(airport.iata, coordinate: airport.clLocationCoordinateItemForLocation) {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 5)
                                     .fill(colorScheme == .dark ? Color.cyan : Color.black)
@@ -334,34 +335,33 @@ struct MapView: View {
                             }
                         }
                     }
-                    //                    ForEach(userData.planes) { plane in
-                    //                        if let location = plane.currentAirportLocation {
-                    //                            MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)) {
-                    //                                Image(systemName: "airplane")
-                    //                                    .font(.system(size: 15))
-                    //                                    .rotationEffect(Angle(degrees: plane.assignedRoute != nil ? getBearing(from: location, to: plane.assignedRoute!.arrivalAirport) : 45))
-                    //                                    .shadow(radius: 10)
-                    //                                    .foregroundStyle(.blue)
-                    //                                    .offset(x: 15, y: 15)
-                    //                            }
-                    //                        }
-                    //                    }
-                    // swift on drugs bro, how tf does this work but not what's above
                     ForEach(userData.planes.compactMap { plane -> (FleetItem, Airport)? in
                         guard let location = plane.currentAirportLocation else { return nil }
                         return (plane, location)
                     }, id: \.0.id) { plane, location in
-                        Annotation(plane.aircraftname, coordinate: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)) {
+                        
+                        Annotation(plane.aircraftname, coordinate: plane.planeLocationInFlight) {
                             Image(systemName: "airplane")
                                 .font(.system(size: 15))
-                                .rotationEffect(Angle(degrees: plane.assignedRoute != nil ? getBearing(from: location, to: plane.assignedRoute!.arrivalAirport) : Double.random(in: 0...360)))
+                                .rotationEffect(
+                                    Angle(degrees:
+                                            plane.assignedRoute != nil
+                                          ? getBearing(from: location,
+                                                       to: plane.assignedRoute!.arrivalAirport)
+                                          : Double.random(in: 0...360)
+                                         )
+                                )
                                 .shadow(radius: 10)
                                 .foregroundStyle(plane == selectedPlane ? .indigo : .blue)
                                 .offset(x: 15, y: 15)
                         }
-                        if plane.assignedRoute != nil {
-                            MapPolyline(coordinates: [plane.assignedRoute!.destinationAirport.clLocationCoordinateItemForLocation, plane.assignedRoute!.arrivalAirport.clLocationCoordinateItemForLocation])
-                                .stroke(.blue, lineWidth: 5) // Customize color and width
+                        
+                        if let route = plane.assignedRoute {
+                            MapPolyline(coordinates: [
+                                route.destinationAirport.clLocationCoordinateItemForLocation,
+                                route.arrivalAirport.clLocationCoordinateItemForLocation
+                            ])
+                            .stroke(.blue, lineWidth: 5)
                         }
                     }
                 }

@@ -97,6 +97,7 @@ enum Region: String, Codable, CaseIterable {
 
 struct Airport: Codable, Identifiable, Hashable {
     var id: String { iata }
+    var uniqueID: UUID = UUID()
     let name: String
     let city: String
     let country: String
@@ -128,59 +129,6 @@ struct AirportFacilities: Codable, Hashable {
     var slotEfficiency: Double // 0.0–1.0
 }
 
-
-// MARK: - Usage Examples
-
-/*
- Usage in your game:
- 
- // Get all aircraft
- let allPlanes = AircraftDatabase.shared.allAircraft
- 
- // Get specific aircraft
- if let a380 = AircraftDatabase.shared.aircraft(byCode: "A380-800") {
- print("Found: \(a380.name)")
- }
- 
- // Get all narrow body aircraft
- let narrowBodies = AircraftDatabase.shared.aircraft(byCategory: .narrowBody)
- 
- // Get all Boeing aircraft
- let boeings = AircraftDatabase.shared.aircraft(byManufacturer: .boeing)
- 
- // Get endgame aircraft
- let endgamePlanes = AircraftDatabase.shared.endgameAircraft()
- 
- // Get affordable aircraft for player's budget
- let affordable = AircraftDatabase.shared.affordableAircraft(budget: 100_000_000)
- 
- // Get aircraft suitable for a specific route
- let suitablePlanes = AircraftDatabase.shared.aircraftForRoute(
- distance: 5000,
- runwayLength: 2500
- )
- 
- // When player purchases aircraft, create FleetItem
- if let selectedAircraft = AircraftDatabase.shared.aircraft(byCode: "A320NEO") {
- let newPlane = FleetItem(
- aircraftID: selectedAircraft.modelCode,
- name: selectedAircraft.name,
- registration: "N123AB",
- hoursFlown: 0,
- condition: 100.0,
- isAirborne: false,
- assignedRoute: nil,
- seatingLayout: [
- selectedAircraft.defaultSeating.economy,
- selectedAircraft.defaultSeating.premiumEconomy,
- selectedAircraft.defaultSeating.business,
- selectedAircraft.defaultSeating.first
- ]
- )
- // Add to player's fleet
- }
- */
-
 enum SeatingType: Codable {
     case economy, premiumEconomy, business, firstClass
 }
@@ -201,12 +149,47 @@ struct FleetItem: Codable, Identifiable, Equatable {
     var isAirborne: Bool = false
     var estimatedLandingTime: Date?
     var takeoffTime: Date?
+    var landingTime: Date?
     var assignedRoute: Route? = nil
     var seatingLayout: SeatingConfig
     var kilometersTravelledSinceLastMaintainence: Int
     var currentAirportLocation: Airport?
     var inMaintainance: Bool = false
     var endMaintainanceDate: Date? = nil
+    var planeLocationInFlight: CLLocationCoordinate2D {
+        if isAirborne, let takeoff = takeoffTime, let landing = landingTime, let route = assignedRoute {
+            let totalFlightDuration = landing.timeIntervalSince(takeoff)
+            let elapsedTime = Date().timeIntervalSince(takeoff)
+            let progress = min(max(elapsedTime / totalFlightDuration, 0), 1)
+            
+            let startLat = route.destinationAirport.latitude
+            let startLon = route.destinationAirport.longitude
+            let endLat = route.arrivalAirport.latitude
+            let endLon = route.arrivalAirport.longitude
+            
+            let currentLat = startLat + (endLat - startLat) * progress
+            let currentLon = startLon + (endLon - startLon) * progress
+            
+            return CLLocationCoordinate2D(latitude: currentLat, longitude: currentLon)
+        } else {
+            return currentAirportLocation?.clLocationCoordinateItemForLocation ?? CLLocationCoordinate2D(latitude: 0, longitude: 0)
+        }
+    }
+    
+    mutating func departJet() -> Bool {
+        /// Steps to perform
+        /// 1. Calculate required jet fuel
+        /// 2. Perform checks for jet fuel and what not
+        /// 3. Return fuel required for final handling
+        let planeSelected = AircraftDatabase.shared.allAircraft.first(where: { $0.id == aircraftID })!
+        if Double(planeSelected.fuelBurnRate * Double(AirportDatabase.shared.calculateDistance(from: assignedRoute!.destinationAirport, to: assignedRoute!.arrivalAirport))) > Double(planeSelected.maxRange * planeSelected.maxRange) && !self.isAirborne && !(self.condition <= 0.25) {
+            isAirborne = true
+            takeoffTime = Date()
+            landingTime = takeoffTime!.adding(hours: Double(AirportDatabase.shared.calculateDistance(from: assignedRoute!.destinationAirport, to: assignedRoute!.arrivalAirport)) / Double(planeSelected.cruiseSpeed))
+            return true
+        }
+        return false
+    }
 }
 
 /// SwiftData class
@@ -269,18 +252,18 @@ class UserData {
         self.deliveryHubs = deliveryHubs
         self.accountBalance = accountBalance
     }
+}
+
+func amountOfNotDepartedPlanes(_ userData: UserData) -> Int {
+    var numberOfunDepartedPlanes: Int = 0
     
-    func amountOfNotDepartedPlanes() -> Int {
-        var numberOfunDepartedPlanes: Int = 0
-        
-        for plane in planes {
-            if !plane.isAirborne && plane.assignedRoute != nil {
-                numberOfunDepartedPlanes = numberOfunDepartedPlanes + 1
-            }
+    for plane in userData.planes {
+        if !plane.isAirborne && plane.assignedRoute != nil {
+            numberOfunDepartedPlanes = numberOfunDepartedPlanes + 1
         }
-        
-        return numberOfunDepartedPlanes
     }
+    
+    return numberOfunDepartedPlanes
 }
 
 /// Test user data
@@ -423,6 +406,305 @@ let testUserData = UserData(name: "Advait",
                                     demand: AirportDemand(passengerDemand: 8.8, cargoDemand: 7.8, businessTravelRatio: 0.65, tourismBoost: 0.88),
                                     facilities: AirportFacilities(terminalCapacity: 165000, cargoCapacity: 3000, gatesAvailable: 90, slotEfficiency: 0.88)
                                 )], accountBalance: 100_000_000)
+
+
+/// Test user data with planes actively flying
+let testUserDataWithFlyingPlanes = UserData(
+    name: "Sarah Chen",
+    airlineName: "Pacific Wings",
+    airlineIataCode: "PW",
+    planes: [
+        FleetItem(
+            aircraftID: "B777-300ER",
+            aircraftname: "Sky Voyager",
+            registration: "N-PW001",
+            hoursFlown: 5420,
+            condition: 0.92,
+            isAirborne: true,
+            estimatedLandingTime: Date().addingTimeInterval(3600 * 2), // Landing in 2 hours
+            takeoffTime: Date().addingTimeInterval(-3600 * 4), // Took off 4 hours ago
+            landingTime: Date().addingTimeInterval(3600 * 2),
+            assignedRoute: Route(
+                destinationAirport: Airport(
+                    name: "John F. Kennedy International Airport",
+                    city: "New York",
+                    country: "United States",
+                    iata: "JFK",
+                    icao: "KJFK",
+                    region: .northAmerica,
+                    latitude: 40.6413,
+                    longitude: -73.7781,
+                    runwayLength: 4423,
+                    elevation: 4,
+                    demand: AirportDemand(passengerDemand: 9.5, cargoDemand: 8.5, businessTravelRatio: 0.75, tourismBoost: 0.80),
+                    facilities: AirportFacilities(terminalCapacity: 200000, cargoCapacity: 3500, gatesAvailable: 128, slotEfficiency: 0.91)
+                ),
+                arrivalAirport: Airport(
+                    name: "London Heathrow Airport",
+                    city: "London",
+                    country: "United Kingdom",
+                    iata: "LHR",
+                    icao: "EGLL",
+                    region: .europe,
+                    latitude: 51.4700,
+                    longitude: -0.4543,
+                    runwayLength: 3902,
+                    elevation: 25,
+                    demand: AirportDemand(passengerDemand: 10.0, cargoDemand: 8.8, businessTravelRatio: 0.80, tourismBoost: 0.85),
+                    facilities: AirportFacilities(terminalCapacity: 225000, cargoCapacity: 3800, gatesAvailable: 115, slotEfficiency: 0.93)
+                )
+            ),
+            seatingLayout: SeatingConfig(economy: 264, premiumEconomy: 48, business: 35, first: 8),
+            kilometersTravelledSinceLastMaintainence: 8500,
+            currentAirportLocation: Airport(
+                name: "John F. Kennedy International Airport",
+                city: "New York",
+                country: "United States",
+                iata: "JFK",
+                icao: "KJFK",
+                region: .northAmerica,
+                latitude: 40.6413,
+                longitude: -73.7781,
+                runwayLength: 4423,
+                elevation: 4,
+                demand: AirportDemand(passengerDemand: 9.5, cargoDemand: 8.5, businessTravelRatio: 0.75, tourismBoost: 0.80),
+                facilities: AirportFacilities(terminalCapacity: 200000, cargoCapacity: 3500, gatesAvailable: 128, slotEfficiency: 0.91)
+            )
+        ),
+        FleetItem(
+            aircraftID: "A350-900",
+            aircraftname: "Pacific Dream",
+            registration: "N-PW002",
+            hoursFlown: 3200,
+            condition: 0.95,
+            isAirborne: true,
+            estimatedLandingTime: Date().addingTimeInterval(3600 * 5), // Landing in 5 hours
+            takeoffTime: Date().addingTimeInterval(-3600 * 1), // Took off 1 hour ago
+            landingTime: Date().addingTimeInterval(3600 * 5),
+            assignedRoute: Route(
+                destinationAirport: Airport(
+                    name: "Singapore Changi Airport",
+                    city: "Singapore",
+                    country: "Singapore",
+                    iata: "SIN",
+                    icao: "WSSS",
+                    region: .asia,
+                    latitude: 1.3644,
+                    longitude: 103.9915,
+                    runwayLength: 4000,
+                    elevation: 7,
+                    demand: AirportDemand(passengerDemand: 9.8, cargoDemand: 9.2, businessTravelRatio: 0.72, tourismBoost: 0.90),
+                    facilities: AirportFacilities(terminalCapacity: 240000, cargoCapacity: 4200, gatesAvailable: 135, slotEfficiency: 0.95)
+                ),
+                arrivalAirport: Airport(
+                    name: "Tokyo Haneda Airport",
+                    city: "Tokyo",
+                    country: "Japan",
+                    iata: "HND",
+                    icao: "RJTT",
+                    region: .asia,
+                    latitude: 35.5494,
+                    longitude: 139.7798,
+                    runwayLength: 3360,
+                    elevation: 11,
+                    demand: AirportDemand(passengerDemand: 9.6, cargoDemand: 8.7, businessTravelRatio: 0.78, tourismBoost: 0.82),
+                    facilities: AirportFacilities(terminalCapacity: 230000, cargoCapacity: 3600, gatesAvailable: 110, slotEfficiency: 0.94)
+                )
+            ),
+            seatingLayout: SeatingConfig(economy: 280, premiumEconomy: 40, business: 30, first: 6),
+            kilometersTravelledSinceLastMaintainence: 5200,
+            currentAirportLocation: Airport(
+                name: "Singapore Changi Airport",
+                city: "Singapore",
+                country: "Singapore",
+                iata: "SIN",
+                icao: "WSSS",
+                region: .asia,
+                latitude: 1.3644,
+                longitude: 103.9915,
+                runwayLength: 4000,
+                elevation: 7,
+                demand: AirportDemand(passengerDemand: 9.8, cargoDemand: 9.2, businessTravelRatio: 0.72, tourismBoost: 0.90),
+                facilities: AirportFacilities(terminalCapacity: 240000, cargoCapacity: 4200, gatesAvailable: 135, slotEfficiency: 0.95)
+            )
+        ),
+        FleetItem(
+            aircraftID: "B787-9",
+            aircraftname: "Ocean Breeze",
+            registration: "N-PW003",
+            hoursFlown: 4100,
+            condition: 0.88,
+            isAirborne: true,
+            estimatedLandingTime: Date().addingTimeInterval(3600 * 3.5), // Landing in 3.5 hours
+            takeoffTime: Date().addingTimeInterval(-3600 * 2.5), // Took off 2.5 hours ago
+            landingTime: Date().addingTimeInterval(3600 * 3.5),
+            assignedRoute: Route(
+                destinationAirport: Airport(
+                    name: "Los Angeles International Airport",
+                    city: "Los Angeles",
+                    country: "United States",
+                    iata: "LAX",
+                    icao: "KLAX",
+                    region: .northAmerica,
+                    latitude: 33.9416,
+                    longitude: -118.4085,
+                    runwayLength: 3685,
+                    elevation: 38,
+                    demand: AirportDemand(passengerDemand: 9.4, cargoDemand: 8.3, businessTravelRatio: 0.68, tourismBoost: 0.92),
+                    facilities: AirportFacilities(terminalCapacity: 220000, cargoCapacity: 3400, gatesAvailable: 135, slotEfficiency: 0.90)
+                ),
+                arrivalAirport: Airport(
+                    name: "Sydney Kingsford Smith Airport",
+                    city: "Sydney",
+                    country: "Australia",
+                    iata: "SYD",
+                    icao: "YSSY",
+                    region: .australiaAndOceania,
+                    latitude: -33.9399,
+                    longitude: 151.1753,
+                    runwayLength: 3962,
+                    elevation: 6,
+                    demand: AirportDemand(passengerDemand: 9.0, cargoDemand: 7.8, businessTravelRatio: 0.65, tourismBoost: 0.95),
+                    facilities: AirportFacilities(terminalCapacity: 180000, cargoCapacity: 2900, gatesAvailable: 95, slotEfficiency: 0.88)
+                )
+            ),
+            seatingLayout: SeatingConfig(economy: 246, premiumEconomy: 36, business: 28, first: 0),
+            kilometersTravelledSinceLastMaintainence: 6800,
+            currentAirportLocation: Airport(
+                name: "Los Angeles International Airport",
+                city: "Los Angeles",
+                country: "United States",
+                iata: "LAX",
+                icao: "KLAX",
+                region: .northAmerica,
+                latitude: 33.9416,
+                longitude: -118.4085,
+                runwayLength: 3685,
+                elevation: 38,
+                demand: AirportDemand(passengerDemand: 9.4, cargoDemand: 8.3, businessTravelRatio: 0.68, tourismBoost: 0.92),
+                facilities: AirportFacilities(terminalCapacity: 220000, cargoCapacity: 3400, gatesAvailable: 135, slotEfficiency: 0.90)
+            )
+        ),
+        FleetItem(
+            aircraftID: "A320neo",
+            aircraftname: "Island Hopper",
+            registration: "N-PW004",
+            hoursFlown: 1850,
+            condition: 0.97,
+            isAirborne: false,
+            assignedRoute: Route(
+                destinationAirport: Airport(
+                    name: "Dubai International Airport",
+                    city: "Dubai",
+                    country: "United Arab Emirates",
+                    iata: "DXB",
+                    icao: "OMDB",
+                    region: .asia,
+                    latitude: 25.2532,
+                    longitude: 55.3657,
+                    runwayLength: 4000,
+                    elevation: 19,
+                    demand: AirportDemand(passengerDemand: 9.7, cargoDemand: 9.0, businessTravelRatio: 0.82, tourismBoost: 0.88),
+                    facilities: AirportFacilities(terminalCapacity: 260000, cargoCapacity: 4500, gatesAvailable: 150, slotEfficiency: 0.92)
+                ),
+                arrivalAirport: Airport(
+                    name: "Adolfo Suárez Madrid-Barajas Airport",
+                    city: "Madrid",
+                    country: "Spain",
+                    iata: "MAD",
+                    icao: "LEMD",
+                    region: .europe,
+                    latitude: 40.4719,
+                    longitude: -3.5626,
+                    runwayLength: 4179,
+                    elevation: 610,
+                    demand: AirportDemand(passengerDemand: 8.8, cargoDemand: 7.8, businessTravelRatio: 0.65, tourismBoost: 0.88),
+                    facilities: AirportFacilities(terminalCapacity: 165000, cargoCapacity: 3000, gatesAvailable: 90, slotEfficiency: 0.88)
+                )
+            ),
+            seatingLayout: SeatingConfig(economy: 150, premiumEconomy: 24, business: 12, first: 0),
+            kilometersTravelledSinceLastMaintainence: 2400,
+            currentAirportLocation: Airport(
+                name: "Dubai International Airport",
+                city: "Dubai",
+                country: "United Arab Emirates",
+                iata: "DXB",
+                icao: "OMDB",
+                region: .asia,
+                latitude: 25.2532,
+                longitude: 55.3657,
+                runwayLength: 4000,
+                elevation: 19,
+                demand: AirportDemand(passengerDemand: 9.7, cargoDemand: 9.0, businessTravelRatio: 0.82, tourismBoost: 0.88),
+                facilities: AirportFacilities(terminalCapacity: 260000, cargoCapacity: 4500, gatesAvailable: 150, slotEfficiency: 0.92)
+            )
+        )
+    ],
+    xp: 4500,
+    levels: 12,
+    airlineReputation: 0.92,
+    reliabilityIndex: 0.89,
+    fuelDiscountMultiplier: 0.85,
+    lastFuelPrice: 0.68,
+    pilots: 16,
+    flightAttendents: 48,
+    maintainanceCrew: 16,
+    currentlyHoldingFuel: 8_500_000,
+    maxFuelHoldable: 12_000_000,
+    weeklyPilotSalary: 650,
+    weeklyFlightAttendentSalary: 450,
+    weeklyFlightMaintainanceCrewSalary: 400,
+    pilotHappiness: 0.93,
+    flightAttendentHappiness: 0.91,
+    maintainanceCrewHappiness: 0.94,
+    campaignRunning: true,
+    campaignEffectiveness: 0.15,
+    deliveryHubs: [
+        Airport(
+            name: "Singapore Changi Airport",
+            city: "Singapore",
+            country: "Singapore",
+            iata: "SIN",
+            icao: "WSSS",
+            region: .asia,
+            latitude: 1.3644,
+            longitude: 103.9915,
+            runwayLength: 4000,
+            elevation: 7,
+            demand: AirportDemand(passengerDemand: 9.8, cargoDemand: 9.2, businessTravelRatio: 0.72, tourismBoost: 0.90),
+            facilities: AirportFacilities(terminalCapacity: 240000, cargoCapacity: 4200, gatesAvailable: 135, slotEfficiency: 0.95)
+        ),
+        Airport(
+            name: "Dubai International Airport",
+            city: "Dubai",
+            country: "United Arab Emirates",
+            iata: "DXB",
+            icao: "OMDB",
+            region: .asia,
+            latitude: 25.2532,
+            longitude: 55.3657,
+            runwayLength: 4000,
+            elevation: 19,
+            demand: AirportDemand(passengerDemand: 9.7, cargoDemand: 9.0, businessTravelRatio: 0.82, tourismBoost: 0.88),
+            facilities: AirportFacilities(terminalCapacity: 260000, cargoCapacity: 4500, gatesAvailable: 150, slotEfficiency: 0.92)
+        ),
+        Airport(
+            name: "Los Angeles International Airport",
+            city: "Los Angeles",
+            country: "United States",
+            iata: "LAX",
+            icao: "KLAX",
+            region: .northAmerica,
+            latitude: 33.9416,
+            longitude: -118.4085,
+            runwayLength: 3685,
+            elevation: 38,
+            demand: AirportDemand(passengerDemand: 9.4, cargoDemand: 8.3, businessTravelRatio: 0.68, tourismBoost: 0.92),
+            facilities: AirportFacilities(terminalCapacity: 220000, cargoCapacity: 3400, gatesAvailable: 135, slotEfficiency: 0.90)
+        )
+    ],
+    accountBalance: 285_000_000
+)
 
 
 /// Exists for the sole purpose of maps

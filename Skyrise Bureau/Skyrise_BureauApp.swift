@@ -10,6 +10,17 @@ import SwiftData
 
 @main
 struct Skyrise_BureauApp: App {
+    /// This is for reseting the SwiftData variable
+    let resetUserData: Bool = false
+    
+    /// For the usage of test data
+    let useTestData: Bool = true
+    
+    /// For the usage of test data with flying planes
+    let useTestDataWithFlyingPlanes: Bool = true
+    
+    /// ENSURE ALL VARIABLES ABOVE ARE SET TO false BEFORE FINAL
+    /// BUILD OF APP
     var body: some Scene {
         let sharedModelContainer: ModelContainer = {
             let schema = Schema([
@@ -20,11 +31,11 @@ struct Skyrise_BureauApp: App {
         }()
         
         WindowGroup("Welcome to Skyrise Bureau!", id: "welcome") {
-            WelcomeView()
+            WelcomeView(debug: resetUserData)
         }
         .modelContainer(sharedModelContainer)
         WindowGroup("Skyrise Bureau", id: "main") {
-            ContentView()
+            ContentView(resetUserData: resetUserData, useTestData: useTestData, useTestDataWithFlyingPlanes: useTestDataWithFlyingPlanes)
         }
         .modelContainer(sharedModelContainer)
     }
