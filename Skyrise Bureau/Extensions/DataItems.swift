@@ -156,6 +156,10 @@ struct SeatingConfig: Codable, Hashable {
     var seatsUsed: Double {
         return Double(economy) + Double(premiumEconomy) * 1.5 + Double(business) * 2.0 + Double(first) * 4.0
     }
+    
+    var totalSeatsOnBoardPlane: Int {
+        return economy + premiumEconomy + business + first
+    }
 }
 
 // MARK: - Airport Enums and Models
@@ -208,7 +212,7 @@ enum SeatingType: Codable {
 }
 
 struct Route: Codable, Equatable {
-    var destinationAirport: Airport
+    var originAirport: Airport
     var arrivalAirport: Airport
     var stopoverAirport: Airport?
 }
@@ -243,8 +247,8 @@ struct FleetItem: Codable, Identifiable, Equatable {
             let elapsedTime = Date().timeIntervalSince(takeoff)
             let progress = min(max(elapsedTime / totalFlightDuration, 0), 1)
             
-            let startLat = route.destinationAirport.latitude
-            let startLon = route.destinationAirport.longitude
+            let startLat = route.originAirport.latitude
+            let startLon = route.originAirport.longitude
             let endLat = route.arrivalAirport.latitude
             let endLon = route.arrivalAirport.longitude
             
@@ -259,18 +263,120 @@ struct FleetItem: Codable, Identifiable, Equatable {
     var assignedPricing: SeatingConfig? = nil
     var passengerSeatsUsed: SeatingConfig? = nil
     
-    mutating func departJet() -> DepartureDoneSuccessfullyItems {
-        /// TO FINISH TMW
-        /// Document steps of calculation here
-        let planeSelected = AircraftDatabase.shared.allAircraft.first(where: { $0.id == aircraftID })!
-        if Double(planeSelected.fuelBurnRate * Double(AirportDatabase.shared.calculateDistance(from: assignedRoute!.destinationAirport, to: assignedRoute!.arrivalAirport))) > Double(planeSelected.maxRange * planeSelected.maxRange) && !self.isAirborne && !(self.condition <= 0.25) {
-            isAirborne = true
-            takeoffTime = Date()
-            landingTime = takeoffTime!.adding(hours: Double(AirportDatabase.shared.calculateDistance(from: assignedRoute!.destinationAirport, to: assignedRoute!.arrivalAirport)) / Double(planeSelected.cruiseSpeed))
-            assignedRoute
-            return DepartureDoneSuccessfullyItems(departedSuccessfully: true, moneyMade: <#T##Double?#>)
+    mutating func departJet(_ userDataProvided: UserData) -> DepartureDoneSuccessfullyItems? {
+        /// Steps for calculation of departure
+        /// 1. Get route passenger distribution
+        /// 2. Apply multiplier for increasing/decreasing demand based on:
+        ///    - How expensive the tickets are
+        ///    - The reputation of the airline (price per km based on this statistic)
+        /// 3. Return DepartureDoneSuccessfullyItems
+        
+        guard let route = assignedRoute, !isAirborne, condition > 0.25, let pricing = assignedPricing else {
+            return DepartureDoneSuccessfullyItems(departedSuccessfully: false, moneyMade: nil, seatsUsedInPlane: nil, seatingConfigOfJet: nil)
         }
-        return false, 0.0
+        
+        let planeSelected = AircraftDatabase.shared.allAircraft.first(where: { $0.id == aircraftID })!
+        let db = AirportDatabase()
+        let distance = db.calculateDistance(from: route.originAirport, to: route.arrivalAirport)
+        let fuelRequired = Double(planeSelected.fuelBurnRate) * Double(distance)
+        
+        // Check if plane has enough range
+        guard fuelRequired <= Double(planeSelected.fuelCapacity) else {
+            return DepartureDoneSuccessfullyItems(departedSuccessfully: false, moneyMade: nil, seatsUsedInPlane: nil, seatingConfigOfJet: nil)
+        }
+        
+        // Calculate base demand
+        let baseDemand = db.calculatePassengerDistribution(
+            from: route.originAirport,
+            to: route.arrivalAirport,
+            aircraftCapacity: seatingLayout.totalSeatsOnBoardPlane,
+            userData: userDataProvided
+        )
+        
+        // Calculate reasonable market pricing for this route
+        let reasonablePricingForAirline = SeatingConfig(
+            economy: Int(predictorModel.predictPricePerKM(rating: userDataProvided.airlineReputation, seatClass: .economy) * Double(distance)),
+            premiumEconomy: Int(predictorModel.predictPricePerKM(rating: userDataProvided.airlineReputation, seatClass: .premiumEconomy) * Double(distance)),
+            business: Int(predictorModel.predictPricePerKM(rating: userDataProvided.airlineReputation, seatClass: .business) * Double(distance)),
+            first: Int(predictorModel.predictPricePerKM(rating: userDataProvided.airlineReputation, seatClass: .first) * Double(distance))
+        )
+        
+        // Calculate demand multipliers based on pricing for each class
+        let economyMultiplier = calculatePricingMultiplier(
+            userPrice: Double(pricing.economy),
+            marketPrice: Double(reasonablePricingForAirline.economy),
+            elasticity: 1.5
+        )
+        let premiumMultiplier = calculatePricingMultiplier(
+            userPrice: Double(pricing.premiumEconomy),
+            marketPrice: Double(reasonablePricingForAirline.premiumEconomy),
+            elasticity: 1.3
+        )
+        let businessMultiplier = calculatePricingMultiplier(
+            userPrice: Double(pricing.business),
+            marketPrice: Double(reasonablePricingForAirline.business),
+            elasticity: 1.0
+        )
+        let firstMultiplier = calculatePricingMultiplier(
+            userPrice: Double(pricing.first),
+            marketPrice: Double(reasonablePricingForAirline.first),
+            elasticity: 0.8
+        )
+        
+        // Apply multipliers to base demand
+        let adjustedDemand = RoutePassengerDistribution(
+            firstClass: Int(Double(baseDemand.firstClass) * firstMultiplier),
+            business: Int(Double(baseDemand.business) * businessMultiplier),
+            premiumEconomy: Int(Double(baseDemand.premiumEconomy) * premiumMultiplier),
+            economy: Int(Double(baseDemand.economy) * economyMultiplier)
+        )
+        
+        // Fill seats based on adjusted demand (can't exceed available seats)
+        let seatsBooked = SeatingConfig(
+            economy: min(adjustedDemand.economy, seatingLayout.economy),
+            premiumEconomy: min(adjustedDemand.premiumEconomy, seatingLayout.premiumEconomy),
+            business: min(adjustedDemand.business, seatingLayout.business),
+            first: min(adjustedDemand.firstClass, seatingLayout.first)
+        )
+        
+        // Calculate revenue
+        let revenue = Double(
+            seatsBooked.economy * pricing.economy +
+            seatsBooked.premiumEconomy * pricing.premiumEconomy +
+            seatsBooked.business * pricing.business +
+            seatsBooked.first * pricing.first
+        )
+        
+        // Update flight status
+        isAirborne = true
+        takeoffTime = Date()
+        landingTime = takeoffTime!.adding(hours: Double(distance) / Double(planeSelected.cruiseSpeed))
+        passengerSeatsUsed = seatsBooked
+        
+        return DepartureDoneSuccessfullyItems(
+            departedSuccessfully: true,
+            moneyMade: revenue,
+            seatsUsedInPlane: seatsBooked.seatsUsed,
+            seatingConfigOfJet: seatingLayout.seatsUsed
+        )
+    }
+    
+    /// Calculates demand multiplier based on user pricing vs market pricing
+    /// - Returns a value between 0.3 and 1.5:
+    ///   - < 1.0 = prices too high (reduced demand)
+    ///   - 1.0 = market price (normal demand)
+    ///   - > 1.0 = competitive pricing (increased demand)
+    private func calculatePricingMultiplier(userPrice: Double, marketPrice: Double, elasticity: Double) -> Double {
+        guard marketPrice > 0 else { return 1.0 }
+        
+        let priceRatio = userPrice / marketPrice
+        // Formula: demand = priceRatio^(-elasticity)
+        // If priceRatio = 0.8 (20% discount) → demand increases
+        // If priceRatio = 1.2 (20% premium) → demand decreases
+        let demandChange = pow(priceRatio, -elasticity)
+        
+        // Clamp between 0.3 (70% demand loss) and 1.5 (50% demand boost)
+        return min(max(demandChange, 0.3), 1.5)
     }
 }
 
@@ -357,7 +463,7 @@ let testUserData = UserData(name: "Advait",
                                           aircraftname: "Suka Blyat",
                                           registration: "VT-SBL",
                                           hoursFlown: 3,
-                                          assignedRoute: Route(destinationAirport: Airport(
+                                          assignedRoute: Route(originAirport: Airport(
                                             name: "Adolfo Suárez Madrid-Barajas Airport",
                                             city: "Madrid",
                                             country: "Spain",
@@ -507,7 +613,7 @@ let testUserDataWithFlyingPlanes = UserData(
             takeoffTime: Date().addingTimeInterval(-3600 * 4), // Took off 4 hours ago
             landingTime: Date().addingTimeInterval(3600 * 2),
             assignedRoute: Route(
-                destinationAirport: Airport(
+                originAirport: Airport(
                     name: "John F. Kennedy International Airport",
                     city: "New York",
                     country: "United States",
@@ -564,7 +670,7 @@ let testUserDataWithFlyingPlanes = UserData(
             takeoffTime: Date().addingTimeInterval(-3600 * 1), // Took off 1 hour ago
             landingTime: Date().addingTimeInterval(3600 * 5),
             assignedRoute: Route(
-                destinationAirport: Airport(
+                originAirport: Airport(
                     name: "Singapore Changi Airport",
                     city: "Singapore",
                     country: "Singapore",
@@ -621,7 +727,7 @@ let testUserDataWithFlyingPlanes = UserData(
             takeoffTime: Date().addingTimeInterval(-3600 * 2.5), // Took off 2.5 hours ago
             landingTime: Date().addingTimeInterval(3600 * 3.5),
             assignedRoute: Route(
-                destinationAirport: Airport(
+                originAirport: Airport(
                     name: "Los Angeles International Airport",
                     city: "Los Angeles",
                     country: "United States",
@@ -675,7 +781,7 @@ let testUserDataWithFlyingPlanes = UserData(
             condition: 0.97,
             isAirborne: false,
             assignedRoute: Route(
-                destinationAirport: Airport(
+                originAirport: Airport(
                     name: "Dubai International Airport",
                     city: "Dubai",
                     country: "United Arab Emirates",
