@@ -38,6 +38,8 @@ struct MapView: View {
         facilities: AirportFacilities(terminalCapacity: 195000, cargoCapacity: 3800, gatesAvailable: 105, slotEfficiency: 0.90)
     )
     @State var planeFleetItemToChangeIndex: Int = 0
+    @State var showTakeoffPopup: Bool = false
+    @State var takeoffItems: DepartureDoneSuccessfullyItems = DepartureDoneSuccessfullyItems(departedSuccessfully: false, moneyMade: nil, seatsUsedInPlane: nil, seatingConfigOfJet: nil)
     /// Temporarily held like this
     @State var airportType:  AirportType = .arrival
     @State var maxRangeOfSelectedJet: Int = 0
@@ -223,7 +225,12 @@ struct MapView: View {
                     VStack {
                         if amountOfNotDepartedPlanes(userData) > 0 {
                             Button {
-                                
+                                ///Use enumerate later - enough coding for today
+                                for (index, plane) in userData.planes.enumerated() {
+                                    if !plane.isAirborne {
+                                        userData.planes[index].departJet(userData)
+                                    }
+                                }
                             } label: {
                                 HStack {
                                     Spacer()
@@ -415,8 +422,20 @@ struct MapView: View {
     var body: some View {
         VStack {
             if !showAirportPicker {
-                regularMapView()
-                    .transition(.move(edge: .top))
+                ZStack {
+                    regularMapView()
+                        .transition(.move(edge: .top))
+                    
+                    if showTakeoffPopup {
+                        VStack {
+                            Text("Plane")
+                        }
+                        .padding()
+                        .transition(.blurReplace)
+                        .foregroundStyle(.black.opacity(0.75))
+                        .clipShape(RoundedRectangle(cornerRadius: 10.0))
+                    }
+                }
             } else {
                 AirportPickerView(maxRange: maxRangeOfSelectedJet, startAirport: currentLocationOfPlane, moveOn: $userDoneSelectedAirport, finalAirportSelected: $temporarilySelectedAirportHolderVariableThingamajik)
                     .transition(.move(edge: .top))

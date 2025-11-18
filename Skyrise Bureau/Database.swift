@@ -1703,6 +1703,19 @@ class AirportDatabase {
                 facilities: AirportFacilities(terminalCapacity: 140000, cargoCapacity: 2600, gatesAvailable: 70, slotEfficiency: 0.89)
             ),
             Airport(
+                name: "Lublin Airport",
+                city: "Lublin",
+                country: "Poland",
+                iata: "LUZ",
+                icao: "EPLB",
+                region: .europe,
+                latitude: 51.142500,
+                longitude: 22.4249,
+                runwayLength: 2520,
+                elevation: 193,
+                demand: AirportDemand(passengerDemand: 9.9, cargoDemand: 9.9, businessTravelRatio: 0.99, tourismBoost: 0.99),
+                facilities: AirportFacilities(terminalCapacity: 20000, cargoCapacity: 1000, gatesAvailable: 4, slotEfficiency: 0.75)),
+            Airport(
                 name: "Riga International Airport",
                 city: "Riga",
                 country: "Latvia",
@@ -2830,6 +2843,30 @@ class AirportDatabase {
                 demand: AirportDemand(passengerDemand: 4.5, cargoDemand: 3.5, businessTravelRatio: 0.40, tourismBoost: 0.82),
                 facilities: AirportFacilities(terminalCapacity: 55000, cargoCapacity: 800, gatesAvailable: 22, slotEfficiency: 0.77)
             ),
+            Airport(name: "Xaleidscopix International Gateway",
+                    city: "Darekuma",
+                    country: "7sref",
+                    iata: "XSX",
+                    icao: "AXSX",
+                    region: .australiaAndOceania,
+                    latitude: 35.6149384,
+                    longitude: 139.731068,
+                    runwayLength: 2500,
+                    elevation: 1500,
+                    demand: AirportDemand(passengerDemand: 4.0, cargoDemand: 3.7, businessTravelRatio: 0.5, tourismBoost: 0.9),
+                    facilities: AirportFacilities(terminalCapacity: 30000, cargoCapacity: 3000, gatesAvailable: 10, slotEfficiency: 0.65)),
+            Airport(name: "DragonSenseiGuy Secret Gateway",
+                    city: "Kwajalein",
+                    country: "Republic of Dragons",
+                    iata: "DSG",
+                    icao: "RDSG",
+                    region: .australiaAndOceania,
+                    latitude: 9.1257934,
+                    longitude: 167.5740472,
+                    runwayLength: 4500,
+                    elevation: 1500,
+                    demand: AirportDemand(passengerDemand: 3.5, cargoDemand: 4.0, businessTravelRatio: 0.35, tourismBoost: 0.87),
+                    facilities: AirportFacilities(terminalCapacity: 35000, cargoCapacity: 1000, gatesAvailable: 25, slotEfficiency: 0.88)),
             Airport(
                 name: "Fua'amotu International Airport",
                 city: "Nuku'alofa",
@@ -3013,7 +3050,7 @@ class AirportDatabase {
                 demand: AirportDemand(passengerDemand: 5.2, cargoDemand: 5.0, businessTravelRatio: 0.62, tourismBoost: 0.48),
                 facilities: AirportFacilities(terminalCapacity: 80000, cargoCapacity: 1800, gatesAvailable: 35, slotEfficiency: 0.78)
             ),
-
+            
             // ALASKA & HAWAII (add to North America section)
             Airport(
                 name: "Ted Stevens Anchorage International Airport",
@@ -3127,7 +3164,7 @@ class AirportDatabase {
                 demand: AirportDemand(passengerDemand: 5.5, cargoDemand: 4.5, businessTravelRatio: 0.35, tourismBoost: 0.88),
                 facilities: AirportFacilities(terminalCapacity: 80000, cargoCapacity: 1500, gatesAvailable: 35, slotEfficiency: 0.81)
             ),
-
+            
             // ADDITIONAL NORTH AMERICAN (add to North America section)
             Airport(
                 name: "Philadelphia International Airport",
@@ -3241,7 +3278,7 @@ class AirportDatabase {
                 demand: AirportDemand(passengerDemand: 7.5, cargoDemand: 6.5, businessTravelRatio: 0.58, tourismBoost: 0.85),
                 facilities: AirportFacilities(terminalCapacity: 145000, cargoCapacity: 2600, gatesAvailable: 68, slotEfficiency: 0.86)
             ),
-
+            
             // INDIA (add to Asia section)
             Airport(
                 name: "Surat International Airport",
@@ -3312,8 +3349,8 @@ class AirportDatabase {
         let dLon = (to.longitude - from.longitude) * .pi / 180
         
         let a = sin(dLat/2) * sin(dLat/2) +
-                cos(lat1) * cos(lat2) *
-                sin(dLon/2) * sin(dLon/2)
+        cos(lat1) * cos(lat2) *
+        sin(dLon/2) * sin(dLon/2)
         let c = 2 * atan2(sqrt(a), sqrt(1-a))
         
         return Int(earthRadius * c)

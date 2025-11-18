@@ -220,8 +220,9 @@ struct Route: Codable, Equatable {
 struct DepartureDoneSuccessfullyItems: Codable {
     var departedSuccessfully: Bool
     var moneyMade: Double?
-    var seatsUsedInPlane: Double?
-    var seatingConfigOfJet: Double?
+    var seatsUsedInPlane: SeatingConfig?
+    var seatingConfigOfJet: SeatingConfig?
+    var planeInfo: FleetItem?
 }
 
 struct FleetItem: Codable, Identifiable, Equatable {
@@ -356,8 +357,8 @@ struct FleetItem: Codable, Identifiable, Equatable {
         return DepartureDoneSuccessfullyItems(
             departedSuccessfully: true,
             moneyMade: revenue,
-            seatsUsedInPlane: seatsBooked.seatsUsed,
-            seatingConfigOfJet: seatingLayout.seatsUsed
+            seatsUsedInPlane: seatsBooked,
+            seatingConfigOfJet: seatingLayout
         )
     }
     
@@ -374,7 +375,6 @@ struct FleetItem: Codable, Identifiable, Equatable {
         takeoffTime = nil
         landingTime = nil
         estimatedLandingTime = nil
-        
     }
     
     /// Calculates demand multiplier based on user pricing vs market pricing
