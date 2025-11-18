@@ -398,7 +398,222 @@ let airlinePricePoints: [AirlinePricePoint] = [
     AirlinePricePoint(airline: "Porter Airlines",  rating: 0.75, seatClass: .economy,        pricePerKM: 0.21),
     AirlinePricePoint(airline: "Porter Airlines",  rating: 0.75, seatClass: .premiumEconomy, pricePerKM: 0.38),
     AirlinePricePoint(airline: "Porter Airlines",  rating: 0.75, seatClass: .business,       pricePerKM: 0.70),
-    AirlinePricePoint(airline: "Porter Airlines",  rating: 0.75, seatClass: .first,          pricePerKM: 1.28)
+    AirlinePricePoint(airline: "Porter Airlines",  rating: 0.75, seatClass: .first,          pricePerKM: 1.28),
+    // American Airlines (rating 0.6)
+    AirlinePricePoint(airline: "American Airlines",  rating: 0.6,  seatClass: .economy,        pricePerKM: 0.21),
+    AirlinePricePoint(airline: "American Airlines",  rating: 0.6,  seatClass: .premiumEconomy, pricePerKM: 0.39),
+    AirlinePricePoint(airline: "American Airlines",  rating: 0.6,  seatClass: .business,       pricePerKM: 0.69),
+    AirlinePricePoint(airline: "American Airlines",  rating: 0.6,  seatClass: .first,          pricePerKM: 1.18),
+    // Virgin Australia (rating 0.8)
+    AirlinePricePoint(airline: "Virgin Australia",   rating: 0.8,  seatClass: .economy,        pricePerKM: 0.25),
+    AirlinePricePoint(airline: "Virgin Australia",   rating: 0.8,  seatClass: .premiumEconomy, pricePerKM: 0.45),
+    AirlinePricePoint(airline: "Virgin Australia",   rating: 0.8,  seatClass: .business,       pricePerKM: 0.80),
+    AirlinePricePoint(airline: "Virgin Australia",   rating: 0.8,  seatClass: .first,          pricePerKM: 1.45),
+    // Azul Brazilian Airlines (rating 0.75)
+    AirlinePricePoint(airline: "Azul Brazilian Airlines", rating: 0.75, seatClass: .economy,   pricePerKM: 0.19),
+    AirlinePricePoint(airline: "Azul Brazilian Airlines", rating: 0.75, seatClass: .premiumEconomy, pricePerKM: 0.35),
+    AirlinePricePoint(airline: "Azul Brazilian Airlines", rating: 0.75, seatClass: .business,  pricePerKM: 0.66),
+    AirlinePricePoint(airline: "Azul Brazilian Airlines", rating: 0.75, seatClass: .first,     pricePerKM: 1.22),
+    // Aeroflot (rating 0.7)
+    AirlinePricePoint(airline: "Aeroflot",         rating: 0.7,  seatClass: .economy,        pricePerKM: 0.21),
+    AirlinePricePoint(airline: "Aeroflot",         rating: 0.7,  seatClass: .premiumEconomy, pricePerKM: 0.38),
+    AirlinePricePoint(airline: "Aeroflot",         rating: 0.7,  seatClass: .business,       pricePerKM: 0.70),
+    AirlinePricePoint(airline: "Aeroflot",         rating: 0.7,  seatClass: .first,          pricePerKM: 1.28),
+    // El Al (rating 0.75)
+    AirlinePricePoint(airline: "El Al",            rating: 0.75, seatClass: .economy,        pricePerKM: 0.23),
+    AirlinePricePoint(airline: "El Al",            rating: 0.75, seatClass: .premiumEconomy, pricePerKM: 0.41),
+    AirlinePricePoint(airline: "El Al",            rating: 0.75, seatClass: .business,       pricePerKM: 0.76),
+    AirlinePricePoint(airline: "El Al",            rating: 0.75, seatClass: .first,          pricePerKM: 1.38),
+    // Fiji Airways (rating 0.8)
+    AirlinePricePoint(airline: "Fiji Airways",     rating: 0.8,  seatClass: .economy,        pricePerKM: 0.25),
+    AirlinePricePoint(airline: "Fiji Airways",     rating: 0.8,  seatClass: .premiumEconomy, pricePerKM: 0.45),
+    AirlinePricePoint(airline: "Fiji Airways",     rating: 0.8,  seatClass: .business,       pricePerKM: 0.81),
+    AirlinePricePoint(airline: "Fiji Airways",     rating: 0.8,  seatClass: .first,          pricePerKM: 1.48),
+    // GOL Transportes Aéreos (rating 0.65)
+    AirlinePricePoint(airline: "GOL Transportes Aéreos", rating: 0.65, seatClass: .economy,        pricePerKM: 0.11),
+    AirlinePricePoint(airline: "GOL Transportes Aéreos", rating: 0.65, seatClass: .premiumEconomy, pricePerKM: 0.19),
+    AirlinePricePoint(airline: "GOL Transportes Aéreos", rating: 0.65, seatClass: .business,       pricePerKM: 0.37),
+    AirlinePricePoint(airline: "GOL Transportes Aéreos", rating: 0.65, seatClass: .first,          pricePerKM: 0.80),
+    // Royal Air Maroc (rating 0.7)
+    AirlinePricePoint(airline: "Royal Air Maroc",  rating: 0.7,  seatClass: .economy,        pricePerKM: 0.22),
+    AirlinePricePoint(airline: "Royal Air Maroc",  rating: 0.7,  seatClass: .premiumEconomy, pricePerKM: 0.39),
+    AirlinePricePoint(airline: "Royal Air Maroc",  rating: 0.7,  seatClass: .business,       pricePerKM: 0.71),
+    AirlinePricePoint(airline: "Royal Air Maroc",  rating: 0.7,  seatClass: .first,          pricePerKM: 1.28),
+    // S7 Airlines (rating 0.75)
+    AirlinePricePoint(airline: "S7 Airlines",      rating: 0.75, seatClass: .economy,        pricePerKM: 0.21),
+    AirlinePricePoint(airline: "S7 Airlines",      rating: 0.75, seatClass: .premiumEconomy, pricePerKM: 0.38),
+    AirlinePricePoint(airline: "S7 Airlines",      rating: 0.75, seatClass: .business,       pricePerKM: 0.70),
+    AirlinePricePoint(airline: "S7 Airlines",      rating: 0.75, seatClass: .first,          pricePerKM: 1.30),
+    // Royal Jordanian (rating 0.75)
+    AirlinePricePoint(airline: "Royal Jordanian",  rating: 0.75, seatClass: .economy,        pricePerKM: 0.21),
+    AirlinePricePoint(airline: "Royal Jordanian",  rating: 0.75, seatClass: .premiumEconomy, pricePerKM: 0.38),
+    AirlinePricePoint(airline: "Royal Jordanian",  rating: 0.75, seatClass: .business,       pricePerKM: 0.70),
+    AirlinePricePoint(airline: "Royal Jordanian",  rating: 0.75, seatClass: .first,          pricePerKM: 1.29),
+    // Aegean Airlines (rating 0.85)
+    AirlinePricePoint(airline: "Aegean Airlines",  rating: 0.85, seatClass: .economy,        pricePerKM: 0.25),
+    AirlinePricePoint(airline: "Aegean Airlines",  rating: 0.85, seatClass: .premiumEconomy, pricePerKM: 0.45),
+    AirlinePricePoint(airline: "Aegean Airlines",  rating: 0.85, seatClass: .business,       pricePerKM: 0.82),
+    AirlinePricePoint(airline: "Aegean Airlines",  rating: 0.85, seatClass: .first,          pricePerKM: 1.45),
+    // Air Serbia (rating 0.7)
+    AirlinePricePoint(airline: "Air Serbia",       rating: 0.7,  seatClass: .economy,        pricePerKM: 0.20),
+    AirlinePricePoint(airline: "Air Serbia",       rating: 0.7,  seatClass: .premiumEconomy, pricePerKM: 0.36),
+    AirlinePricePoint(airline: "Air Serbia",       rating: 0.7,  seatClass: .business,       pricePerKM: 0.67),
+    AirlinePricePoint(airline: "Air Serbia",       rating: 0.7,  seatClass: .first,          pricePerKM: 1.24),
+    // Aerolineas Argentinas (rating 0.65)
+    AirlinePricePoint(airline: "Aerolineas Argentinas", rating: 0.65, seatClass: .economy,        pricePerKM: 0.18),
+    AirlinePricePoint(airline: "Aerolineas Argentinas", rating: 0.65, seatClass: .premiumEconomy, pricePerKM: 0.32),
+    AirlinePricePoint(airline: "Aerolineas Argentinas", rating: 0.65, seatClass: .business,       pricePerKM: 0.60),
+    AirlinePricePoint(airline: "Aerolineas Argentinas", rating: 0.65, seatClass: .first,          pricePerKM: 1.15),
+    // EgyptAir (rating 0.7)
+    AirlinePricePoint(airline: "EgyptAir",         rating: 0.7,  seatClass: .economy,        pricePerKM: 0.21),
+    AirlinePricePoint(airline: "EgyptAir",         rating: 0.7,  seatClass: .premiumEconomy, pricePerKM: 0.38),
+    AirlinePricePoint(airline: "EgyptAir",         rating: 0.7,  seatClass: .business,       pricePerKM: 0.70),
+    AirlinePricePoint(airline: "EgyptAir",         rating: 0.7,  seatClass: .first,          pricePerKM: 1.30),
+    // ITA Airways (rating 0.7)
+    AirlinePricePoint(airline: "ITA Airways",      rating: 0.7,  seatClass: .economy,        pricePerKM: 0.22),
+    AirlinePricePoint(airline: "ITA Airways",      rating: 0.7,  seatClass: .premiumEconomy, pricePerKM: 0.39),
+    AirlinePricePoint(airline: "ITA Airways",      rating: 0.7,  seatClass: .business,       pricePerKM: 0.72),
+    AirlinePricePoint(airline: "ITA Airways",      rating: 0.7,  seatClass: .first,          pricePerKM: 1.33),
+    // Volaris (rating 0.6)
+    AirlinePricePoint(airline: "Volaris",          rating: 0.6,  seatClass: .economy,        pricePerKM: 0.09),
+    AirlinePricePoint(airline: "Volaris",          rating: 0.6,  seatClass: .premiumEconomy, pricePerKM: 0.15),
+    AirlinePricePoint(airline: "Volaris",          rating: 0.6,  seatClass: .business,       pricePerKM: 0.31),
+    AirlinePricePoint(airline: "Volaris",          rating: 0.6,  seatClass: .first,          pricePerKM: 0.73),
+    // Air Transat (rating 0.75)
+    AirlinePricePoint(airline: "Air Transat",      rating: 0.75, seatClass: .economy,        pricePerKM: 0.20),
+    AirlinePricePoint(airline: "Air Transat",      rating: 0.75, seatClass: .premiumEconomy, pricePerKM: 0.36),
+    AirlinePricePoint(airline: "Air Transat",      rating: 0.75, seatClass: .business,       pricePerKM: 0.68),
+    AirlinePricePoint(airline: "Air Transat",      rating: 0.75, seatClass: .first,          pricePerKM: 1.25),
+    // flydubai (rating 0.7)
+    AirlinePricePoint(airline: "flydubai",         rating: 0.7,  seatClass: .economy,        pricePerKM: 0.15),
+    AirlinePricePoint(airline: "flydubai",         rating: 0.7,  seatClass: .premiumEconomy, pricePerKM: 0.27),
+    AirlinePricePoint(airline: "flydubai",         rating: 0.7,  seatClass: .business,       pricePerKM: 0.50),
+    AirlinePricePoint(airline: "flydubai",         rating: 0.7,  seatClass: .first,          pricePerKM: 1.00),
+    // Air Arabia (rating 0.65)
+    AirlinePricePoint(airline: "Air Arabia",       rating: 0.65, seatClass: .economy,        pricePerKM: 0.11),
+    AirlinePricePoint(airline: "Air Arabia",       rating: 0.65, seatClass: .premiumEconomy, pricePerKM: 0.19),
+    AirlinePricePoint(airline: "Air Arabia",       rating: 0.65, seatClass: .business,       pricePerKM: 0.37),
+    AirlinePricePoint(airline: "Air Arabia",       rating: 0.65, seatClass: .first,          pricePerKM: 0.79),
+    // Lion Air (rating 0.6)
+    AirlinePricePoint(airline: "Lion Air",         rating: 0.6,  seatClass: .economy,        pricePerKM: 0.10),
+    AirlinePricePoint(airline: "Lion Air",         rating: 0.6,  seatClass: .premiumEconomy, pricePerKM: 0.17),
+    AirlinePricePoint(airline: "Lion Air",         rating: 0.6,  seatClass: .business,       pricePerKM: 0.34),
+    AirlinePricePoint(airline: "Lion Air",         rating: 0.6,  seatClass: .first,          pricePerKM: 0.75),
+    // Batik Air (rating 0.65)
+    AirlinePricePoint(airline: "Batik Air",        rating: 0.65, seatClass: .economy,        pricePerKM: 0.14),
+    AirlinePricePoint(airline: "Batik Air",        rating: 0.65, seatClass: .premiumEconomy, pricePerKM: 0.25),
+    AirlinePricePoint(airline: "Batik Air",        rating: 0.65, seatClass: .business,       pricePerKM: 0.48),
+    AirlinePricePoint(airline: "Batik Air",        rating: 0.65, seatClass: .first,          pricePerKM: 0.95),
+    // Royal Brunei Airlines (rating 0.85)
+    AirlinePricePoint(airline: "Royal Brunei Airlines", rating: 0.85, seatClass: .economy,        pricePerKM: 0.24),
+    AirlinePricePoint(airline: "Royal Brunei Airlines", rating: 0.85, seatClass: .premiumEconomy, pricePerKM: 0.43),
+    AirlinePricePoint(airline: "Royal Brunei Airlines", rating: 0.85, seatClass: .business,       pricePerKM: 0.80),
+    AirlinePricePoint(airline: "Royal Brunei Airlines", rating: 0.85, seatClass: .first,          pricePerKM: 1.46),
+    // Jetstar Asia (rating 0.65)
+    AirlinePricePoint(airline: "Jetstar Asia",     rating: 0.65, seatClass: .economy,        pricePerKM: 0.11),
+    AirlinePricePoint(airline: "Jetstar Asia",     rating: 0.65, seatClass: .premiumEconomy, pricePerKM: 0.19),
+    AirlinePricePoint(airline: "Jetstar Asia",     rating: 0.65, seatClass: .business,       pricePerKM: 0.38),
+    AirlinePricePoint(airline: "Jetstar Asia",     rating: 0.65, seatClass: .first,          pricePerKM: 0.82),
+    // TAAG Angola Airlines (rating 0.7)
+    AirlinePricePoint(airline: "TAAG Angola Airlines", rating: 0.7,  seatClass: .economy,        pricePerKM: 0.20),
+    AirlinePricePoint(airline: "TAAG Angola Airlines", rating: 0.7,  seatClass: .premiumEconomy, pricePerKM: 0.36),
+    AirlinePricePoint(airline: "TAAG Angola Airlines", rating: 0.7,  seatClass: .business,       pricePerKM: 0.68),
+    AirlinePricePoint(airline: "TAAG Angola Airlines", rating: 0.7,  seatClass: .first,          pricePerKM: 1.25),
+    // Air Baltic (rating 0.75)
+    AirlinePricePoint(airline: "Air Baltic",       rating: 0.75, seatClass: .economy,        pricePerKM: 0.18),
+    AirlinePricePoint(airline: "Air Baltic",       rating: 0.75, seatClass: .premiumEconomy, pricePerKM: 0.32),
+    AirlinePricePoint(airline: "Air Baltic",       rating: 0.75, seatClass: .business,       pricePerKM: 0.62),
+    AirlinePricePoint(airline: "Air Baltic",       rating: 0.75, seatClass: .first,          pricePerKM: 1.18),
+    // Luxair (rating 0.75)
+    AirlinePricePoint(airline: "Luxair",           rating: 0.75, seatClass: .economy,        pricePerKM: 0.23),
+    AirlinePricePoint(airline: "Luxair",           rating: 0.75, seatClass: .premiumEconomy, pricePerKM: 0.41),
+    AirlinePricePoint(airline: "Luxair",           rating: 0.75, seatClass: .business,       pricePerKM: 0.75),
+    AirlinePricePoint(airline: "Luxair",           rating: 0.75, seatClass: .first,          pricePerKM: 1.37),
+    // TAROM (rating 0.7)
+    AirlinePricePoint(airline: "TAROM",            rating: 0.7,  seatClass: .economy,        pricePerKM: 0.21),
+    AirlinePricePoint(airline: "TAROM",            rating: 0.7,  seatClass: .premiumEconomy, pricePerKM: 0.38),
+    AirlinePricePoint(airline: "TAROM",            rating: 0.7,  seatClass: .business,       pricePerKM: 0.70),
+    AirlinePricePoint(airline: "TAROM",            rating: 0.7,  seatClass: .first,          pricePerKM: 1.29),
+    // Sky Airline (rating 0.6)
+    AirlinePricePoint(airline: "Sky Airline",      rating: 0.6,  seatClass: .economy,        pricePerKM: 0.10),
+    AirlinePricePoint(airline: "Sky Airline",      rating: 0.6,  seatClass: .premiumEconomy, pricePerKM: 0.17),
+    AirlinePricePoint(airline: "Sky Airline",      rating: 0.6,  seatClass: .business,       pricePerKM: 0.33),
+    AirlinePricePoint(airline: "Sky Airline",      rating: 0.6,  seatClass: .first,          pricePerKM: 0.75),
+    // JetSMART (rating 0.6)
+    AirlinePricePoint(airline: "JetSMART",         rating: 0.6,  seatClass: .economy,        pricePerKM: 0.09),
+    AirlinePricePoint(airline: "JetSMART",         rating: 0.6,  seatClass: .premiumEconomy, pricePerKM: 0.15),
+    AirlinePricePoint(airline: "JetSMART",         rating: 0.6,  seatClass: .business,       pricePerKM: 0.30),
+    AirlinePricePoint(airline: "JetSMART",         rating: 0.6,  seatClass: .first,          pricePerKM: 0.72),
+    // Air Tanzania (rating 0.65)
+    AirlinePricePoint(airline: "Air Tanzania",     rating: 0.65, seatClass: .economy,        pricePerKM: 0.19),
+    AirlinePricePoint(airline: "Air Tanzania",     rating: 0.65, seatClass: .premiumEconomy, pricePerKM: 0.34),
+    AirlinePricePoint(airline: "Air Tanzania",     rating: 0.65, seatClass: .business,       pricePerKM: 0.63),
+    AirlinePricePoint(airline: "Air Tanzania",     rating: 0.65, seatClass: .first,          pricePerKM: 1.19),
+    // RwandAir (rating 0.7)
+    AirlinePricePoint(airline: "RwandAir",         rating: 0.7,  seatClass: .economy,        pricePerKM: 0.20),
+    AirlinePricePoint(airline: "RwandAir",         rating: 0.7,  seatClass: .premiumEconomy, pricePerKM: 0.36),
+    AirlinePricePoint(airline: "RwandAir",         rating: 0.7,  seatClass: .business,       pricePerKM: 0.67),
+    AirlinePricePoint(airline: "RwandAir",         rating: 0.7,  seatClass: .first,          pricePerKM: 1.24),
+    // Tunisair (rating 0.65)
+    AirlinePricePoint(airline: "Tunisair",         rating: 0.65, seatClass: .economy,        pricePerKM: 0.20),
+    AirlinePricePoint(airline: "Tunisair",         rating: 0.65, seatClass: .premiumEconomy, pricePerKM: 0.36),
+    AirlinePricePoint(airline: "Tunisair",         rating: 0.65, seatClass: .business,       pricePerKM: 0.65),
+    AirlinePricePoint(airline: "Tunisair",         rating: 0.65, seatClass: .first,          pricePerKM: 1.22),
+    // Uzbekistan Airways (rating 0.7)
+    AirlinePricePoint(airline: "Uzbekistan Airways", rating: 0.7,  seatClass: .economy,        pricePerKM: 0.19),
+    AirlinePricePoint(airline: "Uzbekistan Airways", rating: 0.7,  seatClass: .premiumEconomy, pricePerKM: 0.34),
+    AirlinePricePoint(airline: "Uzbekistan Airways", rating: 0.7,  seatClass: .business,       pricePerKM: 0.65),
+    AirlinePricePoint(airline: "Uzbekistan Airways", rating: 0.7,  seatClass: .first,          pricePerKM: 1.20),
+    // Air Astana (rating 0.8)
+    AirlinePricePoint(airline: "Air Astana",       rating: 0.8,  seatClass: .economy,        pricePerKM: 0.22),
+    AirlinePricePoint(airline: "Air Astana",       rating: 0.8,  seatClass: .premiumEconomy, pricePerKM: 0.39),
+    AirlinePricePoint(airline: "Air Astana",       rating: 0.8,  seatClass: .business,       pricePerKM: 0.72),
+    AirlinePricePoint(airline: "Air Astana",       rating: 0.8,  seatClass: .first,          pricePerKM: 1.35),
+    // SriLankan Airlines (rating 0.7)
+    AirlinePricePoint(airline: "SriLankan Airlines", rating: 0.7,  seatClass: .economy,        pricePerKM: 0.20),
+    AirlinePricePoint(airline: "SriLankan Airlines", rating: 0.7,  seatClass: .premiumEconomy, pricePerKM: 0.36),
+    AirlinePricePoint(airline: "SriLankan Airlines", rating: 0.7,  seatClass: .business,       pricePerKM: 0.68),
+    AirlinePricePoint(airline: "SriLankan Airlines", rating: 0.7,  seatClass: .first,          pricePerKM: 1.27),
+    // Biman Bangladesh (rating 0.6)
+    AirlinePricePoint(airline: "Biman Bangladesh", rating: 0.6,  seatClass: .economy,        pricePerKM: 0.18),
+    AirlinePricePoint(airline: "Biman Bangladesh", rating: 0.6,  seatClass: .premiumEconomy, pricePerKM: 0.32),
+    AirlinePricePoint(airline: "Biman Bangladesh", rating: 0.6,  seatClass: .business,       pricePerKM: 0.60),
+    AirlinePricePoint(airline: "Biman Bangladesh", rating: 0.6,  seatClass: .first,          pricePerKM: 1.15),
+    // Pakistan Int'l (rating 0.6)
+    AirlinePricePoint(airline: "Pakistan Int'l",   rating: 0.6,  seatClass: .economy,        pricePerKM: 0.19),
+    AirlinePricePoint(airline: "Pakistan Int'l",   rating: 0.6,  seatClass: .premiumEconomy, pricePerKM: 0.34),
+    AirlinePricePoint(airline: "Pakistan Int'l",   rating: 0.6,  seatClass: .business,       pricePerKM: 0.63),
+    AirlinePricePoint(airline: "Pakistan Int'l",   rating: 0.6,  seatClass: .first,          pricePerKM: 1.18),
+    // SunExpress (rating 0.7)
+    AirlinePricePoint(airline: "SunExpress",       rating: 0.7,  seatClass: .economy,        pricePerKM: 0.14),
+    AirlinePricePoint(airline: "SunExpress",       rating: 0.7,  seatClass: .premiumEconomy, pricePerKM: 0.25),
+    AirlinePricePoint(airline: "SunExpress",       rating: 0.7,  seatClass: .business,       pricePerKM: 0.48),
+    AirlinePricePoint(airline: "SunExpress",       rating: 0.7,  seatClass: .first,          pricePerKM: 0.95),
+    // Air Malta (rating 0.75)
+    AirlinePricePoint(airline: "Air Malta",        rating: 0.75, seatClass: .economy,        pricePerKM: 0.22),
+    AirlinePricePoint(airline: "Air Malta",        rating: 0.75, seatClass: .premiumEconomy, pricePerKM: 0.40),
+    AirlinePricePoint(airline: "Air Malta",        rating: 0.75, seatClass: .business,       pricePerKM: 0.74),
+    AirlinePricePoint(airline: "Air Malta",        rating: 0.75, seatClass: .first,          pricePerKM: 1.36),
+    // airasia X (rating 0.65)
+    AirlinePricePoint(airline: "airasia X",        rating: 0.65, seatClass: .economy,        pricePerKM: 0.10),
+    AirlinePricePoint(airline: "airasia X",        rating: 0.65, seatClass: .premiumEconomy, pricePerKM: 0.18),
+    AirlinePricePoint(airline: "airasia X",        rating: 0.65, seatClass: .business,       pricePerKM: 0.35),
+    AirlinePricePoint(airline: "airasia X",        rating: 0.65, seatClass: .first,          pricePerKM: 0.78),
+    // Eurowings (rating 0.7)
+    AirlinePricePoint(airline: "Eurowings",        rating: 0.7,  seatClass: .economy,        pricePerKM: 0.15),
+    AirlinePricePoint(airline: "Eurowings",        rating: 0.7,  seatClass: .premiumEconomy, pricePerKM: 0.27),
+    AirlinePricePoint(airline: "Eurowings",        rating: 0.7,  seatClass: .business,       pricePerKM: 0.52),
+    AirlinePricePoint(airline: "Eurowings",        rating: 0.7,  seatClass: .first,          pricePerKM: 1.05),
+    // Flynas (rating 0.65)
+    AirlinePricePoint(airline: "Flynas",           rating: 0.65, seatClass: .economy,        pricePerKM: 0.12),
+    AirlinePricePoint(airline: "Flynas",           rating: 0.65, seatClass: .premiumEconomy, pricePerKM: 0.21),
+    AirlinePricePoint(airline: "Flynas",           rating: 0.65, seatClass: .business,       pricePerKM: 0.40),
+    AirlinePricePoint(airline: "Flynas",           rating: 0.65, seatClass: .first,          pricePerKM: 0.83),
+    // SalamAir (rating 0.65)
+    AirlinePricePoint(airline: "SalamAir",         rating: 0.65, seatClass: .economy,        pricePerKM: 0.12),
+    AirlinePricePoint(airline: "SalamAir",         rating: 0.65, seatClass: .premiumEconomy, pricePerKM: 0.20),
+    AirlinePricePoint(airline: "SalamAir",         rating: 0.65, seatClass: .business,       pricePerKM: 0.39),
+    AirlinePricePoint(airline: "SalamAir",         rating: 0.65, seatClass: .first,          pricePerKM: 0.81)
 ]
 
 final class PricePredictorModel {
@@ -425,4 +640,4 @@ final class PricePredictorModel {
 }
 
 /// Change k later to make it more accurate - to be done later after implementing departure and landing logic
-let predictorModel = PricePredictorModel(dataset: airlinePricePoints, k: 4)
+let predictorModel = PricePredictorModel(dataset: airlinePricePoints, k: 11)

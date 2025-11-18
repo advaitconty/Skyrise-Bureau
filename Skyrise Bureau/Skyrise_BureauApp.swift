@@ -14,10 +14,10 @@ struct Skyrise_BureauApp: App {
     let resetUserData: Bool = false
     
     /// For the usage of test data
-    let useTestData: Bool = true
+    let useTestData: Bool = false
     
     /// For the usage of test data with flying planes
-    let useTestDataWithFlyingPlanes: Bool = true
+    let useTestDataWithFlyingPlanes: Bool = false
     
     /// ENSURE ALL VARIABLES ABOVE ARE SET TO false BEFORE FINAL
     /// BUILD OF APP

@@ -229,7 +229,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
     var aircraftID: String
     var aircraftname: String
     var registration: String
-    var hoursFlown: Int
+    var hoursFlown: Double
     var condition: Double = 1
     var isAirborne: Bool = false
     var estimatedLandingTime: Date?
@@ -361,11 +361,27 @@ struct FleetItem: Codable, Identifiable, Equatable {
         )
     }
     
+    mutating func markJetAsArrived(_ userDataProvided: UserData) {
+        let diffComponenets = Calendar.current.dateComponents([.hour], from: takeoffTime!, to: landingTime!)
+        let hours = diffComponenets.hour
+        hoursFlown = hoursFlown + Double(hours!)
+        let db = AirportDatabase()
+        let distanceFlown = db.calculateDistance(from: assignedRoute!.originAirport, to: assignedRoute!.arrivalAirport)
+        let degradationRate = 1.0 / Double.random(in: 35000...65000)
+        condition = max(0.0, 1.0 - Double(kilometersTravelledSinceLastMaintainence) * degradationRate)
+        
+        isAirborne = false
+        takeoffTime = nil
+        landingTime = nil
+        estimatedLandingTime = nil
+        
+    }
+    
     /// Calculates demand multiplier based on user pricing vs market pricing
     /// - Returns a value between 0.3 and 1.5:
-    ///   - < 1.0 = prices too high (reduced demand)
-    ///   - 1.0 = market price (normal demand)
-    ///   - > 1.0 = competitive pricing (increased demand)
+    /// - < 1.0 = prices too high (reduced demand)
+    /// - 1.0 = market price (normal demand)
+    /// - >  1.0 = competitive pricing (increased demand)
     private func calculatePricingMultiplier(userPrice: Double, marketPrice: Double, elasticity: Double) -> Double {
         guard marketPrice > 0 else { return 1.0 }
         

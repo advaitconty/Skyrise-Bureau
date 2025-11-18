@@ -100,10 +100,10 @@ struct MapView: View {
                         .fontWidth(.condensed)
                 } else {
                     if plane.assignedRoute!.stopoverAirport == nil {
-                        Text("Plane flies from \(plane.assignedRoute!.destinationAirport.iata) to \(plane.assignedRoute!.arrivalAirport.iata)")
+                        Text("Plane flies from \(plane.assignedRoute!.originAirport.iata) to \(plane.assignedRoute!.arrivalAirport.iata)")
                             .fontWidth(.condensed)
                     } else {
-                        Text("Plane flies from \(plane.assignedRoute!.destinationAirport.iata) to \(plane.assignedRoute!.arrivalAirport.iata) via \(plane.assignedRoute!.stopoverAirport)")
+                        Text("Plane flies from \(plane.assignedRoute!.originAirport.iata) to \(plane.assignedRoute!.arrivalAirport.iata) via \(plane.assignedRoute!.stopoverAirport)")
                             .fontWidth(.condensed)
                     }
                 }
@@ -269,7 +269,7 @@ struct MapView: View {
                                                     if let stopoverAirport = assignedRoute.stopoverAirport {
                                                     } else {
                                                         HStack {
-                                                            Text("_Flying from \(assignedRoute.destinationAirport.iata) to \(assignedRoute.arrivalAirport.iata)_")
+                                                            Text("_Flying from \(assignedRoute.originAirport.iata) to \(assignedRoute.arrivalAirport.iata)_")
                                                                 .fontWidth(.condensed)
                                                             Spacer()
                                                         }
@@ -358,7 +358,7 @@ struct MapView: View {
                         
                         if let route = plane.assignedRoute {
                             MapPolyline(coordinates: [
-                                route.destinationAirport.clLocationCoordinateItemForLocation,
+                                route.originAirport.clLocationCoordinateItemForLocation,
                                 route.arrivalAirport.clLocationCoordinateItemForLocation
                             ])
                             .stroke(.blue, lineWidth: 5)
@@ -426,7 +426,7 @@ struct MapView: View {
         .onChange(of: userDoneSelectedAirport) { originalValue, newValue in
             if newValue {
                 if userData.planes[planeFleetItemToChangeIndex].assignedRoute == nil {
-                    userData.planes[planeFleetItemToChangeIndex].assignedRoute = Route(destinationAirport: Airport(
+                    userData.planes[planeFleetItemToChangeIndex].assignedRoute = Route(originAirport: Airport(
                         name: "Toronto Pearson International Airport",
                         city: "Toronto",
                         country: "Canada",
@@ -456,13 +456,13 @@ struct MapView: View {
                 }
                 switch airportType {
                 case .departure:
-                    userData.planes[planeFleetItemToChangeIndex].assignedRoute?.destinationAirport = temporarilySelectedAirportHolderVariableThingamajik
+                    userData.planes[planeFleetItemToChangeIndex].assignedRoute?.originAirport = temporarilySelectedAirportHolderVariableThingamajik
                 case .arrival:
                     userData.planes[planeFleetItemToChangeIndex].assignedRoute?.arrivalAirport = temporarilySelectedAirportHolderVariableThingamajik
                 case .stopover:
                     userData.planes[planeFleetItemToChangeIndex].assignedRoute?.stopoverAirport = temporarilySelectedAirportHolderVariableThingamajik
                 }
-                userData.planes[planeFleetItemToChangeIndex].assignedRoute?.destinationAirport = userData.planes[planeFleetItemToChangeIndex].currentAirportLocation!
+                userData.planes[planeFleetItemToChangeIndex].assignedRoute?.originAirport = userData.planes[planeFleetItemToChangeIndex].currentAirportLocation!
                 print(userData.planes[planeFleetItemToChangeIndex].assignedRoute)
                 userDoneSelectedAirport = false
             }

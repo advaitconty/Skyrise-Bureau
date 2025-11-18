@@ -1672,6 +1672,20 @@ class AirportDatabase {
                 demand: AirportDemand(passengerDemand: 7.0, cargoDemand: 9.5, businessTravelRatio: 0.70, tourismBoost: 0.75),
                 facilities: AirportFacilities(terminalCapacity: 100000, cargoCapacity: 6000, gatesAvailable: 50, slotEfficiency: 0.85)
             ),
+            Airport(
+                name: "Yangon International Airport",
+                city: "Yangon",
+                country: "Myanmar",
+                iata: "RGN",
+                icao: "VYYY",
+                region: .asia,
+                latitude: 16.9073,
+                longitude: 96.1332,
+                runwayLength: 3414,
+                elevation: 33,
+                demand: AirportDemand(passengerDemand: 7.2, cargoDemand: 6.8, businessTravelRatio: 0.50, tourismBoost: 0.75),
+                facilities: AirportFacilities(terminalCapacity: 110000, cargoCapacity: 2000, gatesAvailable: 50, slotEfficiency: 0.80)
+            ),
             
             // EUROPE
             Airport(
@@ -2065,6 +2079,20 @@ class AirportDatabase {
                 elevation: 179,
                 demand: AirportDemand(passengerDemand: 8.8, cargoDemand: 8.2, businessTravelRatio: 0.72, tourismBoost: 0.62),
                 facilities: AirportFacilities(terminalCapacity: 170000, cargoCapacity: 3500, gatesAvailable: 85, slotEfficiency: 0.88)
+            ),
+            Airport(
+                name: "Zakhaev International Airport",
+                city: "Moscow",
+                country: "Russia",
+                iata: "ZIA",
+                icao: "UUWZ",
+                region: .europe,
+                latitude: 55.9726,
+                longitude: 37.4146,
+                runwayLength: 4000,
+                elevation: 192,
+                demand: AirportDemand(passengerDemand: 9.5, cargoDemand: 8.5, businessTravelRatio: 0.70, tourismBoost: 0.60),
+                facilities: AirportFacilities(terminalCapacity: 190000, cargoCapacity: 4000, gatesAvailable: 100, slotEfficiency: 0.90)
             ),
             
             // AFRICA
