@@ -8,6 +8,17 @@
 import SwiftUI
 import MapKit
 
+struct DepartureDoneSuccessfullyItemsToShow: Codable {
+    var planesTakenOff: [FleetItem]
+    var noOfPlanesTakenOff: Int {
+        return planesTakenOff.count
+    }
+    var economyPassenegersServed: Int
+    var premiumEconomyPassenegersServed: Int
+    var businessPassengersServed: Int
+    var firstClassPassengersServed: Int
+}
+
 struct MapView: View {
     @Namespace var mapScope
     @Namespace var namespace
@@ -37,6 +48,8 @@ struct MapView: View {
         demand: AirportDemand(passengerDemand: 9.3, cargoDemand: 8.5, businessTravelRatio: 0.75, tourismBoost: 0.78),
         facilities: AirportFacilities(terminalCapacity: 195000, cargoCapacity: 3800, gatesAvailable: 105, slotEfficiency: 0.90)
     )
+    @State var temporarilySelectedAirportToGetMoreInformationOn: Airport? = nil
+    @State var showTemporarilySelectedAirportToGetMoreInformationOnPopUp: Bool = false
     @State var planeFleetItemToChangeIndex: Int = 0
     @State var showTakeoffPopup: Bool = false
     @State var takeoffItems: DepartureDoneSuccessfullyItems = DepartureDoneSuccessfullyItems(departedSuccessfully: false, moneyMade: nil, seatsUsedInPlane: nil, seatingConfigOfJet: nil)
@@ -58,7 +71,41 @@ struct MapView: View {
         facilities: AirportFacilities(terminalCapacity: 195000, cargoCapacity: 3800, gatesAvailable: 105, slotEfficiency: 0.90)
     )
     
+    // MARK: Little small box thingy
+    func littleSmallBoxThingy(icon: String, item: String) -> some View {
+        HStack {
+            Image(systemName: icon)
+            Text(item)
+                .fontWidth(.condensed)
+        }
+        .padding(5)
+        .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
+        .clipShape(RoundedRectangle(cornerRadius: 4.0))
+    }
     
+    // MARK: Popover for map
+    func mapView(_ airport: Airport) -> some View {
+        VStack {
+            HStack {
+                Text("\(countryNameToEmoji(airport.country)) ")
+                    .font(.title)
+                Text("\(airport.name)")
+                    .font(.title)
+                    .fontWidth(.expanded)
+                Spacer()
+            }
+            
+            HStack {
+                littleSmallBoxThingy(icon: "building.2", item: airport.city)
+                littleSmallBoxThingy(icon: "airplane", item: "\(airport.iata)/\(airport.icao)")
+                littleSmallBoxThingy(icon: "road.lanes", item: "\(airport.runwayLength)m")
+                littleSmallBoxThingy(icon: "flag", item: "\(airport.country)")
+            }
+        }
+        .padding()
+    }
+    
+    // MARK: Sidebar item (when you open the plane, that thingy)
     func sidebarItemView(plane: FleetItem) -> some View {
         VStack {
             HStack {
@@ -141,6 +188,7 @@ struct MapView: View {
         }
     }
     
+    // MARK: Selector for map type
     func mapSelectView() -> some View {
         VStack {
             HStack {
@@ -201,6 +249,7 @@ struct MapView: View {
         .padding()
     }
     
+    // MARK: Actual sidebar item
     func sidebarView() -> some View {
         VStack {
             if selectedPlane == nil {
@@ -314,6 +363,7 @@ struct MapView: View {
         .background(.ultraThinMaterial)
     }
     
+    // MARK: Map Controller
     func regularMapView() -> some View {
         HStack(spacing: 0) {
             if showSidebar {
@@ -338,7 +388,23 @@ struct MapView: View {
                                 Text(airport.iata)
                                     .foregroundStyle(colorScheme == .dark ? .black : .cyan)
                                     .padding(5)
-                                    .fontWidth(.compressed)
+                                    .fontWidth(temporarilySelectedAirportToGetMoreInformationOn == airport ? .expanded : .compressed)
+                            }
+                            .onTapGesture {
+                                withAnimation {
+                                    temporarilySelectedAirportToGetMoreInformationOn = airport
+                                }
+                                showTemporarilySelectedAirportToGetMoreInformationOnPopUp = true
+                            }
+                            .popover(isPresented: Binding(get: {
+                                self.showTemporarilySelectedAirportToGetMoreInformationOnPopUp && self.temporarilySelectedAirportToGetMoreInformationOn == airport
+                            },set: {
+                                self.showTemporarilySelectedAirportToGetMoreInformationOnPopUp = $0
+                            })) {
+                                mapView(airport)
+                                    .onAppear {
+                                        print("shown")
+                                    }
                             }
                         }
                     }
@@ -361,6 +427,11 @@ struct MapView: View {
                                 .shadow(radius: 10)
                                 .foregroundStyle(plane == selectedPlane ? .indigo : .blue)
                                 .offset(x: 15, y: 15)
+                                .onTapGesture {
+                                    withAnimation {
+                                        selectedPlane = plane
+                                    }
+                                }
                         }
                         
                         if let route = plane.assignedRoute {

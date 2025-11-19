@@ -36,7 +36,9 @@ struct AirportPickerView: View {
                 rangeMax = true
             }
             
-            return rangeMax && matchesSearch
+            let sameAirport = airport == startAirport
+            /// TODO: Figure out why it is not working
+            return rangeMax && matchesSearch && !sameAirport
         }
     }
     

@@ -338,7 +338,7 @@ struct WelcomeView: View {
         .frame(minWidth: 700, minHeight: 400)
         .onAppear {
             if debug {
-                for item in originalUserData {item
+                for item in originalUserData {
                     print(item)
                     modelContext.delete(item)
                 }
