@@ -112,8 +112,6 @@ extension MapView {
                             } label: {
                                 Spacer()
                                 Image(systemName: "cart")
-                                Text("Shop")
-                                    .fontWidth(.condensed)
                                 Spacer()
                             }
                             Button {
@@ -121,8 +119,6 @@ extension MapView {
                             } label: {
                                 Spacer()
                                 Image(systemName: "gear")
-                                Text("Settings")
-                                    .fontWidth(.condensed)
                                 Spacer()
                             }
                             Button {
@@ -130,8 +126,6 @@ extension MapView {
                             } label: {
                                 Spacer()
                                 Image(systemName: "person.text.rectangle")
-                                Text("Airline")
-                                    .fontWidth(.condensed)
                                 Spacer()
                             }
                         }

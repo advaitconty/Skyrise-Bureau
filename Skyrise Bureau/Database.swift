@@ -1898,6 +1898,20 @@ class AirportDatabase {
                 facilities: AirportFacilities(terminalCapacity: 215000, cargoCapacity: 4800, gatesAvailable: 112, slotEfficiency: 0.93)
             ),
             Airport(
+                name: "Eindhoven Airport",
+                city: "Eindhoven",
+                country: "Netherlands",
+                iata: "EIN",
+                icao: "EHEH",
+                region: .europe,
+                latitude: 51.45000,
+                longitude: 5.37444,
+                runwayLength: 3000,
+                elevation: 23,
+                demand: AirportDemand(passengerDemand: 6.8, cargoDemand: 3.2, businessTravelRatio: 0.18, tourismBoost: 0.40),
+                facilities: AirportFacilities(terminalCapacity: 6_800_000, cargoCapacity: 8_000, gatesAvailable: 30, slotEfficiency: 0.85)
+            ),
+            Airport(
                 name: "Brussels Airport",
                 city: "Brussels",
                 country: "Belgium",
@@ -2136,6 +2150,20 @@ class AirportDatabase {
                 elevation: 46,
                 demand: AirportDemand(passengerDemand: 7.8, cargoDemand: 6.8, businessTravelRatio: 0.58, tourismBoost: 0.90),
                 facilities: AirportFacilities(terminalCapacity: 135000, cargoCapacity: 2300, gatesAvailable: 65, slotEfficiency: 0.84)
+            ),
+            Airport(
+                name: "O. R. Tambo International Airport",
+                city: "Johannesburg",
+                country: "South Africa",
+                iata: "JNB",
+                icao: "FAOR",
+                region: .africa,
+                latitude: -26.13920,
+                longitude: 28.24600,
+                runwayLength: 4421,
+                elevation: 1694,
+                demand: AirportDemand(passengerDemand: 9.4, cargoDemand: 9.0, businessTravelRatio: 0.72, tourismBoost: 0.55),
+                facilities: AirportFacilities(terminalCapacity: 28_000_000, cargoCapacity: 50_000, gatesAvailable: 110, slotEfficiency: 0.92)
             ),
             Airport(
                 name: "N'djili International Airport",
