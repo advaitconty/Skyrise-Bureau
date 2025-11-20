@@ -16,9 +16,22 @@
 		F1BA0D342EBAF3150019BC2A /* Skyrise Bureau.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Skyrise Bureau.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		F175E9EE2ECF4DAD00EA0F17 /* Exceptions for "Skyrise Bureau" folder in "Skyrise Bureau" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				DecreaseAssetSize.py,
+			);
+			target = F1BA0D332EBAF3150019BC2A /* Skyrise Bureau */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		F1BA0D362EBAF3150019BC2A /* Skyrise Bureau */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F175E9EE2ECF4DAD00EA0F17 /* Exceptions for "Skyrise Bureau" folder in "Skyrise Bureau" target */,
+			);
 			path = "Skyrise Bureau";
 			sourceTree = "<group>";
 		};
