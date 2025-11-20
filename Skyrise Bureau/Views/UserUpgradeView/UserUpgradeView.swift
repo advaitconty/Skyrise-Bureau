@@ -38,18 +38,9 @@ struct UserUpgradeView: View {
                 }
             }
             ScrollView {
-                // MARK: Paychecks
-                HStack {
-                    Text("PAYCHECKS")
-                        .font(.title3)
-                        .fontWidth(.expanded)
-                    Spacer()
-                }
-                HStack {
-                    salaryViewItem()
-                }
+                paycheckView()
                 
-                // MARK: Airline Stats
+                // MARK: Airline Stats Start
                 HStack {
                     Text("AIRLINE INFO")
                         .font(.title2)
@@ -57,91 +48,10 @@ struct UserUpgradeView: View {
                     Spacer()
                 }
                 // Hub airports
-                VStack {
-                    HStack {
-                        Text("\(userData.deliveryHubs.count) Hub airports owned".uppercased())
-                            .fontWidth(.expanded)
-                        Spacer()
-                    }
-                    ScrollView(.horizontal) {
-                        HStack {
-                            ForEach(userData.deliveryHubs, id: \.uniqueID) { airport in
-                                VStack {
-                                    Text("\(countryNameToEmoji(airport.country))\(airport.iata) (\(airport.icao))\n")
-                                        .fontWidth(.expanded)
-                                    +
-                                    Text(airport.name)
-                                        .fontWidth(.condensed)
-                                }
-                                .padding(5)
-                                .frame(width: 150, height: 100)
-                                .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
-                                .clipShape(RoundedRectangle(cornerRadius: 10.0))
-                            }
-                            Button {
-                                
-                            } label: {
-                                VStack {
-                                    Text("New hub airport")
-                                        .fontWidth(.expanded)
-                                    Image(systemName: "plus")
-                                        .font(.system(size: 24))
-                                        .padding(1)
-                                    Text("$10,000,000")
-                                        .fontWidth(.condensed)
-                                }
-                                .padding(5)
-                                .frame(width: 150, height: 100)
-                                .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
-                                .clipShape(RoundedRectangle(cornerRadius: 10.0))
-                            }
-                            .buttonStyle(.plain)
-                        }
-                    }
-                }
+                hubAirportsView()
                 
                 // Planes
-                VStack {
-                    HStack {
-                        Text("\(userData.planes.count) Airplanes owned".uppercased())
-                            .fontWidth(.expanded)
-                        Spacer()
-                    }
-                    ScrollView(.horizontal) {
-                        HStack {
-                            ForEach($userData.planes, id: \.id) { $plane in
-                                VStack {
-                                    Image(plane.aircraftID)
-                                        .resizable()
-                                        .scaledToFit()
-                                        .clipShape(RoundedRectangle(cornerRadius: 5.0))
-
-                                    TextField(plane.aircraftname, text: $plane.aircraftname)
-                                        .textFieldStyle(.plain)
-                                        .font(.subheadline)
-                                        .fontWidth(.expanded)
-                                    HStack {
-                                        Text(plane.aircraftID)
-                                            .font(.caption)
-                                            .fontWidth(.condensed)
-                                        TextField(plane.registration, text: $plane.registration)
-                                            .textFieldStyle(.plain)
-                                            .font(.caption)
-                                            .fontWidth(.condensed)
-                                            .multilineTextAlignment(.trailing)
-                                    }
-                                    Text("\(Int(plane.hoursFlown).withCommas)h flown - \(plane.isAirborne ? "currently flying" : "at \(plane.currentAirportLocation!.iata)")")
-                                        .font(.caption)
-                                        .fontWidth(.condensed)
-                                }
-                                .padding(5)
-                                .frame(width: 150, height: 160)
-                                .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
-                                .clipShape(RoundedRectangle(cornerRadius: 10.0))
-                            }
-                        }
-                    }
-                }
+                planeStatsViewForUpgrades()
             }
         }
         .padding()
