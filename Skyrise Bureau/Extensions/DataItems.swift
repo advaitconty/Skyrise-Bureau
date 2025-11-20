@@ -173,7 +173,7 @@ enum Region: String, Codable, CaseIterable {
     case australiaAndOceania = "Australia and Oceania"
 }
 
-struct Airport: Codable, Identifiable, Hashable {
+struct Airport: Codable, Identifiable, Hashable, Equatable {
     var id: String { iata }
     var uniqueID: UUID = UUID()
     let name: String
@@ -190,6 +190,9 @@ struct Airport: Codable, Identifiable, Hashable {
     var facilities: AirportFacilities
     var clLocationCoordinateItemForLocation: CLLocationCoordinate2D {
         return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
+    static func == (lhs: Airport, rhs: Airport) -> Bool {
+        return lhs.icao == rhs.icao
     }
 }
 

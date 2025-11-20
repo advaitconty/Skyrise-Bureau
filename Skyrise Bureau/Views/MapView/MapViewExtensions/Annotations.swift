@@ -15,7 +15,7 @@ extension MapView {
         Annotation(airport.iata, coordinate: airport.clLocationCoordinateItemForLocation) {
             ZStack {
                 RoundedRectangle(cornerRadius: 5)
-                    .fill(colorScheme == .dark ? Color.cyan : Color.black)
+                    .fill(userData.deliveryHubs.contains(airport) ? Color.accentColor :(colorScheme == .dark ? Color.cyan : Color.black))
                 Text(airport.iata)
                     .foregroundStyle(colorScheme == .dark ? .black : .cyan)
                     .padding(5)
