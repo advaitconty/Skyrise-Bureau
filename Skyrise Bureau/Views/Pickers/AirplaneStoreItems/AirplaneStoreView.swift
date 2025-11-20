@@ -29,7 +29,7 @@ struct AirplaneStoreView: View {
         
     var body: some View {
         if showPlane == false {
-            shopView()
+            shopView(userData)
                 .transition(.move(edge: .leading))
         } else {
             if let plane = showPlaneStats {

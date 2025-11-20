@@ -407,6 +407,7 @@ class UserData {
     var planes: [FleetItem]
     var xp: Int = 0
     var levels: Int = 0
+    var xpPoints: Int = 0
     var airlineReputation: Double = 0.6
     var reliabilityIndex: Double = 0.7
     var fuelDiscountMultiplier: Double = 1
@@ -429,12 +430,13 @@ class UserData {
     // Percentage airline improves during campaign. After campaign, airline improves reputation by 1% of their improvement during the campaign
     // airline also looses reputation when their maintainance or happiness drops below 0.7
     
-    init(name: String, airlineName: String, airlineIataCode: String, planes: [FleetItem], xp: Int, levels: Int, airlineReputation: Double, reliabilityIndex: Double, fuelDiscountMultiplier: Double, lastFuelPrice: Double, pilots: Int, flightAttendents: Int, maintainanceCrew: Int, currentlyHoldingFuel: Int, maxFuelHoldable: Int, weeklyPilotSalary: Int, weeklyFlightAttendentSalary: Int, weeklyFlightMaintainanceCrewSalary: Int, pilotHappiness: Double, flightAttendentHappiness: Double, maintainanceCrewHappiness: Double, campaignRunning: Bool, campaignEffectiveness: Double? = nil, deliveryHubs: [Airport], accountBalance: Double) {
+    init(name: String, airlineName: String, airlineIataCode: String, planes: [FleetItem], xp: Int, xpPoints: Int = 0, levels: Int, airlineReputation: Double, reliabilityIndex: Double, fuelDiscountMultiplier: Double, lastFuelPrice: Double, pilots: Int, flightAttendents: Int, maintainanceCrew: Int, currentlyHoldingFuel: Int, maxFuelHoldable: Int, weeklyPilotSalary: Int, weeklyFlightAttendentSalary: Int, weeklyFlightMaintainanceCrewSalary: Int, pilotHappiness: Double, flightAttendentHappiness: Double, maintainanceCrewHappiness: Double, campaignRunning: Bool, campaignEffectiveness: Double? = nil, deliveryHubs: [Airport], accountBalance: Double) {
         self.name = name
         self.airlineName = airlineName
         self.airlineIataCode = airlineIataCode
         self.planes = planes
         self.xp = xp
+        self.xpPoints = xpPoints
         self.levels = levels
         self.airlineReputation = airlineReputation
         self.reliabilityIndex = reliabilityIndex
@@ -908,6 +910,52 @@ let testUserDataWithFlyingPlanes = UserData(
         )
     ],
     accountBalance: 285_000_000
+)
+
+/// Test user data for an endgame player
+/// This user has completed ~15,000 departures (15,000 XP) and is at level 50
+let testUserDataEndgame = UserData(
+    name: "Marcus Sterling",
+    airlineName: "Global Skies International",
+    airlineIataCode: "GSI",
+    planes: [
+        FleetItem(aircraftID: "B777-300ER", aircraftname: "Crown Jewel", registration: "N-GSI001", hoursFlown: 24500, condition: 0.87, seatingLayout: SeatingConfig(economy: 264, premiumEconomy: 48, business: 35, first: 8), kilometersTravelledSinceLastMaintainence: 12400, currentAirportLocation: Airport(name: "John F. Kennedy International Airport", city: "New York", country: "United States", iata: "JFK", icao: "KJFK", region: .northAmerica, latitude: 40.6413, longitude: -73.7781, runwayLength: 4423, elevation: 4, demand: AirportDemand(passengerDemand: 9.5, cargoDemand: 8.5, businessTravelRatio: 0.75, tourismBoost: 0.80), facilities: AirportFacilities(terminalCapacity: 200000, cargoCapacity: 3500, gatesAvailable: 128, slotEfficiency: 0.91))),
+        FleetItem(aircraftID: "A350-900", aircraftname: "Prestige", registration: "N-GSI002", hoursFlown: 22100, condition: 0.91, seatingLayout: SeatingConfig(economy: 280, premiumEconomy: 40, business: 30, first: 6), kilometersTravelledSinceLastMaintainence: 10800, currentAirportLocation: Airport(name: "Singapore Changi Airport", city: "Singapore", country: "Singapore", iata: "SIN", icao: "WSSS", region: .asia, latitude: 1.3644, longitude: 103.9915, runwayLength: 4000, elevation: 7, demand: AirportDemand(passengerDemand: 9.8, cargoDemand: 9.2, businessTravelRatio: 0.72, tourismBoost: 0.90), facilities: AirportFacilities(terminalCapacity: 240000, cargoCapacity: 4200, gatesAvailable: 135, slotEfficiency: 0.95))),
+        FleetItem(aircraftID: "B787-9", aircraftname: "Dreamliner Elite", registration: "N-GSI003", hoursFlown: 19800, condition: 0.89, seatingLayout: SeatingConfig(economy: 246, premiumEconomy: 36, business: 28, first: 0), kilometersTravelledSinceLastMaintainence: 9600, currentAirportLocation: Airport(name: "Los Angeles International Airport", city: "Los Angeles", country: "United States", iata: "LAX", icao: "KLAX", region: .northAmerica, latitude: 33.9416, longitude: -118.4085, runwayLength: 3685, elevation: 38, demand: AirportDemand(passengerDemand: 9.4, cargoDemand: 8.3, businessTravelRatio: 0.68, tourismBoost: 0.92), facilities: AirportFacilities(terminalCapacity: 220000, cargoCapacity: 3400, gatesAvailable: 135, slotEfficiency: 0.90))),
+        FleetItem(aircraftID: "A320neo", aircraftname: "Efficiency", registration: "N-GSI004", hoursFlown: 18200, condition: 0.93, seatingLayout: SeatingConfig(economy: 180, premiumEconomy: 24, business: 12, first: 0), kilometersTravelledSinceLastMaintainence: 8900, currentAirportLocation: Airport(name: "Dubai International Airport", city: "Dubai", country: "United Arab Emirates", iata: "DXB", icao: "OMDB", region: .asia, latitude: 25.2532, longitude: 55.3657, runwayLength: 4000, elevation: 19, demand: AirportDemand(passengerDemand: 9.7, cargoDemand: 9.0, businessTravelRatio: 0.82, tourismBoost: 0.88), facilities: AirportFacilities(terminalCapacity: 260000, cargoCapacity: 4500, gatesAvailable: 150, slotEfficiency: 0.92))),
+        FleetItem(aircraftID: "B777-300ER", aircraftname: "Endurance", registration: "N-GSI005", hoursFlown: 21500, condition: 0.85, seatingLayout: SeatingConfig(economy: 270, premiumEconomy: 40, business: 24, first: 8), kilometersTravelledSinceLastMaintainence: 11200, currentAirportLocation: Airport(name: "London Heathrow Airport", city: "London", country: "United Kingdom", iata: "LHR", icao: "EGLL", region: .europe, latitude: 51.4700, longitude: -0.4543, runwayLength: 3902, elevation: 25, demand: AirportDemand(passengerDemand: 10.0, cargoDemand: 8.8, businessTravelRatio: 0.80, tourismBoost: 0.85), facilities: AirportFacilities(terminalCapacity: 225000, cargoCapacity: 3800, gatesAvailable: 115, slotEfficiency: 0.93))),
+        FleetItem(aircraftID: "A380-800", aircraftname: "Mega Carrier", registration: "N-GSI006", hoursFlown: 16800, condition: 0.88, seatingLayout: SeatingConfig(economy: 399, premiumEconomy: 80, business: 76, first: 14), kilometersTravelledSinceLastMaintainence: 8200, currentAirportLocation: Airport(name: "Tokyo Haneda Airport", city: "Tokyo", country: "Japan", iata: "HND", icao: "RJTT", region: .asia, latitude: 35.5494, longitude: 139.7798, runwayLength: 3360, elevation: 11, demand: AirportDemand(passengerDemand: 9.6, cargoDemand: 8.7, businessTravelRatio: 0.78, tourismBoost: 0.82), facilities: AirportFacilities(terminalCapacity: 230000, cargoCapacity: 3600, gatesAvailable: 110, slotEfficiency: 0.94))),
+        FleetItem(aircraftID: "B767-300ER", aircraftname: "Workhorse 1", registration: "N-GSI007", hoursFlown: 25200, condition: 0.82, seatingLayout: SeatingConfig(economy: 218, premiumEconomy: 30, business: 16, first: 0), kilometersTravelledSinceLastMaintainence: 12800, currentAirportLocation: Airport(name: "Frankfurt Airport", city: "Frankfurt", country: "Germany", iata: "FRA", icao: "EDDF", region: .europe, latitude: 50.0264, longitude: 8.5722, runwayLength: 4000, elevation: 109, demand: AirportDemand(passengerDemand: 9.2, cargoDemand: 9.5, businessTravelRatio: 0.72, tourismBoost: 0.75), facilities: AirportFacilities(terminalCapacity: 210000, cargoCapacity: 4100, gatesAvailable: 120, slotEfficiency: 0.91))),
+        FleetItem(aircraftID: "A330-300", aircraftname: "Wide Body Wonder", registration: "N-GSI008", hoursFlown: 20300, condition: 0.90, seatingLayout: SeatingConfig(economy: 292, premiumEconomy: 42, business: 30, first: 8), kilometersTravelledSinceLastMaintainence: 9900, currentAirportLocation: Airport(name: "Sydney Kingsford Smith Airport", city: "Sydney", country: "Australia", iata: "SYD", icao: "YSSY", region: .australiaAndOceania, latitude: -33.9399, longitude: 151.1753, runwayLength: 3962, elevation: 6, demand: AirportDemand(passengerDemand: 9.0, cargoDemand: 7.8, businessTravelRatio: 0.65, tourismBoost: 0.95), facilities: AirportFacilities(terminalCapacity: 180000, cargoCapacity: 2900, gatesAvailable: 95, slotEfficiency: 0.88))),
+        FleetItem(aircraftID: "B737MAX8", aircraftname: "Modern Fleet 1", registration: "N-GSI009", hoursFlown: 8600, condition: 0.96, seatingLayout: SeatingConfig(economy: 160, premiumEconomy: 20, business: 8, first: 0), kilometersTravelledSinceLastMaintainence: 4200, currentAirportLocation: Airport(name: "Paris Charles de Gaulle Airport", city: "Paris", country: "France", iata: "CDG", icao: "LFPG", region: .europe, latitude: 49.0097, longitude: 2.5479, runwayLength: 4000, elevation: 119, demand: AirportDemand(passengerDemand: 9.3, cargoDemand: 8.9, businessTravelRatio: 0.76, tourismBoost: 0.88), facilities: AirportFacilities(terminalCapacity: 215000, cargoCapacity: 3900, gatesAvailable: 110, slotEfficiency: 0.92))),
+        FleetItem(aircraftID: "A321neo", aircraftname: "Modern Fleet 2", registration: "N-GSI010", hoursFlown: 7900, condition: 0.97, seatingLayout: SeatingConfig(economy: 194, premiumEconomy: 28, business: 14, first: 0), kilometersTravelledSinceLastMaintainence: 3800, currentAirportLocation: Airport(name: "Amsterdam Airport Schiphol", city: "Amsterdam", country: "Netherlands", iata: "AMS", icao: "EHAM", region: .europe, latitude: 52.3081, longitude: 4.7639, runwayLength: 3500, elevation: -2, demand: AirportDemand(passengerDemand: 8.9, cargoDemand: 9.1, businessTravelRatio: 0.70, tourismBoost: 0.82), facilities: AirportFacilities(terminalCapacity: 190000, cargoCapacity: 3700, gatesAvailable: 105, slotEfficiency: 0.90)))
+    ],
+    xp: 15420,
+    levels: 50,
+    airlineReputation: 0.98,
+    reliabilityIndex: 0.96,
+    fuelDiscountMultiplier: 0.42,
+    lastFuelPrice: 0.42,
+    pilots: 85,
+    flightAttendents: 320,
+    maintainanceCrew: 80,
+    currentlyHoldingFuel: 50_000_000,
+    maxFuelHoldable: 65_000_000,
+    weeklyPilotSalary: 1200,
+    weeklyFlightAttendentSalary: 800,
+    weeklyFlightMaintainanceCrewSalary: 950,
+    pilotHappiness: 0.98,
+    flightAttendentHappiness: 0.97,
+    maintainanceCrewHappiness: 0.99,
+    campaignRunning: false,
+    deliveryHubs: [
+        Airport(name: "John F. Kennedy International Airport", city: "New York", country: "United States", iata: "JFK", icao: "KJFK", region: .northAmerica, latitude: 40.6413, longitude: -73.7781, runwayLength: 4423, elevation: 4, demand: AirportDemand(passengerDemand: 9.5, cargoDemand: 8.5, businessTravelRatio: 0.75, tourismBoost: 0.80), facilities: AirportFacilities(terminalCapacity: 200000, cargoCapacity: 3500, gatesAvailable: 128, slotEfficiency: 0.91)),
+        Airport(name: "London Heathrow Airport", city: "London", country: "United Kingdom", iata: "LHR", icao: "EGLL", region: .europe, latitude: 51.4700, longitude: -0.4543, runwayLength: 3902, elevation: 25, demand: AirportDemand(passengerDemand: 10.0, cargoDemand: 8.8, businessTravelRatio: 0.80, tourismBoost: 0.85), facilities: AirportFacilities(terminalCapacity: 225000, cargoCapacity: 3800, gatesAvailable: 115, slotEfficiency: 0.93)),
+        Airport(name: "Singapore Changi Airport", city: "Singapore", country: "Singapore", iata: "SIN", icao: "WSSS", region: .asia, latitude: 1.3644, longitude: 103.9915, runwayLength: 4000, elevation: 7, demand: AirportDemand(passengerDemand: 9.8, cargoDemand: 9.2, businessTravelRatio: 0.72, tourismBoost: 0.90), facilities: AirportFacilities(terminalCapacity: 240000, cargoCapacity: 4200, gatesAvailable: 135, slotEfficiency: 0.95)),
+        Airport(name: "Dubai International Airport", city: "Dubai", country: "United Arab Emirates", iata: "DXB", icao: "OMDB", region: .asia, latitude: 25.2532, longitude: 55.3657, runwayLength: 4000, elevation: 19, demand: AirportDemand(passengerDemand: 9.7, cargoDemand: 9.0, businessTravelRatio: 0.82, tourismBoost: 0.88), facilities: AirportFacilities(terminalCapacity: 260000, cargoCapacity: 4500, gatesAvailable: 150, slotEfficiency: 0.92)),
+        Airport(name: "Tokyo Haneda Airport", city: "Tokyo", country: "Japan", iata: "HND", icao: "RJTT", region: .asia, latitude: 35.5494, longitude: 139.7798, runwayLength: 3360, elevation: 11, demand: AirportDemand(passengerDemand: 9.6, cargoDemand: 8.7, businessTravelRatio: 0.78, tourismBoost: 0.82), facilities: AirportFacilities(terminalCapacity: 230000, cargoCapacity: 3600, gatesAvailable: 110, slotEfficiency: 0.94))
+    ],
+    accountBalance: 1_250_000_000
 )
 
 
