@@ -108,7 +108,7 @@ extension MapView {
                         Spacer()
                         HStack {
                             Button {
-                                // Shop logic, to add later
+                                openWindow(id: "shop")
                             } label: {
                                 Spacer()
                                 Image(systemName: "cart")

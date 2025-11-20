@@ -140,6 +140,8 @@ extension AirplaneStoreView {
                 }
             }
             
+            availableAirportPicker()
+            
             Button {
                 
             } label: {

@@ -59,7 +59,8 @@ struct MapView: View {
         demand: AirportDemand(passengerDemand: 9.3, cargoDemand: 8.5, businessTravelRatio: 0.75, tourismBoost: 0.78),
         facilities: AirportFacilities(terminalCapacity: 195000, cargoCapacity: 3800, gatesAvailable: 105, slotEfficiency: 0.90)
     )
-    
+    @Environment(\.openWindow) var openWindow
+
     var body: some View {
         VStack {
             if !showAirportPicker {

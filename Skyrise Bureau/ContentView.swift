@@ -44,8 +44,7 @@ struct ContentView: View {
     @Environment(\.modelContext) var modelContext
     @Query var userData: [UserData]
     var resetUserData: Bool
-    var useTestData: Bool
-    var useTestDataWithFlyingPlanes: Bool
+    var useTestData: DataTypeToUse
     var body: some View {
         VStack {
             MapView(userData: moidifiableUserdata)
@@ -55,14 +54,17 @@ struct ContentView: View {
                             modelContext.delete(item)
                         }
                         try? modelContext.save()
-                    } else if useTestData {
-                        let value: UserData
-                        if useTestDataWithFlyingPlanes {
+                    } else if useTestData != .none {
+                        var value: UserData
+                        if useTestData == .flyingPlanes {
                             value = testUserDataWithFlyingPlanes
                             print("Flying planes test data used")
-                        } else {
+                        } else if useTestData == .regular {
                             value = testUserData
                             print("Regular test data used")
+                        } else {
+                            value = testUserDataEndgame
+                            print("Endgame test user data being used")
                         }
                         if let item = userData.first {
                             item.planes = value.planes
@@ -97,5 +99,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView(resetUserData: false, useTestData: false, useTestDataWithFlyingPlanes: false)
+    ContentView(resetUserData: false, useTestData: .endGame)
 }

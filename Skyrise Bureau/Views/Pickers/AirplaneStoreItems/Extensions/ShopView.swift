@@ -12,13 +12,13 @@ extension AirplaneStoreView {
     func shopView(_ userData: UserData) -> some View {
         VStack {
             HStack {
-                Text("Store")
+                Text("Jet Set Emporium")
                     .font(.system(size: 24))
                     .fontWidth(.expanded)
                 Spacer()
             }
             HStack {
-                Text("Available Cash: \(String(format: ".%0f", userData.accountBalance))")
+                Text("Available Cash: \(userData.accountBalance.withCommas)")
                     .font(.system(size: 14))
                     .fontWidth(.condensed)
                 Spacer()

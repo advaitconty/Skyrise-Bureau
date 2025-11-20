@@ -38,7 +38,8 @@ struct UserUpgradeView: View {
                 }
             }
             ScrollView {
-                paycheckView()
+                /// This is gonna be a v2 feature, will be a non-issue
+//                paycheckView()
                 
                 // MARK: Airline Stats Start
                 HStack {

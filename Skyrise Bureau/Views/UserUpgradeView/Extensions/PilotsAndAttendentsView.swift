@@ -28,11 +28,13 @@ extension UserUpgradeView {
                     Button {
                         withAnimation {
                             userData.weeklyPilotSalary = userData.weeklyPilotSalary + 50
-                            var adder: Double = Double.random(in: 0.01...0.05)
-                            while adder + userData.pilotHappiness > 1 {
-                                adder = Double.random(in: 0.01...0.05)
+                            if userData.pilotHappiness != 1 {
+                                var adder: Double = Double.random(in: 0.01...0.05)
+                                while adder + userData.pilotHappiness > 1 {
+                                    adder = Double.random(in: 0.01...0.05)
+                                }
+                                userData.pilotHappiness = userData.pilotHappiness + adder
                             }
-                            userData.pilotHappiness = userData.pilotHappiness + Double.random(in: 0.01...0.05)
                         }
                     } label: {
                         Spacer()
