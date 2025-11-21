@@ -49,6 +49,7 @@ struct ContentView: View {
         VStack {
             MapView(userData: moidifiableUserdata)
                 .onAppear {
+                    /// Test stubs
                     if resetUserData {
                         for item in userData {
                             modelContext.delete(item)
@@ -93,6 +94,8 @@ struct ContentView: View {
                             try? modelContext.save()
                         }
                     }
+                    
+                    
                 }
         }
     }

@@ -428,10 +428,17 @@ class UserData {
     var maintainanceCrewHappiness: Double = 0.95
     var campaignRunning: Bool = false
     var campaignEffectiveness: Double?
-    var deliveryHubs: [Airport]
-    var accountBalance: Double
     // Percentage airline improves during campaign. After campaign, airline improves reputation by 1% of their improvement during the campaign
     // airline also looses reputation when their maintainance or happiness drops below 0.7
+    var deliveryHubs: [Airport]
+    var accountBalance: Double
+    var lastLogin: Date = Date()
+    var amountSpentOnFuelInTheLastWeek: Double = 0
+    var amountSpentOnPlanesInTheLastWeek: Double = 0
+    var amountSpentOnHubsAccquisitionInTheLastWeek: Double = 0
+    var amountOfMoneyMadeFromDepartures: Double = 0
+    var planesAccquired: [Aircraft] = []
+    var hubsAcquired: [Airport] = []
     
     init(name: String, airlineName: String, airlineIataCode: String, planes: [FleetItem], xp: Int, xpPoints: Int = 0, levels: Int, airlineReputation: Double, reliabilityIndex: Double, fuelDiscountMultiplier: Double, lastFuelPrice: Double, pilots: Int, flightAttendents: Int, maintainanceCrew: Int, currentlyHoldingFuel: Int, maxFuelHoldable: Int, weeklyPilotSalary: Int, weeklyFlightAttendentSalary: Int, weeklyFlightMaintainanceCrewSalary: Int, pilotHappiness: Double, flightAttendentHappiness: Double, maintainanceCrewHappiness: Double, campaignRunning: Bool, campaignEffectiveness: Double? = nil, deliveryHubs: [Airport], accountBalance: Double) {
         self.name = name
@@ -460,6 +467,13 @@ class UserData {
         self.campaignEffectiveness = campaignEffectiveness
         self.deliveryHubs = deliveryHubs
         self.accountBalance = accountBalance
+        self.lastLogin = Date()
+        self.amountSpentOnFuelInTheLastWeek = 0
+        self.amountSpentOnPlanesInTheLastWeek = 0
+        self.amountSpentOnHubsAccquisitionInTheLastWeek = 0
+        self.amountOfMoneyMadeFromDepartures = 0
+        self.planesAccquired = []
+        self.hubsAcquired
     }
 }
 

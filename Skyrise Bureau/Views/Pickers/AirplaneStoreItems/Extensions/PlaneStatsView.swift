@@ -91,16 +91,23 @@ extension AirplaneStoreView {
             .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
             
-            
-            configuator(plane: plane)
-                .onAppear {
-                    preferedSeatingConfig = plane.defaultSeating
+            if userData.accountBalance.wrappedValue > plane.purchasePrice {
+                configuator(plane: plane)
+                    .onAppear {
+                        preferedSeatingConfig = plane.defaultSeating
+                    }
+                
+                Button {
+                    
+                } label: {
+                    Text("Purchase for $\(String(format: ".%2f", plane.purchasePrice))")
                 }
-            
-            Button {
-            // Processing for purchasing
-            } label: {
-                Text("Purchase for $\(String(format: ".%2f", plane.purchasePrice))")
+            } else {
+                HStack {
+                    Image(systemName: "exclamationmark.octagon.fill")
+                    Text("You do not have enough funds to purchase this plane")
+                        .fontWidth(.condensed)
+                }
             }
         }
         .padding()
