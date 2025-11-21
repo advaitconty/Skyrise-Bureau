@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import Foundation
 
 struct ContentView: View {
     var moidifiableUserdata: Binding<UserData> {
@@ -43,6 +44,7 @@ struct ContentView: View {
     }
     @Environment(\.modelContext) var modelContext
     @Query var userData: [UserData]
+    @State var showFinancialsAvailableAlert: Bool = false
     var resetUserData: Bool
     var useTestData: DataTypeToUse
     var body: some View {
@@ -95,7 +97,18 @@ struct ContentView: View {
                         }
                     }
                     
-                    
+                    let todaysDate: Date = Date()
+                    let calendar = Calendar.current
+                    guard let days = calendar.dateComponents([.day], from: calendar.startOfDay(for: todaysDate), to: calendar.startOfDay(for: moidifiableUserdata.wrappedValue.lastLogin)).day else { return }
+                    moidifiableUserdata.wrappedValue.daysPassedSinceStartOfFinancialWeek = days + moidifiableUserdata.wrappedValue.daysPassedSinceStartOfFinancialWeek
+                    if moidifiableUserdata.wrappedValue.daysPassedSinceStartOfFinancialWeek >= 7 {
+                        let numberOfDeductionsToMakeForSalary: Int
+                        numberOfDeductionsToMakeForSalary = Int(moidifiableUserdata.wrappedValue.daysPassedSinceStartOfFinancialWeek / 7)
+                        moidifiableUserdata.wrappedValue.daysPassedSinceStartOfFinancialWeek = moidifiableUserdata.wrappedValue.daysPassedSinceStartOfFinancialWeek % 7
+                        moidifiableUserdata.wrappedValue.accountBalance = moidifiableUserdata.wrappedValue.accountBalance - Double(moidifiableUserdata.wrappedValue.cashToPayAsSalaryPerWeek * numberOfDeductionsToMakeForSalary)
+                        showFinancialsAvailableAlert = true
+                    }
+                    moidifiableUserdata.wrappedValue.lastLogin = todaysDate
                 }
         }
     }

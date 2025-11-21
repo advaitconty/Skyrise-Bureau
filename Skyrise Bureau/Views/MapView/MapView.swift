@@ -41,7 +41,7 @@ struct MapView: View {
     @State var showTemporarilySelectedAirportToGetMoreInformationOnPopUp: Bool = false
     @State var planeFleetItemToChangeIndex: Int = 0
     @State var showTakeoffPopup: Bool = false
-    @State var takeoffItems: DepartureDoneSuccessfullyItems = DepartureDoneSuccessfullyItems(departedSuccessfully: false, moneyMade: nil, seatsUsedInPlane: nil, seatingConfigOfJet: nil)
+    @State var takeoffItems: DepartureDoneSuccessfullyItemsToShow? = nil
     /// Temporarily held like this
     @State var airportType:  AirportType = .arrival
     @State var maxRangeOfSelectedJet: Int = 0
@@ -69,13 +69,7 @@ struct MapView: View {
                         .transition(.move(edge: .top))
                     
                     if showTakeoffPopup {
-                        VStack {
-                            Text("Plane")
-                        }
-                        .padding()
-                        .transition(.blurReplace)
-                        .foregroundStyle(.black.opacity(0.75))
-                        .clipShape(RoundedRectangle(cornerRadius: 10.0))
+                        
                     }
                 }
             } else {

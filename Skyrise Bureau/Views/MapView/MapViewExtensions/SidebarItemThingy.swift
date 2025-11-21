@@ -9,7 +9,7 @@ import SwiftUI
 
 extension MapView {
     // MARK: Sidebar item (when you open the plane, that thingy)
-    func sidebarItemView(plane: FleetItem) -> some View {
+    func sidebarItemView(plane: Binding<FleetItem>) -> some View {
         VStack {
             HStack {
                 Button {
@@ -30,20 +30,20 @@ extension MapView {
                 .buttonStyle(.bordered)
                 .background(.ultraThickMaterial)
                 .matchedGeometryEffect(id: "sidebarBtn", in: namespace)
-                Text(plane.aircraftID)
+                Text(plane.aircraftID.wrappedValue)
                     .fontWidth(.condensed)
                 Spacer()
             }
             
-            Image(plane.aircraftID)
+            Image(plane.aircraftID.wrappedValue)
                 .resizable()
                 .scaledToFit()
             
             HStack {
-                Text(plane.registration)
+                Text(plane.registration.wrappedValue)
                     .fontWidth(.condensed)
                 Spacer()
-                Text(plane.aircraftname)
+                Text(plane.aircraftname.wrappedValue)
                     .fontWidth(.condensed)
             }
             HStack {
@@ -51,11 +51,11 @@ extension MapView {
                     Text("No assigned route")
                         .fontWidth(.condensed)
                 } else {
-                    if plane.assignedRoute!.stopoverAirport == nil {
-                        Text("Plane flies from \(plane.assignedRoute!.originAirport.iata) to \(plane.assignedRoute!.arrivalAirport.iata)")
+                    if plane.wrappedValue.assignedRoute!.stopoverAirport == nil {
+                        Text("Plane flies from \(plane.wrappedValue.assignedRoute!.originAirport.iata) to \(plane.wrappedValue.assignedRoute!.arrivalAirport.iata)")
                             .fontWidth(.condensed)
                     } else {
-                        Text("Plane flies from \(plane.assignedRoute!.originAirport.iata) to \(plane.assignedRoute!.arrivalAirport.iata) via \(plane.assignedRoute!.stopoverAirport)")
+                        Text("Plane flies from \(plane.wrappedValue.assignedRoute!.originAirport.iata) to \(plane.wrappedValue.assignedRoute!.arrivalAirport.iata) via \(plane.wrappedValue.assignedRoute!.stopoverAirport)")
                             .fontWidth(.condensed)
                     }
                 }
@@ -68,10 +68,10 @@ extension MapView {
                         .fontWidth(.expanded)
                     Spacer()
                     Button {
-                        planeFleetItemToChangeIndex = userData.planes.firstIndex(of: plane) ?? planeFleetItemToChangeIndex
+                        planeFleetItemToChangeIndex = userData.planes.firstIndex(of: plane.wrappedValue) ?? planeFleetItemToChangeIndex
                         airportType = .arrival
-                        maxRangeOfSelectedJet = Int(aircraftDatabase.aircraft(byCode: plane.aircraftID)!.maxRange)
-                        currentLocationOfPlane = plane.currentAirportLocation!
+                        maxRangeOfSelectedJet = Int(aircraftDatabase.aircraft(byCode: plane.wrappedValue.aircraftID)!.maxRange)
+                        currentLocationOfPlane = plane.wrappedValue.currentAirportLocation!
                         withAnimation {
                             showAirportPicker = true
                         }
@@ -79,6 +79,32 @@ extension MapView {
                         Text("Arrival")
                             .fontWidth(.condensed)
                         
+                    }
+                }
+                if plane.wrappedValue.isAirborne {
+                    HStack {
+                        Text("Depart Plane")
+                            .fontWidth(.expanded)
+                        Spacer()
+                        Button {
+                            var departureStatus = plane.wrappedValue.departJet(userData)
+                            if departureStatus != nil {
+                                showTakeoffPopup = true
+                                takeoffItems = DepartureDoneSuccessfullyItemsToShow(planesTakenOff: [plane.wrappedValue],
+                                                                                    economyPassenegersServed: departureStatus!.seatsUsedInPlane!.economy,
+                                                                                    premiumEconomyPassenegersServed: departureStatus!.seatsUsedInPlane!.premiumEconomy,
+                                                                                    businessPassengersServed: departureStatus!.seatsUsedInPlane!.business,
+                                                                                    firstClassPassengersServed: departureStatus!.seatsUsedInPlane!.first,
+                                                                                    maxEconomyPassenegersServed: departureStatus!.seatingConfigOfJet!.economy,
+                                                                                    maxPremiumEconomyPassenegersServed: departureStatus!.seatingConfigOfJet!.premiumEconomy,
+                                                                                    maxBusinessPassengersServed: departureStatus!.seatingConfigOfJet!.business,
+                                                                                    maxFirstClassPassengersServed: departureStatus!.seatingConfigOfJet!.first)
+                            }
+                        } label: {
+                            Text("Depart")
+                                .fontWidth(.condensed)
+                            
+                        }
                     }
                 }
                 HStack {

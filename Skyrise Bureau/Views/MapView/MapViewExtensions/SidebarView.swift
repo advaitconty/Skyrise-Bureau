@@ -133,7 +133,7 @@ extension MapView {
                 }
                 .transition(.asymmetric(insertion: .slide, removal: .scale))
             } else {
-                sidebarItemView(plane: selectedPlane!)
+                sidebarItemView(plane: Binding(get: { return selectedPlane! }, set: { selectedPlane = $0 } ))
                     .transition(.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .leading)))
             }
         }

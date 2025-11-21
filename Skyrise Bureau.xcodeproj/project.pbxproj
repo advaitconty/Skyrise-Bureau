@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		F1050A902EC78D82001A25E6 /* Skyrise.icon in Resources */ = {isa = PBXBuildFile; fileRef = F1050A8F2EC78D82001A25E6 /* Skyrise.icon */; };
-		F175E9F52ED00F4700EA0F17 /* CustomAlert in Frameworks */ = {isa = PBXBuildFile; productRef = F175E9F42ED00F4700EA0F17 /* CustomAlert */; };
 		F1B94CB52EBE005C002A260A /* CompactSlider in Frameworks */ = {isa = PBXBuildFile; productRef = F1B94CB42EBE005C002A260A /* CompactSlider */; };
 /* End PBXBuildFile section */
 
@@ -43,7 +42,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F175E9F52ED00F4700EA0F17 /* CustomAlert in Frameworks */,
 				F1B94CB52EBE005C002A260A /* CompactSlider in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -89,7 +87,6 @@
 			name = "Skyrise Bureau";
 			packageProductDependencies = (
 				F1B94CB42EBE005C002A260A /* CompactSlider */,
-				F175E9F42ED00F4700EA0F17 /* CustomAlert */,
 			);
 			productName = "Skyrise Bureau";
 			productReference = F1BA0D342EBAF3150019BC2A /* Skyrise Bureau.app */;
@@ -121,7 +118,6 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				F1B94CB32EBE005C002A260A /* XCRemoteSwiftPackageReference "CompactSlider" */,
-				F175E9F32ED00F4700EA0F17 /* XCRemoteSwiftPackageReference "CustomAlert" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F1BA0D352EBAF3150019BC2A /* Products */;
@@ -285,7 +281,7 @@
 				AUTOMATION_APPLE_EVENTS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = MK2VQ82S9T;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -311,7 +307,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 0.1.2;
+				MARKETING_VERSION = 0.9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.contyadvait.skyrisebureau;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -340,7 +336,7 @@
 				AUTOMATION_APPLE_EVENTS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = MK2VQ82S9T;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -366,7 +362,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 0.1.2;
+				MARKETING_VERSION = 0.9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.contyadvait.Skyrise-Bureau";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -409,14 +405,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		F175E9F32ED00F4700EA0F17 /* XCRemoteSwiftPackageReference "CustomAlert" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/divadretlaw/CustomAlert.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 6.0.1;
-			};
-		};
 		F1B94CB32EBE005C002A260A /* XCRemoteSwiftPackageReference "CompactSlider" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/buh/CompactSlider.git";
@@ -428,11 +416,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		F175E9F42ED00F4700EA0F17 /* CustomAlert */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F175E9F32ED00F4700EA0F17 /* XCRemoteSwiftPackageReference "CustomAlert" */;
-			productName = CustomAlert;
-		};
 		F1B94CB42EBE005C002A260A /* CompactSlider */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F1B94CB32EBE005C002A260A /* XCRemoteSwiftPackageReference "CompactSlider" */;

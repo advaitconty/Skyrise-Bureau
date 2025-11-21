@@ -439,6 +439,10 @@ class UserData {
     var amountOfMoneyMadeFromDepartures: Double = 0
     var planesAccquired: [Aircraft] = []
     var hubsAcquired: [Airport] = []
+    var daysPassedSinceStartOfFinancialWeek: Int = 0
+    var cashToPayAsSalaryPerWeek: Int {
+        return weeklyPilotSalary * pilots + weeklyFlightAttendentSalary * flightAttendents + weeklyFlightMaintainanceCrewSalary * maintainanceCrew
+    }
     
     init(name: String, airlineName: String, airlineIataCode: String, planes: [FleetItem], xp: Int, xpPoints: Int = 0, levels: Int, airlineReputation: Double, reliabilityIndex: Double, fuelDiscountMultiplier: Double, lastFuelPrice: Double, pilots: Int, flightAttendents: Int, maintainanceCrew: Int, currentlyHoldingFuel: Int, maxFuelHoldable: Int, weeklyPilotSalary: Int, weeklyFlightAttendentSalary: Int, weeklyFlightMaintainanceCrewSalary: Int, pilotHappiness: Double, flightAttendentHappiness: Double, maintainanceCrewHappiness: Double, campaignRunning: Bool, campaignEffectiveness: Double? = nil, deliveryHubs: [Airport], accountBalance: Double) {
         self.name = name
@@ -473,7 +477,8 @@ class UserData {
         self.amountSpentOnHubsAccquisitionInTheLastWeek = 0
         self.amountOfMoneyMadeFromDepartures = 0
         self.planesAccquired = []
-        self.hubsAcquired
+        self.hubsAcquired = []
+        self.daysPassedSinceStartOfFinancialWeek = 0
     }
 }
 
