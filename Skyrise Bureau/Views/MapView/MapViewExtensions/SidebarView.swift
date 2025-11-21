@@ -33,11 +33,42 @@ extension MapView {
                     VStack {
                         if amountOfNotDepartedPlanes(userData) > 0 {
                             Button {
+                                var jetsDepartedSuccessfully: [DepartureDoneSuccessfullyItems] = []
                                 for (index, plane) in userData.planes.enumerated() {
                                     if !plane.isAirborne {
-                                        userData.planes[index].departJet(userData)
+                                        let attempt = userData.planes[index].departJet($userData)
+                                        if attempt.departedSuccessfully {
+                                            jetsDepartedSuccessfully.append(attempt)
+                                        }
                                     }
                                 }
+                                var planesTakenOff: [FleetItem] = []
+                                var economyPassengersServed: Int = 0
+                                var premiumEconomyPassengersServed: Int = 0
+                                var businessPassengersServed: Int = 0
+                                var firstPassengersServed: Int = 0
+                                
+                                var maxEconomyPassengersServed: Int = 0
+                                var maxPremiumEconomyPassengersServed: Int = 0
+                                var maxBusinessPassengersServed: Int = 0
+                                var maxFirstPassengersServed: Int = 0
+                                
+                                var totalMoneyMade: Double = 0
+                                
+                                for jetDepartedSuccessfully in jetsDepartedSuccessfully {
+                                    planesTakenOff.append(jetDepartedSuccessfully.planeInfo!)
+                                    economyPassengersServed += jetDepartedSuccessfully.seatsUsedInPlane!.economy
+                                    premiumEconomyPassengersServed += jetDepartedSuccessfully.seatsUsedInPlane!.premiumEconomy
+                                    businessPassengersServed += jetDepartedSuccessfully.seatsUsedInPlane!.business
+                                    firstPassengersServed += jetDepartedSuccessfully.seatsUsedInPlane!.first
+                                    maxEconomyPassengersServed += jetDepartedSuccessfully.seatingConfigOfJet!.economy
+                                    maxPremiumEconomyPassengersServed += jetDepartedSuccessfully.seatingConfigOfJet!.premiumEconomy
+                                    maxBusinessPassengersServed += jetDepartedSuccessfully.seatingConfigOfJet!.business
+                                    maxFirstPassengersServed += jetDepartedSuccessfully.seatingConfigOfJet!.first
+                                    totalMoneyMade += jetDepartedSuccessfully.moneyMade!
+                                }
+                                
+                                takeoffItems = DepartureDoneSuccessfullyItemsToShow(planesTakenOff: planesTakenOff, economyPassenegersServed: economyPassengersServed, premiumEconomyPassenegersServed: premiumEconomyPassengersServed, businessPassengersServed: businessPassengersServed, firstClassPassengersServed: firstPassengersServed, maxEconomyPassenegersServed: maxEconomyPassengersServed, maxPremiumEconomyPassenegersServed: maxPremiumEconomyPassengersServed, maxBusinessPassengersServed: maxBusinessPassengersServed, maxFirstClassPassengersServed: maxFirstPassengersServed, moneyMade: totalMoneyMade)
                             } label: {
                                 HStack {
                                     Spacer()

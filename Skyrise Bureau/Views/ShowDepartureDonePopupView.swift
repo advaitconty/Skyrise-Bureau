@@ -23,10 +23,14 @@ struct DepartureDoneSuccessfullyItemsToShow: Codable {
     var maxPremiumEconomyPassenegersServed: Int
     var maxBusinessPassengersServed: Int
     var maxFirstClassPassengersServed: Int
+    
+    var moneyMade: Double
 }
 
 struct ShowDepartureDonePopupView: View {
     @Environment(\.colorScheme) var colorScheme
+    @Binding var showDeparturePopupView: Bool
+    @State var count: Int = 0
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     let departureDoneSuccessfullyItemsToShow: DepartureDoneSuccessfullyItemsToShow
     
@@ -58,6 +62,14 @@ struct ShowDepartureDonePopupView: View {
                         .font(.title)
                         .fontWidth(.expanded)
                     Spacer()
+                        .onReceive(timer) { _ in
+                            count = count + 1
+                            if count == 7 {
+                                withAnimation {
+                                    showDeparturePopupView = false
+                                }
+                            }
+                        }
                 }
                 
                 HStack {
@@ -141,8 +153,8 @@ struct ShowDepartureDonePopupView: View {
         maxEconomyPassenegersServed: 600,
         maxPremiumEconomyPassenegersServed: 120,
         maxBusinessPassengersServed: 75,
-        maxFirstClassPassengersServed: 16
+        maxFirstClassPassengersServed: 16, moneyMade: 1000000
     )
     
-    ShowDepartureDonePopupView(departureDoneSuccessfullyItemsToShow: testData)
+    ShowDepartureDonePopupView(showDeparturePopupView: .constant(true), departureDoneSuccessfullyItemsToShow: testData)
 }

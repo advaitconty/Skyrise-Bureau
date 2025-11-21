@@ -8,6 +8,7 @@
 import Foundation
 import SwiftData
 import _LocationEssentials
+import SwiftUI
 
 // MARK: Calculate Passenger Demand between Airports
 struct RoutePassengerDistribution: Codable {
@@ -266,8 +267,19 @@ struct FleetItem: Codable, Identifiable, Equatable {
     }
     var assignedPricing: SeatingConfig? = nil
     var passengerSeatsUsed: SeatingConfig? = nil
+    var timeTakenForTheJetToReturn: String? {
+        if landingTime != nil {
+            let formatter = DateComponentsFormatter()
+            formatter.allowedUnits = [.hour, .minute, .second]
+            formatter.unitsStyle = .short
+            formatter.zeroFormattingBehavior = .dropAll
+            return formatter.string(from: landingTime!, to: Date())!
+        } else {
+            return nil
+        }
+    }
     
-    mutating func departJet(_ userDataProvided: UserData) -> DepartureDoneSuccessfullyItems? {
+    mutating func departJet(_ userDataProvided: Binding<UserData>) -> DepartureDoneSuccessfullyItems {
         /// Steps for calculation of departure
         /// 1. Get route passenger distribution
         /// 2. Apply multiplier for increasing/decreasing demand based on:
@@ -283,6 +295,9 @@ struct FleetItem: Codable, Identifiable, Equatable {
         let db = AirportDatabase()
         let distance = db.calculateDistance(from: route.originAirport, to: route.arrivalAirport)
         let fuelRequired = Double(planeSelected.fuelBurnRate) * Double(distance)
+        if userDataProvided.wrappedValue.currentlyHoldingFuel - Int(fuelRequired) < 0 {
+            return DepartureDoneSuccessfullyItems(departedSuccessfully: false, moneyMade: nil, seatsUsedInPlane: nil, seatingConfigOfJet: nil)
+        }
         
         // Check if plane has enough range
         guard fuelRequired <= Double(planeSelected.fuelCapacity) else {
@@ -294,15 +309,15 @@ struct FleetItem: Codable, Identifiable, Equatable {
             from: route.originAirport,
             to: route.arrivalAirport,
             aircraftCapacity: seatingLayout.totalSeatsOnBoardPlane,
-            userData: userDataProvided
+            userData: userDataProvided.wrappedValue
         )
         
         // Calculate reasonable market pricing for this route
         let reasonablePricingForAirline = SeatingConfig(
-            economy: Int(predictorModel.predictPricePerKM(rating: userDataProvided.airlineReputation, seatClass: .economy) * Double(distance)),
-            premiumEconomy: Int(predictorModel.predictPricePerKM(rating: userDataProvided.airlineReputation, seatClass: .premiumEconomy) * Double(distance)),
-            business: Int(predictorModel.predictPricePerKM(rating: userDataProvided.airlineReputation, seatClass: .business) * Double(distance)),
-            first: Int(predictorModel.predictPricePerKM(rating: userDataProvided.airlineReputation, seatClass: .first) * Double(distance))
+            economy: Int(predictorModel.predictPricePerKM(rating: userDataProvided.wrappedValue.airlineReputation, seatClass: .economy) * Double(distance)),
+            premiumEconomy: Int(predictorModel.predictPricePerKM(rating: userDataProvided.wrappedValue.airlineReputation, seatClass: .premiumEconomy) * Double(distance)),
+            business: Int(predictorModel.predictPricePerKM(rating: userDataProvided.wrappedValue.airlineReputation, seatClass: .business) * Double(distance)),
+            first: Int(predictorModel.predictPricePerKM(rating: userDataProvided.wrappedValue.airlineReputation, seatClass: .first) * Double(distance))
         )
         
         // Calculate demand multipliers based on pricing for each class
@@ -356,6 +371,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
         takeoffTime = Date()
         landingTime = takeoffTime!.adding(hours: Double(distance) / Double(planeSelected.cruiseSpeed))
         passengerSeatsUsed = seatsBooked
+        userDataProvided.wrappedValue.accountBalance += revenue
         
         return DepartureDoneSuccessfullyItems(
             departedSuccessfully: true,

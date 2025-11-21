@@ -87,18 +87,19 @@ extension MapView {
                             .fontWidth(.expanded)
                         Spacer()
                         Button {
-                            var departureStatus = plane.wrappedValue.departJet(userData)
+                            var departureStatus = plane.wrappedValue.departJet($userData)
                             if departureStatus != nil {
                                 showTakeoffPopup = true
                                 takeoffItems = DepartureDoneSuccessfullyItemsToShow(planesTakenOff: [plane.wrappedValue],
-                                                                                    economyPassenegersServed: departureStatus!.seatsUsedInPlane!.economy,
-                                                                                    premiumEconomyPassenegersServed: departureStatus!.seatsUsedInPlane!.premiumEconomy,
-                                                                                    businessPassengersServed: departureStatus!.seatsUsedInPlane!.business,
-                                                                                    firstClassPassengersServed: departureStatus!.seatsUsedInPlane!.first,
-                                                                                    maxEconomyPassenegersServed: departureStatus!.seatingConfigOfJet!.economy,
-                                                                                    maxPremiumEconomyPassenegersServed: departureStatus!.seatingConfigOfJet!.premiumEconomy,
-                                                                                    maxBusinessPassengersServed: departureStatus!.seatingConfigOfJet!.business,
-                                                                                    maxFirstClassPassengersServed: departureStatus!.seatingConfigOfJet!.first)
+                                                                                    economyPassenegersServed: departureStatus.seatsUsedInPlane!.economy,
+                                                                                    premiumEconomyPassenegersServed: departureStatus.seatsUsedInPlane!.premiumEconomy,
+                                                                                    businessPassengersServed: departureStatus.seatsUsedInPlane!.business,
+                                                                                    firstClassPassengersServed: departureStatus.seatsUsedInPlane!.first,
+                                                                                    maxEconomyPassenegersServed: departureStatus.seatingConfigOfJet!.economy,
+                                                                                    maxPremiumEconomyPassenegersServed: departureStatus.seatingConfigOfJet!.premiumEconomy,
+                                                                                    maxBusinessPassengersServed: departureStatus.seatingConfigOfJet!.business,
+                                                                                    maxFirstClassPassengersServed: departureStatus.seatingConfigOfJet!.first,
+                                                                                    moneyMade: departureStatus.moneyMade!)
                             }
                         } label: {
                             Text("Depart")
