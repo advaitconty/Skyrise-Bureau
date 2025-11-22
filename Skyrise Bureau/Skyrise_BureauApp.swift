@@ -20,7 +20,7 @@ struct Skyrise_BureauApp: App {
     let resetUserData: Bool = false
     
     /// For the usage of any test data
-    let useTestData: DataTypeToUse = .endGame
+    let useTestData: DataTypeToUse = .none
     
     /// ENSURE ALL VARIABLES ABOVE ARE SET TO false BEFORE FINAL
     /// BUILD OF APP
