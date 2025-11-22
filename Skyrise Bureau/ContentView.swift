@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 import Foundation
+import Combine
 
 struct ContentView: View {
     var moidifiableUserdata: Binding<UserData> {
@@ -45,6 +46,7 @@ struct ContentView: View {
     @Environment(\.modelContext) var modelContext
     @Query var userData: [UserData]
     @State var showFinancialsAvailableAlert: Bool = false
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     var resetUserData: Bool
     var useTestData: DataTypeToUse
     var body: some View {
@@ -109,6 +111,17 @@ struct ContentView: View {
                         showFinancialsAvailableAlert = true
                     }
                     moidifiableUserdata.wrappedValue.lastLogin = todaysDate
+                }
+            /// Manages marking the plane as arrived or not at the first possible instant
+                .onReceive(timer) { _ in
+                    for (index, plane) in moidifiableUserdata.wrappedValue.planes.enumerated() {
+                        let currentDate = Date()
+                        if plane.isAirborne {
+                            if currentDate >= plane.estimatedLandingTime! {
+                                moidifiableUserdata.wrappedValue.planes[index].markJetAsArrived(moidifiableUserdata)
+                            }
+                        }
+                    }
                 }
         }
     }

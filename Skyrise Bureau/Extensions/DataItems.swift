@@ -381,7 +381,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
         )
     }
     
-    mutating func markJetAsArrived(_ userDataProvided: UserData) {
+    mutating func markJetAsArrived(_ userDataProvided: Binding<UserData>) {
         let diffComponenets = Calendar.current.dateComponents([.hour], from: takeoffTime!, to: landingTime!)
         let hours = diffComponenets.hour
         hoursFlown = hoursFlown + Double(hours!)
@@ -394,6 +394,8 @@ struct FleetItem: Codable, Identifiable, Equatable {
         takeoffTime = nil
         landingTime = nil
         estimatedLandingTime = nil
+        
+        userDataProvided.wrappedValue.xp = userDataProvided.wrappedValue.xp + 1
     }
     
     /// Calculates demand multiplier based on user pricing vs market pricing
