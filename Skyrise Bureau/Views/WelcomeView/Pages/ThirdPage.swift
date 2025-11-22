@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 extension WelcomeView {
     func pageThreeView() -> some View {
@@ -26,30 +27,45 @@ extension WelcomeView {
                                 // E175-E2
                                 userDataForAddition.planes.append(FleetItem(aircraftID: "E175E2", aircraftname: "Middle Management", registration: "N-RGNL1", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 70, premiumEconomy: 8, business: 4, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
                                 userDataForAddition.planes.append(FleetItem(aircraftID: "E175E2", aircraftname: "The Commuter Special", registration: "N-REG01", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 70, premiumEconomy: 8, business: 4, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
+                                userDataForAddition.pilots = 2 + 2 + 2 + 2 // 2 for each CRJ900, 2 for each E175-E2
+                                userDataForAddition.flightAttendents = 2 + 2 + 2 + 2 // 2 for each CRJ900, 2 for each E175-E2
                             } else if fleetChoice == 2 {
                                 // Boeing 737-800 (New Generation)
                                 userDataForAddition.planes.append(FleetItem(aircraftID: "B737-800NG", aircraftname: "Good Ol' Reliable", registration: "N-MERICA", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 138, premiumEconomy: 18, business: 10, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
                                 // E175-E2
                                 userDataForAddition.planes.append(FleetItem(aircraftID: "E175E2", aircraftname: "The Ranch Hand", registration: "N-YEEHAW", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 70, premiumEconomy: 8, business: 4, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
                                 userDataForAddition.planes.append(FleetItem(aircraftID: "E175E2", aircraftname: "Stars and Stripes", registration: "N-EAGLE1", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 70, premiumEconomy: 8, business: 4, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
+                                userDataForAddition.pilots = 2 + 2 + 2 // 2 for each B737-800NG, 2 for each E175-E2
+                                userDataForAddition.flightAttendents = 4 + 2 + 2 // 4 for each B737-800NG, 2 for each E175-E2
                             } else if fleetChoice == 3 {
                                 // Airbus A319
                                 userDataForAddition.planes.append(FleetItem(aircraftID: "A319", aircraftname: "Le Continental", registration: "N-FANCY1", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 114, premiumEconomy: 16, business: 8, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
                                 // CRJ900
                                 userDataForAddition.planes.append(FleetItem(aircraftID: "CRJ900", aircraftname: "Tea and Crumpets", registration: "N-POSH01", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 70, premiumEconomy: 10, business: 5, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
                                 userDataForAddition.planes.append(FleetItem(aircraftID: "CRJ900", aircraftname: "The Sophisticate", registration: "N-CLASSY", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 70, premiumEconomy: 10, business: 5, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
+                                userDataForAddition.pilots = 2 + 2 + 2 // 2 for each A319, 2 for each CRJ900
+                                userDataForAddition.flightAttendents = 4 + 2 + 2 // 4 for each A319, 2 for each CRJ900
                             } else if fleetChoice == 4 {
                                 // Airbus A320
                                 userDataForAddition.planes.append(FleetItem(aircraftID: "A320", aircraftname: "Bread and Butter", registration: "N-BASIC1", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 132, premiumEconomy: 18, business: 10, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
                                 // Boeing 737-800 (New Generation)
                                 userDataForAddition.planes.append(FleetItem(aircraftID: "B737-800NG", aircraftname: "The Minivan", registration: "N-SAFE1", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 138, premiumEconomy: 18, business: 10, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
+                                userDataForAddition.pilots = 2 + 2  // 2 for each A320, 2 for each B737-800NG
+                                userDataForAddition.flightAttendents = 4 + 2 // 4 for each A320, 2 for each B737-800NG
                             } else if fleetChoice == 5 {
                                 // E175-E2
                                 userDataForAddition.planes.append(FleetItem(aircraftID: "E175E2", aircraftname: "Fresh Off The Lot", registration: "N-NEWB01", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 70, premiumEconomy: 8, business: 4, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
                                 userDataForAddition.planes.append(FleetItem(aircraftID: "E175E2", aircraftname: "The Dawn of the Millenium", registration: "N-TECH01", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 70, premiumEconomy: 8, business: 4, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
                                 // E190-E2
                                 userDataForAddition.planes.append(FleetItem(aircraftID: "E190E2", aircraftname: "Actually has WiFi", registration: "N-FANCY2", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 88, premiumEconomy: 12, business: 4, first: 0), kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: userDataForAddition.deliveryHubs[0]))
+                                userDataForAddition.pilots = 2 + 2 + 2 // 2 for each E175-E2, 2 for each E190-E2
+                                userDataForAddition.flightAttendents = 2 + 2 + 3 // 2 for each E175-E2, 2 for each E190-E2
                             }
+                            
+                            /// For the stupid maintainance crew that I can't be bothered to add manually
+                            /// Will do 3 for each jet, based on planes added
+                            userDataForAddition.maintainanceCrew = userDataForAddition.planes.count * 3
+                            
                             modelContext.insert(userDataForAddition)
                             try? modelContext.save()
                             openWindow(id: "main")
