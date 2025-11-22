@@ -45,5 +45,9 @@ struct Skyrise_BureauApp: App {
             AirplaneStoreView()
         }
         .modelContainer(sharedModelContainer)
+        WindowGroup("About Your Airline", id: "attributes") {
+            UserUpgradeView()
+        }
+        .modelContainer(sharedModelContainer)
     }
 }

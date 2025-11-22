@@ -48,8 +48,8 @@ extension UserUpgradeView {
             }
             ScrollView(.horizontal) {
                 HStack {
-                    ForEach($userData.planes, id: \.id) { $plane in
-                        planeItemView($plane)
+                    ForEach(userData.planes, id: \.id) { plane in
+                        planeItemView(plane)
                     }
                 }
             }

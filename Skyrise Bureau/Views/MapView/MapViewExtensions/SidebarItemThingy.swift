@@ -81,7 +81,7 @@ extension MapView {
                         
                     }
                 }
-                if !plane.wrappedValue.isAirborne && plane.wrappedValue.assignedRoute != nil {
+                if !plane.wrappedValue.isAirborne && plane.wrappedValue.assignedRoute != nil && !plane.wrappedValue.inMaintainance && plane.wrappedValue.condition > 0.15 {
                     HStack {
                         Text("Depart Plane")
                             .fontWidth(.expanded)
@@ -108,6 +108,25 @@ extension MapView {
                             Text("Depart")
                                 .fontWidth(.condensed)
                             
+                        }
+                    }
+                } else if plane.wrappedValue.isAirborne {
+                    HStack {
+                        Text("Arrival in \(plane.wrappedValue.timeTakenForTheJetToReturn!)")
+                            .fontWidth(.condensed)
+                        Spacer()
+                    }
+                } else if plane.wrappedValue.condition <= 0.15 {
+                    HStack {
+                        Text("Plane cannot fly due to poor condition")
+                            .fontWidth(.condensed)
+                        Spacer()
+                        if $userData.wrappedValue.accountBalance > AircraftDatabase.shared.allAircraft.first(where: { plane.wrappedValue.aircraftID == $0.modelCode })!.maintenanceCostPerHour * (plane.wrappedValue.hoursFlown - plane.wrappedValue.lastHoursOfPlaneDuringMaintainance) {
+                            Button {
+                                $userData.wrappedValue.accountBalance -= AircraftDatabase.shared.allAircraft.first(where: { plane.wrappedValue.aircraftID == $0.modelCode })!.maintenanceCostPerHour * (plane.wrappedValue.hoursFlown - plane.wrappedValue.lastHoursOfPlaneDuringMaintainance)
+                            } label: {
+                                Text("$\((AircraftDatabase.shared.allAircraft.first(where: { plane.wrappedValue.aircraftID == $0.modelCode })!.maintenanceCostPerHour * (plane.wrappedValue.hoursFlown - plane.wrappedValue.lastHoursOfPlaneDuringMaintainance)).withCommas)")
+                            }
                         }
                     }
                 }

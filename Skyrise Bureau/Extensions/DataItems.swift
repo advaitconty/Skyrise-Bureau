@@ -246,6 +246,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
     var currentAirportLocation: Airport?
     var inMaintainance: Bool = false
     var endMaintainanceDate: Date? = nil
+    var lastHoursOfPlaneDuringMaintainance: Double = 0
     var planeLocationInFlight: CLLocationCoordinate2D {
         if isAirborne, let takeoff = takeoffTime, let landing = landingTime, let route = assignedRoute {
             let totalFlightDuration = landing.timeIntervalSince(takeoff)

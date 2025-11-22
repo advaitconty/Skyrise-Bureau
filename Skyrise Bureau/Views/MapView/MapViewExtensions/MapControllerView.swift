@@ -34,19 +34,20 @@ extension MapView {
                             print(userData.progressToNextXPLevel)
                         }
                         .frame(height: 20)
-                    HStack {
-                        Text("Currently Level \(userData.levels)")
-                            .font(.caption2)
-                            .fontWidth(.expanded)
-                        +
-                        Text(" - \(userData.xpRequiredForNextXPLevel) XP to next level")
-                            .font(.caption)
-                            .fontWidth(.expanded)
-                        Spacer()
-                        Text("Holding Fuel: \(userData.currentlyHoldingFuel.withCommas)kg/\(userData.maxFuelHoldable.withCommas)kg")
-                            .font(.caption)
-                            .fontWidth(.condensed)
-                    }
+//                    HStack {
+//                        Text("Currently Level \(userData.levels)")
+//                            .font(.caption2)
+//                            .fontWidth(.expanded)
+//                        +
+//                        Text(" - \(userData.xpRequiredForNextXPLevel) XP to next level")
+//                            .font(.caption)
+//                            .fontWidth(.expanded)
+//                        Spacer()
+//                        Text("Holding Fuel: \(userData.currentlyHoldingFuel.withCommas)kg/\(userData.maxFuelHoldable.withCommas)kg")
+//                            .font(.caption)
+//                            .fontWidth(.condensed)
+//                    }
+                    /// To readd once fuel logic is successfully implemented
                     
                 }
             }

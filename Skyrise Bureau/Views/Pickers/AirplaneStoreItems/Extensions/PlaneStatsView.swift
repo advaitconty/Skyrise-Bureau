@@ -97,10 +97,17 @@ extension AirplaneStoreView {
                         preferedSeatingConfig = plane.defaultSeating
                     }
                 
-                Button {
-                    
-                } label: {
-                    Text("Purchase for $\(String(format: ".%2f", plane.purchasePrice))")
+                
+                if !showAllSeatsFileld {
+                    Button {
+                        userData.wrappedValue.planes.append(FleetItem(aircraftID: plane.modelCode, aircraftname: aircraftName, registration: registration, hoursFlown: 0, seatingLayout: preferedSeatingConfig, kilometersTravelledSinceLastMaintainence: 0))
+                        userData.wrappedValue.maintainanceCrew += 3
+                        userData.wrappedValue.pilots += plane.pilots
+                        userData.wrappedValue.flightAttendents += plane.flightAttendents
+                        dismissWindow()
+                    } label: {
+                        Text("Purchase for $\(String(format: ".%2f", plane.purchasePrice))")
+                    }
                 }
             } else {
                 HStack {

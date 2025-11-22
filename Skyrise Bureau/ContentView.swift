@@ -122,6 +122,9 @@ struct ContentView: View {
                             }
                         }
                     }
+                    if moidifiableUserdata.wrappedValue.currentlyHoldingFuel != moidifiableUserdata.wrappedValue.maxFuelHoldable {
+                        moidifiableUserdata.wrappedValue.currentlyHoldingFuel = moidifiableUserdata.wrappedValue.maxFuelHoldable
+                    }
                 }
         }
     }

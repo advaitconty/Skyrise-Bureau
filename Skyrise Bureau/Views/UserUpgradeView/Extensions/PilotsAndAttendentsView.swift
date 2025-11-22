@@ -19,41 +19,52 @@ extension UserUpgradeView {
                 Spacer()
                 Image(systemName: "person.crop.circle")
                     .font(.system(size: 36))
-                Text("$\(userData.weeklyPilotSalary.withCommas)/week")
+                Text("$\(userData.wrappedValue.weeklyPilotSalary.withCommas)/week")
                     .fontWidth(.condensed)
-                Text("\(String(Int(userData.pilotHappiness * 100)))%")
+                Text("\(String(Int(userData.wrappedValue.pilotHappiness * 100)))%")
                     .fontWidth(.condensed)
                 Spacer()
-                HStack {
-                    Button {
-                        withAnimation {
-                            userData.weeklyPilotSalary = userData.weeklyPilotSalary + 50
-                            if userData.pilotHappiness != 1 {
-                                var adder: Double = Double.random(in: 0.01...0.05)
-                                while adder + userData.pilotHappiness > 1 {
-                                    adder = Double.random(in: 0.01...0.05)
-                                }
-                                userData.pilotHappiness = userData.pilotHappiness + adder
-                            }
-                        }
-                    } label: {
-                        Spacer()
-                        Image(systemName: "arrowtriangle.up")
-                        Spacer()
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.green)
-                    
-                    Button {
-                        
-                    } label: {
-                        Spacer()
-                        Image(systemName: "arrowtriangle.down")
-                        Spacer()
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.red)
-                }
+                /// Pilot salary logic
+                /// To implement in v1
+//                HStack {
+//                    Button {
+//                        withAnimation {
+//                            userData.wrappedValue.weeklyPilotSalary = userData.wrappedValue.weeklyPilotSalary + 50
+//                            if userData.wrappedValue.pilotHappiness != 1 {
+//                                var adder: Double = Double.random(in: 0.01...0.05)
+//                                while adder + userData.wrappedValue.pilotHappiness > 1 {
+//                                    adder = Double.random(in: 0.01...0.05)
+//                                }
+//                                userData.wrappedValue.pilotHappiness = userData.wrappedValue.pilotHappiness + adder
+//                            }
+//                        }
+//                    } label: {
+//                        Spacer()
+//                        Image(systemName: "arrowtriangle.up")
+//                        Spacer()
+//                    }
+//                    .buttonStyle(.borderedProminent)
+//                    .tint(.green)
+//                    
+//                    Button {
+//                        withAnimation {
+//                            userData.wrappedValue.weeklyPilotSalary = userData.wrappedValue.weeklyPilotSalary - 50
+//                            if userData.wrappedValue.pilotHappiness != 1 {
+//                                var adder: Double = Double.random(in: 0.01...0.05)
+//                                while adder + userData.wrappedValue.pilotHappiness > 1 {
+//                                    adder = Double.random(in: 0.01...0.05)
+//                                }
+//                                userData.wrappedValue.pilotHappiness = userData.wrappedValue.pilotHappiness - adder
+//                            }
+//                        }
+//                    } label: {
+//                        Spacer()
+//                        Image(systemName: "arrowtriangle.down")
+//                        Spacer()
+//                    }
+//                    .buttonStyle(.borderedProminent)
+//                    .tint(.red)
+//                }
 
             }
             .padding(5)
@@ -69,32 +80,43 @@ extension UserUpgradeView {
                 Spacer()
                 Image(systemName: "bell")
                     .font(.system(size: 36))
-                Text("$\(userData.weeklyFlightAttendentSalary.withCommas)/week")
+                Text("$\(userData.wrappedValue.weeklyFlightAttendentSalary.withCommas)/week")
                     .fontWidth(.condensed)
-                Text("\(String(Int(userData.flightAttendentHappiness * 100)))%")
+                Text("\(String(Int(userData.wrappedValue.flightAttendentHappiness * 100)))%")
                     .fontWidth(.condensed)
                 Spacer()
-                HStack {
-                    Button {
-                        
-                    } label: {
-                        Spacer()
-                        Image(systemName: "arrowtriangle.up")
-                        Spacer()
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.green)
-                    
-                    Button {
-                        
-                    } label: {
-                        Spacer()
-                        Image(systemName: "arrowtriangle.down")
-                        Spacer()
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.red)
-                }
+                /// Flight attendent pricing logic
+                /// To implement in v1
+//                HStack {
+//                    Button {
+//                        withAnimation {
+//                            userData.wrappedValue.weeklyFlightAttendentSalary = userData.wrappedValue.weeklyFlightAttendentSalary + 50
+//                            if userData.wrappedValue.flightAttendents != 1 {
+//                                var adder: Double = Double.random(in: 0.01...0.05)
+//                                while adder + userData.wrappedValue.weeklyFlightAttendentSalary > 1 {
+//                                    adder = Double.random(in: 0.01...0.05)
+//                                }
+//                                userData.wrappedValue.weeklyFlightAttendentSalary = userData.wrappedValue.pilotHappiness + adder
+//                            }
+//                        }
+//                    } label: {
+//                        Spacer()
+//                        Image(systemName: "arrowtriangle.up")
+//                        Spacer()
+//                    }
+//                    .buttonStyle(.borderedProminent)
+//                    .tint(.green)
+//                    
+//                    Button {
+//                        
+//                    } label: {
+//                        Spacer()
+//                        Image(systemName: "arrowtriangle.down")
+//                        Spacer()
+//                    }
+//                    .buttonStyle(.borderedProminent)
+//                    .tint(.red)
+//                }
 
             }
             .padding(5)
@@ -109,32 +131,34 @@ extension UserUpgradeView {
                 Spacer()
                 Image(systemName: "wrench.and.screwdriver")
                     .font(.system(size: 36))
-                Text("$\(userData.weeklyFlightMaintainanceCrewSalary.withCommas)/week")
+                Text("$\(userData.wrappedValue.weeklyFlightMaintainanceCrewSalary.withCommas)/week")
                     .fontWidth(.condensed)
-                Text("\(String(Int(userData.maintainanceCrewHappiness * 100)))%")
+                Text("\(String(Int(userData.wrappedValue.maintainanceCrewHappiness * 100)))%")
                     .fontWidth(.condensed)
                 Spacer()
-                HStack {
-                    Button {
-                        
-                    } label: {
-                        Spacer()
-                        Image(systemName: "arrowtriangle.up")
-                        Spacer()
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.green)
-                    
-                    Button {
-                        
-                    } label: {
-                        Spacer()
-                        Image(systemName: "arrowtriangle.down")
-                        Spacer()
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.red)
-                }
+                /// Maintainance crew salary logic
+                /// To implement in v1
+//                HStack {
+//                    Button {
+//                        
+//                    } label: {
+//                        Spacer()
+//                        Image(systemName: "arrowtriangle.up")
+//                        Spacer()
+//                    }
+//                    .buttonStyle(.borderedProminent)
+//                    .tint(.green)
+//                    
+//                    Button {
+//                        
+//                    } label: {
+//                        Spacer()
+//                        Image(systemName: "arrowtriangle.down")
+//                        Spacer()
+//                    }
+//                    .buttonStyle(.borderedProminent)
+//                    .tint(.red)
+//                }
             }
             .padding(5)
             .frame(width: 150, height: 140)

@@ -149,15 +149,15 @@ extension MapView {
                                 Image(systemName: "cart")
                                 Spacer()
                             }
+//                            Button {
+//                                // Settings spawner, to add later
+//                            } label: {
+//                                Spacer()
+//                                Image(systemName: "gear")
+//                                Spacer()
+//                            }
                             Button {
-                                // Settings spawner, to add later
-                            } label: {
-                                Spacer()
-                                Image(systemName: "gear")
-                                Spacer()
-                            }
-                            Button {
-                                // Airline management screen, to manage attributes, logic to add later
+                                openWindow(id: "attributes")
                             } label: {
                                 Spacer()
                                 Image(systemName: "person.text.rectangle")

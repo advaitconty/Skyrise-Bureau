@@ -6,15 +6,50 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct UserUpgradeView: View {
-    @Binding var userData: UserData
+    @Query var swiftDataUserData: [UserData]
+    @Environment(\.modelContext) var modelContext
+    var userData: Binding<UserData> {
+        Binding {
+            swiftDataUserData.first ?? testUserData
+        } set: { value in
+            if let item = swiftDataUserData.first {
+                item.planes = value.planes
+                item.deliveryHubs = value.deliveryHubs
+                item.airlineIataCode = value.airlineIataCode
+                item.airlineName = value.airlineName
+                item.name = value.name
+                item.accountBalance = value.accountBalance
+                item.airlineReputation = value.airlineReputation
+                item.campaignEffectiveness = value.campaignEffectiveness
+                item.campaignRunning = value.campaignRunning
+                item.currentlyHoldingFuel = value.currentlyHoldingFuel
+                item.flightAttendentHappiness = value.flightAttendentHappiness
+                item.flightAttendents = value.flightAttendents
+                item.fuelDiscountMultiplier = value.fuelDiscountMultiplier
+                item.lastFuelPrice = value.lastFuelPrice
+                item.levels = value.levels
+                item.maintainanceCrew = value.maintainanceCrew
+                item.maintainanceCrewHappiness = value.maintainanceCrewHappiness
+                item.maxFuelHoldable = value.maxFuelHoldable
+                item.pilotHappiness = value.pilotHappiness
+                item.pilots = value.pilots
+                item.pilotHappiness = value.pilotHappiness
+                item.xp = value.xp
+                
+                try? modelContext.save()
+            }
+        }
+    }
+
     @Environment(\.colorScheme) var colorScheme
     var body: some View {
         VStack {
             VStack {
                 HStack {
-                    TextField(userData.airlineName, text: $userData.airlineName)
+                    TextField(userData.wrappedValue.airlineName, text: userData.airlineName)
                         .textFieldStyle(.plain)
                         .font(.largeTitle)
                         .fontWidth(.expanded)
@@ -24,14 +59,14 @@ struct UserUpgradeView: View {
                     Text("As managed by ".uppercased())
                         .font(.caption2)
                         .fontWidth(.expanded)
-                    TextField(userData.name, text: $userData.name)
+                    TextField(userData.wrappedValue.name, text: userData.name)
                         .textFieldStyle(.plain)
                         .font(.caption2)
                         .fontWidth(.expanded)
                     Spacer()
                 }
                 HStack {
-                    Text("ACTIVE RESERVES: $\(userData.accountBalance.withCommas)".uppercased())
+                    Text("ACTIVE RESERVES: $\(userData.wrappedValue.accountBalance.withCommas)".uppercased())
                         .font(.caption2)
                         .fontWidth(.expanded)
                     Spacer()
@@ -60,5 +95,5 @@ struct UserUpgradeView: View {
 }
 
 #Preview {
-    UserUpgradeView(userData: .constant(testUserDataEndgame))
+    UserUpgradeView()
 }

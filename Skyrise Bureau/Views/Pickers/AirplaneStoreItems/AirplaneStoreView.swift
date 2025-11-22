@@ -6,6 +6,7 @@ import SwiftData
 struct AirplaneStoreView: View {
     @Query var swiftDataUserData: [UserData]
     @Environment(\.modelContext) var modelContext
+    @Environment(\.dismissWindow) var dismissWindow
     var userData: Binding<UserData> {
         Binding {
             swiftDataUserData.first ?? testUserData

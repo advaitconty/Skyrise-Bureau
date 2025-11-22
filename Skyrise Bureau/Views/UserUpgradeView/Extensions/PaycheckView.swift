@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension UserUpgradeView {
-    func paycheckView() -> some View {  
+    func paycheckView() -> some View { 
         VStack {
             HStack {
                 Text("PAYCHECKS")
