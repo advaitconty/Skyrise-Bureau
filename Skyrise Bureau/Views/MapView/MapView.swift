@@ -7,8 +7,10 @@
 
 import SwiftUI
 import MapKit
+import Combine
 
 struct MapView: View {
+    @State var refresh: Bool = false
     @Namespace var mapScope
     @Namespace var namespace
     @State var showMapSelector: Bool = false
@@ -60,6 +62,7 @@ struct MapView: View {
         facilities: AirportFacilities(terminalCapacity: 195000, cargoCapacity: 3800, gatesAvailable: 105, slotEfficiency: 0.90)
     )
     @Environment(\.openWindow) var openWindow
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     var body: some View {
         VStack {

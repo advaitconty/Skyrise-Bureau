@@ -58,7 +58,8 @@ struct ShowDepartureDonePopupView: View {
         ZStack(alignment: .top) {
             VStack {
                 HStack {
-                    Text("Successfully departed \(departureDoneSuccessfullyItemsToShow.noOfPlanesTakenOff) planes!")
+                    Text("Successfully departed \(departureDoneSuccessfullyItemsToShow.noOfPlanesTakenOff) plane(s)!")
+                    /// TO DO: Research a way that keeps this grammatically correct automatically
                         .font(.title)
                         .fontWidth(.expanded)
                     Spacer()
@@ -88,6 +89,7 @@ struct ShowDepartureDonePopupView: View {
         }
         .padding()
         .frame(maxWidth: 400)
+        .background(Color.white.opacity(0.75))
     }
 }
 

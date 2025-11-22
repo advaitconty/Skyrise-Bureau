@@ -61,6 +61,20 @@ extension MapView {
                 }
                 Spacer()
             }
+            if plane.wrappedValue.assignedRoute != nil && !plane.wrappedValue.isAirborne {
+                VStack {
+                    VStack {
+                        editableLittleSmallBoxThingy(icon: "carseat.right", item: plane.assignedPricing.economy, placeholder: "$50")
+                        editableLittleSmallBoxThingy(icon: "star", item: plane.assignedPricing.premiumEconomy, placeholder: "$100")
+                    }
+                    VStack {
+                        editableLittleSmallBoxThingy(icon: "briefcase", item: plane.assignedPricing.business, placeholder: "$150")
+                        editableLittleSmallBoxThingy(icon: "crown", item: plane.assignedPricing.first, placeholder: "$200")
+                    }
+                }
+                .transition(.blurReplace)
+            }
+
             
             VStack {
                 HStack {
@@ -111,10 +125,18 @@ extension MapView {
                         }
                     }
                 } else if plane.wrappedValue.isAirborne {
-                    HStack {
-                        Text("Arrival in \(plane.wrappedValue.timeTakenForTheJetToReturn!)")
-                            .fontWidth(.condensed)
-                        Spacer()
+                    if refresh {
+                        HStack {
+                            Text("Arrival in \(plane.wrappedValue.timeTakenForTheJetToReturn!)")
+                                .fontWidth(.condensed)
+                            Spacer()
+                        }
+                    } else {
+                        HStack {
+                            Text("Arrival in \(plane.wrappedValue.timeTakenForTheJetToReturn!)")
+                                .fontWidth(.condensed)
+                            Spacer()
+                        }
                     }
                 } else if plane.wrappedValue.condition <= 0.15 {
                     HStack {
@@ -136,6 +158,9 @@ extension MapView {
             }
             
             Spacer()
+                .onReceive(timer) { _ in
+                    refresh.toggle()
+                }
             
         }
     }
