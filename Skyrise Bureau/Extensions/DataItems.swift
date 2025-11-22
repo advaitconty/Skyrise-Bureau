@@ -163,6 +163,17 @@ struct SeatingConfig: Codable, Hashable {
     }
 }
 
+struct PricingConfig: Codable, Hashable {
+    var economy: Double
+    var premiumEconomy: Double
+    var business: Double
+    var first: Double
+    
+    var seatsUsed: Double {
+        return Double(economy) + Double(premiumEconomy) * 1.5 + Double(business) * 2.0 + Double(first) * 4.0
+    }
+}
+
 // MARK: - Airport Enums and Models
 
 enum Region: String, Codable, CaseIterable {
@@ -266,7 +277,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
             return currentAirportLocation?.clLocationCoordinateItemForLocation ?? CLLocationCoordinate2D(latitude: 0, longitude: 0)
         }
     }
-    var assignedPricing: SeatingConfig? = nil
+    var assignedPricing: SeatingConfig = SeatingConfig(economy: 50, premiumEconomy: 100, business: 250, first: 500)
     var passengerSeatsUsed: SeatingConfig? = nil
     var timeTakenForTheJetToReturn: String? {
         if landingTime != nil {
@@ -274,7 +285,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
             formatter.allowedUnits = [.hour, .minute, .second]
             formatter.unitsStyle = .short
             formatter.zeroFormattingBehavior = .dropAll
-            return formatter.string(from: landingTime!, to: Date())!
+            return formatter.string(from: Date(), to: landingTime!)!
         } else {
             return nil
         }
@@ -288,10 +299,11 @@ struct FleetItem: Codable, Identifiable, Equatable {
         ///    - The reputation of the airline (price per km based on this statistic)
         /// 3. Return DepartureDoneSuccessfullyItems
         
-        guard let route = assignedRoute, !isAirborne, condition > 0.25, let pricing = assignedPricing else {
+        let pricing = assignedPricing
+        guard let route = assignedRoute, !isAirborne, condition > 0.25 else {
             return DepartureDoneSuccessfullyItems(departedSuccessfully: false, moneyMade: nil, seatsUsedInPlane: nil, seatingConfigOfJet: nil)
         }
-        
+        print("conditions 1 matched")
         let planeSelected = AircraftDatabase.shared.allAircraft.first(where: { $0.id == aircraftID })!
         let db = AirportDatabase()
         let distance = db.calculateDistance(from: route.originAirport, to: route.arrivalAirport)
@@ -299,12 +311,14 @@ struct FleetItem: Codable, Identifiable, Equatable {
         if userDataProvided.wrappedValue.currentlyHoldingFuel - Int(fuelRequired) < 0 {
             return DepartureDoneSuccessfullyItems(departedSuccessfully: false, moneyMade: nil, seatsUsedInPlane: nil, seatingConfigOfJet: nil)
         }
-        
+        print("conditions 2 matched")
+
         // Check if plane has enough range
         guard fuelRequired <= Double(planeSelected.fuelCapacity) else {
             return DepartureDoneSuccessfullyItems(departedSuccessfully: false, moneyMade: nil, seatsUsedInPlane: nil, seatingConfigOfJet: nil)
         }
-        
+        print("conditions 3 matched")
+
         // Calculate base demand
         let baseDemand = db.calculatePassengerDistribution(
             from: route.originAirport,

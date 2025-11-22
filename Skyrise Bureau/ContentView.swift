@@ -116,7 +116,7 @@ struct ContentView: View {
                 .onReceive(timer) { _ in
                     for (index, plane) in moidifiableUserdata.wrappedValue.planes.enumerated() {
                         let currentDate = Date()
-                        if plane.isAirborne {
+                        if plane.isAirborne && plane.estimatedLandingTime != nil {
                             if currentDate >= plane.estimatedLandingTime! {
                                 moidifiableUserdata.wrappedValue.planes[index].markJetAsArrived(moidifiableUserdata)
                             }

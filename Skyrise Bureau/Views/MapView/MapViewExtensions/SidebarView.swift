@@ -57,7 +57,7 @@ extension MapView {
                                 var totalMoneyMade: Double = 0
                                 
                                 for jetDepartedSuccessfully in jetsDepartedSuccessfully {
-                                    planesTakenOff.append(jetDepartedSuccessfully.planeInfo!)
+                                    planesTakenOff.append(jetDepartedSuccessfully.planeInfo ?? FleetItem(aircraftID: "somethong", aircraftname: "goasngo", registration: "gaogns", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 4, premiumEconomy: 41, business: 414, first: 41), kilometersTravelledSinceLastMaintainence: 4))
                                     economyPassengersServed += jetDepartedSuccessfully.seatsUsedInPlane!.economy
                                     premiumEconomyPassengersServed += jetDepartedSuccessfully.seatsUsedInPlane!.premiumEconomy
                                     businessPassengersServed += jetDepartedSuccessfully.seatsUsedInPlane!.business
@@ -128,10 +128,12 @@ extension MapView {
                                             
                                             
                                             if let currentAirportLocation = plane.currentAirportLocation {
-                                                HStack {
-                                                    Text("_Plane is sitting at \(currentAirportLocation.iata)_")
-                                                        .fontWidth(.condensed)
-                                                    Spacer()
+                                                if !plane.isAirborne {
+                                                    HStack {
+                                                        Text("_Plane is sitting at \(currentAirportLocation.iata)_")
+                                                            .fontWidth(.condensed)
+                                                        Spacer()
+                                                    }
                                                 }
                                             }
                                         }
