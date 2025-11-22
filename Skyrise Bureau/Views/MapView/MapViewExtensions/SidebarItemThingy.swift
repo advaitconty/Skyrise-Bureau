@@ -47,17 +47,17 @@ extension MapView {
                     .fontWidth(.condensed)
             }
             HStack {
-                if plane.assignedRoute == nil {
+                if plane.wrappedValue.assignedRoute == nil {
                     Text("No assigned route")
                         .fontWidth(.condensed)
                 } else {
-                    if plane.wrappedValue.assignedRoute!.stopoverAirport == nil {
+//                    if plane.wrappedValue.assignedRoute!.stopoverAirport == nil {
+//                        Text("Plane flies from \(plane.wrappedValue.assignedRoute!.originAirport.iata) to \(plane.wrappedValue.assignedRoute!.arrivalAirport.iata)")
+//                            .fontWidth(.condensed)
+//                    } else {
                         Text("Plane flies from \(plane.wrappedValue.assignedRoute!.originAirport.iata) to \(plane.wrappedValue.assignedRoute!.arrivalAirport.iata)")
                             .fontWidth(.condensed)
-                    } else {
-                        Text("Plane flies from \(plane.wrappedValue.assignedRoute!.originAirport.iata) to \(plane.wrappedValue.assignedRoute!.arrivalAirport.iata) via \(plane.wrappedValue.assignedRoute!.stopoverAirport)")
-                            .fontWidth(.condensed)
-                    }
+//                    }
                 }
                 Spacer()
             }
@@ -81,15 +81,15 @@ extension MapView {
                         
                     }
                 }
-                if plane.wrappedValue.isAirborne {
+                if !plane.wrappedValue.isAirborne && plane.wrappedValue.assignedRoute != nil {
                     HStack {
                         Text("Depart Plane")
                             .fontWidth(.expanded)
                         Spacer()
                         Button {
-                            var departureStatus = plane.wrappedValue.departJet($userData)
-                            if departureStatus != nil {
-                                showTakeoffPopup = true
+                            let departureStatus = plane.wrappedValue.departJet($userData)
+                            print(departureStatus)
+                            if departureStatus.departedSuccessfully {
                                 takeoffItems = DepartureDoneSuccessfullyItemsToShow(planesTakenOff: [plane.wrappedValue],
                                                                                     economyPassenegersServed: departureStatus.seatsUsedInPlane!.economy,
                                                                                     premiumEconomyPassenegersServed: departureStatus.seatsUsedInPlane!.premiumEconomy,
@@ -100,6 +100,9 @@ extension MapView {
                                                                                     maxBusinessPassengersServed: departureStatus.seatingConfigOfJet!.business,
                                                                                     maxFirstClassPassengersServed: departureStatus.seatingConfigOfJet!.first,
                                                                                     moneyMade: departureStatus.moneyMade!)
+                                withAnimation {
+                                    showTakeoffPopup = true
+                                }
                             }
                         } label: {
                             Text("Depart")

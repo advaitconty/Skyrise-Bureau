@@ -42,6 +42,7 @@ extension MapView {
                                         }
                                     }
                                 }
+                                print(jetsDepartedSuccessfully)
                                 var planesTakenOff: [FleetItem] = []
                                 var economyPassengersServed: Int = 0
                                 var premiumEconomyPassengersServed: Int = 0
@@ -69,6 +70,9 @@ extension MapView {
                                 }
                                 
                                 takeoffItems = DepartureDoneSuccessfullyItemsToShow(planesTakenOff: planesTakenOff, economyPassenegersServed: economyPassengersServed, premiumEconomyPassenegersServed: premiumEconomyPassengersServed, businessPassengersServed: businessPassengersServed, firstClassPassengersServed: firstPassengersServed, maxEconomyPassenegersServed: maxEconomyPassengersServed, maxPremiumEconomyPassenegersServed: maxPremiumEconomyPassengersServed, maxBusinessPassengersServed: maxBusinessPassengersServed, maxFirstClassPassengersServed: maxFirstPassengersServed, moneyMade: totalMoneyMade)
+                                withAnimation {
+                                    showTakeoffPopup = true
+                                }
                             } label: {
                                 HStack {
                                     Spacer()

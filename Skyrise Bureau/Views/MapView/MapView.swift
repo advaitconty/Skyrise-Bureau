@@ -69,7 +69,8 @@ struct MapView: View {
                         .transition(.move(edge: .top))
                     
                     if showTakeoffPopup {
-                        
+                        ShowDepartureDonePopupView(showDeparturePopupView: $showTakeoffPopup, departureDoneSuccessfullyItemsToShow: takeoffItems!)
+                            .transition(.scale)
                     }
                 }
             } else {
@@ -129,5 +130,5 @@ struct MapView: View {
 }
 
 #Preview {
-    MapView(userData: .constant(testUserData))
+    MapView(userData: .constant(testUserDataEndgame))
 }
