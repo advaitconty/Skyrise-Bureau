@@ -1,6 +1,8 @@
 # Skyrise Bureau
 An airline manager, inspired by [this](https://airlinemanager.net), built fully in SwiftUI
 
+_Part of Hack Club's Midnight event, in Vienna, Austria (midnight.hackclub.com)
+
 > ### Looking for help!
 > Looking for people who know SwiftUI better then me, as I wanna launch this on mobile but RAM constraints
 
