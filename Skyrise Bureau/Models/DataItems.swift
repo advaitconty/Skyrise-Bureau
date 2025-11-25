@@ -418,6 +418,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
     }
 }
 
+
 /// SwiftData class
 /// name --> CEO name, airlineName --> name of the airline, airlineIataCode --> Airline IATA code, that will be used at the start of all
 /// flights under that airline, planes [FleetItem] --> Contains a list of the planes
@@ -437,6 +438,7 @@ class UserData {
     var lastFuelPrice: Double = 750
     var fuelPurchasedByUserAtLastFuelPrice: Double = 0
     var currentFuelPrice: Double = 750
+    var lastFewFuelPricesForGraph: [Double] = [1100, 2100, 300, 1700, 2600, 900, 1400, 1300, 2700, 750]
     var pilots: Int = 3
     var flightAttendents: Int = 6
     var maintainanceCrew: Int = 4 // 4 for each plane - fixed amount
@@ -524,6 +526,7 @@ class UserData {
         self.daysPassedSinceStartOfFinancialWeek = 0
         self.fuelPurchasedByUserAtLastFuelPrice = 0
         self.currentFuelPrice = 750
+        self.lastFewFuelPricesForGraph = [1100, 2100, 300, 1700, 2600, 900, 1400, 1300, 2700, 750]
     }
 }
 
