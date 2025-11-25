@@ -434,7 +434,9 @@ class UserData {
     var airlineReputation: Double = 0.6
     var reliabilityIndex: Double = 0.7
     var fuelDiscountMultiplier: Double = 1
-    var lastFuelPrice: Double = 0.75 // Starting at this price, lowest will be 0.45, max will be 1.4, based on how much fuel user purchases
+    var lastFuelPrice: Double = 750
+    var fuelPurchasedByUserAtLastFuelPrice: Double = 0
+    var currentFuelPrice: Double = 750
     var pilots: Int = 3
     var flightAttendents: Int = 6
     var maintainanceCrew: Int = 4 // 4 for each plane - fixed amount
@@ -457,7 +459,6 @@ class UserData {
     var amountSpentOnPlanesInTheLastWeek: Double = 0
     var amountSpentOnHubsAccquisitionInTheLastWeek: Double = 0
     var amountOfMoneyMadeFromDepartures: Double = 0
-    var planesAccquired: [Aircraft] = []
     var hubsAcquired: [Airport] = []
     var daysPassedSinceStartOfFinancialWeek: Int = 0
     var cashToPayAsSalaryPerWeek: Int {
@@ -468,6 +469,23 @@ class UserData {
     }
     var xpRequiredForNextXPLevel: Int {
         return levels - (xp % levels)
+    }
+    // For fuel calculations
+    var fuelUsedInDepartingAllJets: Double {
+        let airportDB = AirportDatabase()
+        var totalFuelConsumptionOfAllPlanes: Double = 0
+        var totalDistanceOfPlanesTravelled: Double = 0
+        
+        for plane in planes {
+            totalFuelConsumptionOfAllPlanes += AircraftDatabase.shared.allAircraft.first(where: { $0.id == plane.aircraftID })!.fuelBurnRate
+            if let assignedRoute = plane.assignedRoute {
+                totalDistanceOfPlanesTravelled += Double(airportDB.calculateDistance(from: assignedRoute.originAirport, to: assignedRoute.arrivalAirport))
+            }
+        }
+        
+        let averageFuelConsumptionOfAllPlanes = totalFuelConsumptionOfAllPlanes / Double(planes.count)
+        
+        return averageFuelConsumptionOfAllPlanes * totalDistanceOfPlanesTravelled
     }
     
     init(name: String, airlineName: String, airlineIataCode: String, planes: [FleetItem], xp: Int, xpPoints: Int = 0, levels: Int, airlineReputation: Double, reliabilityIndex: Double, fuelDiscountMultiplier: Double, lastFuelPrice: Double, pilots: Int, flightAttendents: Int, maintainanceCrew: Int, currentlyHoldingFuel: Int, maxFuelHoldable: Int, weeklyPilotSalary: Int, weeklyFlightAttendentSalary: Int, weeklyFlightMaintainanceCrewSalary: Int, pilotHappiness: Double, flightAttendentHappiness: Double, maintainanceCrewHappiness: Double, campaignRunning: Bool, campaignEffectiveness: Double? = nil, deliveryHubs: [Airport], accountBalance: Double) {
@@ -502,9 +520,10 @@ class UserData {
         self.amountSpentOnPlanesInTheLastWeek = 0
         self.amountSpentOnHubsAccquisitionInTheLastWeek = 0
         self.amountOfMoneyMadeFromDepartures = 0
-        self.planesAccquired = []
         self.hubsAcquired = []
         self.daysPassedSinceStartOfFinancialWeek = 0
+        self.fuelPurchasedByUserAtLastFuelPrice = 0
+        self.currentFuelPrice = 750
     }
 }
 
