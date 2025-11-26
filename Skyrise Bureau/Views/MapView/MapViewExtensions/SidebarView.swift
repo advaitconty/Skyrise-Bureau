@@ -36,8 +36,9 @@ extension MapView {
                                 var jetsDepartedSuccessfully: [DepartureDoneSuccessfullyItems] = []
                                 for (index, plane) in userData.planes.enumerated() {
                                     if !plane.isAirborne {
-                                        let attempt = userData.planes[index].departJet($userData)
+                                        var attempt = userData.planes[index].departJet($userData)
                                         if attempt.departedSuccessfully {
+                                            attempt.planeInfo = userData.planes[index]
                                             jetsDepartedSuccessfully.append(attempt)
                                         }
                                     }
@@ -134,7 +135,19 @@ extension MapView {
                                                     Spacer()
                                                 }
                                             }
+                                            if let timeTakenForTheJetToReturn = plane.timeTakenForTheJetToReturn {
+                                                HStack {
+                                                        Text("_\(timeTakenForTheJetToReturn) to reach_")
+                                                            .fontWidth(.condensed)
+                                                            .contentTransition(.numericText(countsDown: true))
+                                                            .id(refreshTimer)
+                                                    Spacer()
+                                                }
+                                            }
                                         }
+                                    }
+                                    .onChange(of: refreshTimer) {
+                                        refreshTimer = true
                                     }
                                     .padding(1)
                                 }
@@ -149,13 +162,13 @@ extension MapView {
                                 Image(systemName: "cart")
                                 Spacer()
                             }
-//                            Button {
-//                                // Settings spawner, to add later
-//                            } label: {
-//                                Spacer()
-//                                Image(systemName: "gear")
-//                                Spacer()
-//                            }
+                            //                            Button {
+                            //                                // Settings spawner, to add later
+                            //                            } label: {
+                            //                                Spacer()
+                            //                                Image(systemName: "gear")
+                            //                                Spacer()
+                            //                            }
                             Button {
                                 openWindow(id: "attributes")
                             } label: {

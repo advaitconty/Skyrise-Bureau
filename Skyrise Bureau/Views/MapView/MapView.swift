@@ -7,6 +7,7 @@
 
 import SwiftUI
 import MapKit
+import Combine
 
 struct MapView: View {
     @Namespace var mapScope
@@ -23,6 +24,7 @@ struct MapView: View {
     @State var showAirportPicker: Bool = false
     @State var userDoneSelectedAirport: Bool = false
     @State var aircraftDatabase: AircraftDatabase = AircraftDatabase()
+    @State var refreshTimer: Bool = true
     @State var temporarilySelectedAirportHolderVariableThingamajik: Airport = Airport(
         name: "Toronto Pearson International Airport",
         city: "Toronto",
@@ -60,6 +62,7 @@ struct MapView: View {
         facilities: AirportFacilities(terminalCapacity: 195000, cargoCapacity: 3800, gatesAvailable: 105, slotEfficiency: 0.90)
     )
     @Environment(\.openWindow) var openWindow
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     var body: some View {
         VStack {
@@ -78,6 +81,9 @@ struct MapView: View {
                     .transition(.move(edge: .top))
                     .padding()
             }
+        }
+        .onReceive(timer) { _ in
+            refreshTimer = false
         }
         .onChange(of: userDoneSelectedAirport) { originalValue, newValue in
             if newValue {

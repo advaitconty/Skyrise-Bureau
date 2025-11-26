@@ -197,6 +197,17 @@ struct Airport: Codable, Identifiable, Hashable, Equatable {
     }
 }
 
+struct PricingConfig: Codable, Hashable {
+    var economy: Double
+    var premiumEconomy: Double
+    var business: Double
+    var first: Double
+    
+    var seatsUsed: Double {
+        return Double(economy) + Double(premiumEconomy) * 1.5 + Double(business) * 2.0 + Double(first) * 4.0
+    }
+}
+
 struct AirportDemand: Codable, Hashable {
     var passengerDemand: Double // relative scale, 0.0–10.0
     var cargoDemand: Double
@@ -266,7 +277,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
             return currentAirportLocation?.clLocationCoordinateItemForLocation ?? CLLocationCoordinate2D(latitude: 0, longitude: 0)
         }
     }
-    var assignedPricing: SeatingConfig? = nil
+    var assignedPricing: PricingConfig? = PricingConfig(economy: 100, premiumEconomy: 150, business: 250, first: 400)
     var passengerSeatsUsed: SeatingConfig? = nil
     var timeTakenForTheJetToReturn: String? {
         if landingTime != nil {
@@ -274,7 +285,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
             formatter.allowedUnits = [.hour, .minute, .second]
             formatter.unitsStyle = .short
             formatter.zeroFormattingBehavior = .dropAll
-            return formatter.string(from: landingTime!, to: Date())!
+            return formatter.string(from: Date(), to: landingTime!)!
         } else {
             return nil
         }
@@ -361,18 +372,20 @@ struct FleetItem: Codable, Identifiable, Equatable {
         
         // Calculate revenue
         let revenue = Double(
-            seatsBooked.economy * pricing.economy +
-            seatsBooked.premiumEconomy * pricing.premiumEconomy +
-            seatsBooked.business * pricing.business +
-            seatsBooked.first * pricing.first
+            Double(seatsBooked.economy) * pricing.economy +
+            Double(seatsBooked.premiumEconomy) * pricing.premiumEconomy +
+            Double(seatsBooked.business) * pricing.business +
+            Double(seatsBooked.first) * pricing.first
         )
         
         // Update flight status
         isAirborne = true
         takeoffTime = Date()
         landingTime = takeoffTime!.adding(hours: Double(distance) / Double(planeSelected.cruiseSpeed))
+        estimatedLandingTime = takeoffTime!.adding(hours: Double(distance) / Double(planeSelected.cruiseSpeed))
         passengerSeatsUsed = seatsBooked
         userDataProvided.wrappedValue.accountBalance += revenue
+        currentAirportLocation = nil
         
         return DepartureDoneSuccessfullyItems(
             departedSuccessfully: true,

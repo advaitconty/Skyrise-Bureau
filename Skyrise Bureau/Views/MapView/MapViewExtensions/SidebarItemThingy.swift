@@ -111,10 +111,14 @@ extension MapView {
                         }
                     }
                 } else if plane.wrappedValue.isAirborne {
-                    HStack {
-                        Text("Arrival in \(plane.wrappedValue.timeTakenForTheJetToReturn!)")
-                            .fontWidth(.condensed)
-                        Spacer()
+                    if let timeTakenForTheJetToReturn = plane.wrappedValue.timeTakenForTheJetToReturn {
+                        HStack {
+                                Text("_\(timeTakenForTheJetToReturn) to reach_")
+                                    .fontWidth(.condensed)
+                                    .contentTransition(.numericText(countsDown: true))
+                                    .id(refreshTimer)
+                            Spacer()
+                        }
                     }
                 } else if plane.wrappedValue.condition <= 0.15 {
                     HStack {
@@ -130,13 +134,20 @@ extension MapView {
                         }
                     }
                 }
+                /// Price for jets
+                if plane.wrappedValue.assignedRoute != nil {
+                    VStack {
+                        littleSmallBoxField(icon: "carseat.right", item: Binding(get: { plane.wrappedValue.assignedPricing!.economy }, set: { plane.wrappedValue.assignedPricing!.economy = $0 }))
+                        littleSmallBoxField(icon: "star", item: Binding(get: { plane.wrappedValue.assignedPricing!.economy }, set: { plane.wrappedValue.assignedPricing!.economy = $0 }))
+                        littleSmallBoxField(icon: "briefcase", item: Binding(get: { plane.wrappedValue.assignedPricing!.economy }, set: { plane.wrappedValue.assignedPricing!.economy = $0 }))
+                        littleSmallBoxField(icon: "crown", item: Binding(get: { plane.wrappedValue.assignedPricing!.economy }, set: { plane.wrappedValue.assignedPricing!.economy = $0 }))
+                    }
+                }
                 HStack {
                     // For future implementations, add the stopover
                 }
             }
-            
             Spacer()
-            
         }
     }
 }
