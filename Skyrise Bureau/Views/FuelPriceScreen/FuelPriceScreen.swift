@@ -113,9 +113,6 @@ struct FuelPriceView: View {
                                 }
                             }
                         }
-                        
-                        /// CONSIDER:
-                        /// adding new fuel capacity?
                     }
                     .padding()
                     .frame(width: reader.size.width / 2)

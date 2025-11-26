@@ -25,31 +25,40 @@ extension FuelPriceView {
                 if let maxItem = lastFewFuelPriceItem.max(by: { a, b in
                     a.fuelPrice < b.fuelPrice
                 }) {
-                    Text("MAX:\n")
+                    (Text("MAX:\n")
                         .font(.caption)
                         .fontWidth(.condensed)
                     +
                     Text("$\(String(format: "%.2f", maxItem.fuelPrice))")
                         .font(.headline)
                         .fontWeight(.regular)
-                        .fontWidth(.expanded)
+                        .fontWidth(.expanded))
+                        .contentTransition(.numericText(countsDown: true))
                 }
                 Spacer()
                 if let minItem = lastFewFuelPriceItem.max(by: { a, b in
                     a.fuelPrice > b.fuelPrice
                 }) {
-                    Text("MIN:\n")
+                    (Text("MIN:\n")
                         .font(.caption)
                         .fontWidth(.condensed)
                     +
                     Text("$\(String(format: "%.2f", minItem.fuelPrice))")
                         .font(.headline)
                         .fontWeight(.regular)
-                        .fontWidth(.expanded)
+                        .fontWidth(.expanded))
+                        .contentTransition(.numericText(countsDown: true))
                 }
                 Spacer()
-                /// TODO: Add volatility
-
+                (Text("VOLATILITY:\n")
+                    .font(.caption)
+                    .fontWidth(.condensed)
+                +
+                 Text("\(volatilityCalculator(userData.lastFewFuelPricesForGraph))%")
+                    .font(.headline)
+                    .fontWeight(.regular)
+                    .fontWidth(.expanded))
+                .contentTransition(.numericText(countsDown: true))
             }
         }
     }
