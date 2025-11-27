@@ -162,13 +162,13 @@ extension MapView {
                                 Image(systemName: "cart")
                                 Spacer()
                             }
-                            //                            Button {
-                            //                                // Settings spawner, to add later
-                            //                            } label: {
-                            //                                Spacer()
-                            //                                Image(systemName: "gear")
-                            //                                Spacer()
-                            //                            }
+                                                        Button {
+                                                            openWindow(id: "fuel")
+                                                        } label: {
+                                                            Spacer()
+                                                            Image(systemName: "fuelpump")
+                                                            Spacer()
+                                                        }
                             Button {
                                 openWindow(id: "attributes")
                             } label: {

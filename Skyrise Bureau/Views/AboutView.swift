@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AboutView: View {
     let preRealease: Bool = true
-    let version: String = "0.9.9 ⍺2"
+    let version: String = "0.9.9-⍺3"
     @Environment(\.openURL) var openURL
     var body: some View {
         VStack {
@@ -20,7 +20,7 @@ struct AboutView: View {
                     .padding()
                 VStack {
                     if preRealease {
-                        Text("Skyrise Bureau")
+                        Text("Skyrise Bureau (⍺)")
                             .font(.largeTitle)
                             .fontWidth(.expanded)
                         +

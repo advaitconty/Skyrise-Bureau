@@ -54,7 +54,7 @@ extension FuelPriceView {
                     .font(.caption)
                     .fontWidth(.condensed)
                 +
-                 Text("\(volatilityCalculator(userData.lastFewFuelPricesForGraph))%")
+                 Text("\(volatilityCalculator(userData.wrappedValue.lastFewFuelPricesForGraph))%")
                     .font(.headline)
                     .fontWeight(.regular)
                     .fontWidth(.expanded))

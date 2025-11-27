@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Charts
+import SwiftData
 
 struct FuelPriceItem: Codable, Identifiable {
     var id: UUID = UUID()
@@ -16,7 +17,40 @@ struct FuelPriceItem: Codable, Identifiable {
 }
 
 struct FuelPriceView: View {
-    @Binding var userData: UserData
+    @Query var actualUserData: [UserData]
+    @Environment(\.modelContext) var modelContext
+    var userData: Binding<UserData> {
+        Binding {
+            actualUserData.first ?? testUserData
+        } set: { value in
+            if let item = actualUserData.first {
+                item.planes = value.planes
+                item.deliveryHubs = value.deliveryHubs
+                item.airlineIataCode = value.airlineIataCode
+                item.airlineName = value.airlineName
+                item.name = value.name
+                item.accountBalance = value.accountBalance
+                item.airlineReputation = value.airlineReputation
+                item.campaignEffectiveness = value.campaignEffectiveness
+                item.campaignRunning = value.campaignRunning
+                item.currentlyHoldingFuel = value.currentlyHoldingFuel
+                item.flightAttendentHappiness = value.flightAttendentHappiness
+                item.flightAttendents = value.flightAttendents
+                item.fuelDiscountMultiplier = value.fuelDiscountMultiplier
+                item.lastFuelPrice = value.lastFuelPrice
+                item.levels = value.levels
+                item.maintainanceCrew = value.maintainanceCrew
+                item.maintainanceCrewHappiness = value.maintainanceCrewHappiness
+                item.maxFuelHoldable = value.maxFuelHoldable
+                item.pilotHappiness = value.pilotHappiness
+                item.pilots = value.pilots
+                item.pilotHappiness = value.pilotHappiness
+                item.xp = value.xp
+                
+                try? modelContext.save()
+            }
+        }
+    }
     @State var lastFewFuelPriceItem: [FuelPriceItem] = []
     @State var amountOfFuelUserWantsToPurchase: Double = 1000.0
     @Environment(\.colorScheme) var colorScheme
@@ -45,7 +79,7 @@ struct FuelPriceView: View {
                             .fontWidth(.condensed)
                             .font(.caption)
                         +
-                         Text("$\(userData.accountBalance.withCommas)")
+                         Text("$\(userData.wrappedValue.accountBalance.withCommas)")
                             .font(.title3)
                             .fontWidth(.expanded))
                             .multilineTextAlignment(.trailing)
@@ -64,7 +98,7 @@ struct FuelPriceView: View {
                                 .font(.callout)
                                 .fontWidth(.condensed)
                             Spacer()
-                            (Text("$\(Int(userData.currentFuelPrice))")
+                            (Text("$\(Int(userData.wrappedValue.currentFuelPrice))")
                                 .font(.title)
                                 .fontWidth(.expanded)
                             +
@@ -84,8 +118,8 @@ struct FuelPriceView: View {
                         
                         Button {
                             withAnimation {
-                                userData.currentlyHoldingFuel = userData.currentlyHoldingFuel + Int(amountOfFuelUserWantsToPurchase)
-                                userData.accountBalance = userData.accountBalance - userData.currentFuelPrice/1000 * amountOfFuelUserWantsToPurchase
+                                userData.wrappedValue.currentlyHoldingFuel = userData.wrappedValue.currentlyHoldingFuel + Int(amountOfFuelUserWantsToPurchase)
+                                userData.wrappedValue.accountBalance = userData.wrappedValue.accountBalance - userData.wrappedValue.currentFuelPrice/1000 * amountOfFuelUserWantsToPurchase
                             }
                             /// CLOSE WINDOW AFTER THIS
                         } label: {
@@ -99,13 +133,13 @@ struct FuelPriceView: View {
                         
                         /// Current fuel capacity
                         VStack {
-                            ProgressView(value: Double(userData.currentlyHoldingFuel)/Double(userData.maxFuelHoldable)) {
+                            ProgressView(value: Double(userData.wrappedValue.currentlyHoldingFuel)/Double(userData.wrappedValue.maxFuelHoldable)) {
                                 HStack {
                                     Text("CURRENT \nFUEL HOLD:\n")
                                         .font(.caption)
                                         .fontWidth(.condensed)
                                     Spacer()
-                                    Text("\(userData.currentlyHoldingFuel.withCommas)kg/\(userData.maxFuelHoldable.withCommas)kg")
+                                    Text("\(userData.wrappedValue.currentlyHoldingFuel.withCommas)kg/\(userData.wrappedValue.maxFuelHoldable.withCommas)kg")
                                         .fontWidth(.expanded)
                                         .multilineTextAlignment(.trailing)
                                         .lineLimit(2, reservesSpace: true)
@@ -124,7 +158,7 @@ struct FuelPriceView: View {
         }
         .padding()
         .onAppear {
-            let item = userData.lastFewFuelPricesForGraph
+            let item = userData.wrappedValue.lastFewFuelPricesForGraph
             lastFewFuelPriceItem = convertFuelPricesToChartItems(item)
         }
         .frame(width: 600, height: 550)
@@ -135,6 +169,6 @@ var testUserDataModifiable = testUserData
 
 struct FuelPriceView_Previews: PreviewProvider {
     static var previews: some View {
-        FuelPriceView(userData: Binding( get: { testUserDataModifiable }, set: { testUserDataModifiable = $0 } ))
+        FuelPriceView()
     }
 }
