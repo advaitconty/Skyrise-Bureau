@@ -263,7 +263,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
             let totalFlightDuration = landing.timeIntervalSince(takeoff)
             let elapsedTime = Date().timeIntervalSince(takeoff)
             let progress = min(max(elapsedTime / totalFlightDuration, 0), 1)
-            
+                
             let startLat = route.originAirport.latitude
             let startLon = route.originAirport.longitude
             let endLat = route.arrivalAirport.latitude
@@ -279,16 +279,26 @@ struct FleetItem: Codable, Identifiable, Equatable {
     }
     var assignedPricing: PricingConfig? = PricingConfig(economy: 100, premiumEconomy: 150, business: 250, first: 400)
     var passengerSeatsUsed: SeatingConfig? = nil
-    var timeTakenForTheJetToReturn: String? {
-        if landingTime != nil {
-            let formatter = DateComponentsFormatter()
-            formatter.allowedUnits = [.hour, .minute, .second]
-            formatter.unitsStyle = .short
-            formatter.zeroFormattingBehavior = .dropAll
-            return formatter.string(from: Date(), to: landingTime!)!
-        } else {
-            return nil
-        }
+    func timeTakenForJetToReturn(_ currentDate: Date) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.unitsStyle = .short
+        formatter.zeroFormattingBehavior = .dropAll
+        return formatter.string(from: currentDate, to: landingTime!)!
+        
+    }
+    
+    func timeTakenForJetToGetOutOfMaintainance(_ currentDate: Date) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.unitsStyle = .short
+        formatter.zeroFormattingBehavior = .dropAll
+        return formatter.string(from: currentDate, to: landingTime!)!
+    }
+    
+    mutating func markJetAsMaintainanceDone() {
+        inMaintainance = false
+        endMaintainanceDate = nil
     }
     
     mutating func departJet(_ userDataProvided: Binding<UserData>) -> DepartureDoneSuccessfullyItems {
@@ -386,7 +396,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
         passengerSeatsUsed = seatsBooked
         userDataProvided.wrappedValue.accountBalance += revenue
         currentAirportLocation = nil
-        
+                
         return DepartureDoneSuccessfullyItems(
             departedSuccessfully: true,
             moneyMade: revenue,
@@ -402,6 +412,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
         let db = AirportDatabase()
         let distanceFlown = db.calculateDistance(from: assignedRoute!.originAirport, to: assignedRoute!.arrivalAirport)
         let degradationRate = 1.0 / Double.random(in: 35000...65000)
+        lastHoursOfPlaneDuringMaintainance = lastHoursOfPlaneDuringMaintainance + Double(hours!)
         condition = max(0.0, 1.0 - Double(kilometersTravelledSinceLastMaintainence) * degradationRate)
         
         isAirborne = false
@@ -409,7 +420,21 @@ struct FleetItem: Codable, Identifiable, Equatable {
         landingTime = nil
         estimatedLandingTime = nil
         
+        currentAirportLocation = assignedRoute!.arrivalAirport
+        assignedRoute = Route(originAirport: assignedRoute! .arrivalAirport, arrivalAirport: assignedRoute!.arrivalAirport)
+        
         userDataProvided.wrappedValue.xp = userDataProvided.wrappedValue.xp + 1
+    }
+    
+    /// Repair starter
+    /// Set a timer
+    mutating func setJetUnderMaintainance(_ userDataProvided: Binding<UserData>) {
+        let currentDate = Date()
+        let selectedPlane = AircraftDatabase.shared.allAircraft.first(where: { $0.id == aircraftID })!
+        condition = 1.0
+        endMaintainanceDate = currentDate.adding(hours: 3.0)
+        userDataProvided.wrappedValue.accountBalance = userDataProvided.wrappedValue.accountBalance - selectedPlane.maintenanceCostPerHour * lastHoursOfPlaneDuringMaintainance
+        lastHoursOfPlaneDuringMaintainance = 0
     }
     
     /// Calculates demand multiplier based on user pricing vs market pricing
@@ -429,6 +454,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
         // Clamp between 0.3 (70% demand loss) and 1.5 (50% demand boost)
         return min(max(demandChange, 0.3), 1.5)
     }
+    
 }
 
 
@@ -470,6 +496,7 @@ class UserData {
     var deliveryHubs: [Airport]
     var accountBalance: Double
     var lastLogin: Date = Date()
+    var lastFuelPriceCalculationDate: Date = Date()
     var amountSpentOnFuelInTheLastWeek: Double = 0
     var amountSpentOnPlanesInTheLastWeek: Double = 0
     var amountSpentOnHubsAccquisitionInTheLastWeek: Double = 0
@@ -531,6 +558,7 @@ class UserData {
         self.deliveryHubs = deliveryHubs
         self.accountBalance = accountBalance
         self.lastLogin = Date()
+        self.lastFuelPriceCalculationDate = Date()
         self.amountSpentOnFuelInTheLastWeek = 0
         self.amountSpentOnPlanesInTheLastWeek = 0
         self.amountSpentOnHubsAccquisitionInTheLastWeek = 0

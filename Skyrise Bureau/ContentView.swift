@@ -38,15 +38,17 @@ struct ContentView: View {
                 item.pilots = value.pilots
                 item.pilotHappiness = value.pilotHappiness
                 item.xp = value.xp
-                
+                print("saving userdata...")
                 try? modelContext.save()
+                print("saved userdata successfully")
             }
         }
     }
     @Environment(\.modelContext) var modelContext
     @Query var userData: [UserData]
     @State var showFinancialsAvailableAlert: Bool = false
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    let planeArrivalTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    let fuelPriceTimer = Timer.publish(every: 7200, on: .main, in: .common).autoconnect() // 2 hours
     var resetUserData: Bool
     var useTestData: DataTypeToUse
     var body: some View {
@@ -111,20 +113,36 @@ struct ContentView: View {
                         showFinancialsAvailableAlert = true
                     }
                     moidifiableUserdata.wrappedValue.lastLogin = todaysDate
+                    
+                    // Recalculate fuel price for the time passed since last open
+                    let hoursSinceLastFuelUpdate = Calendar.current.dateComponents([.hour], from: moidifiableUserdata.wrappedValue.lastFuelPriceCalculationDate, to: todaysDate).hour ?? 0
+                    if hoursSinceLastFuelUpdate >= 2 {
+                        let numberOfUpdates = hoursSinceLastFuelUpdate / 2
+                        for _ in 0..<numberOfUpdates {
+                            calculateNextFuelPrice(userData: moidifiableUserdata)
+                        }
+                    }
+                    moidifiableUserdata.wrappedValue.lastFuelPriceCalculationDate = todaysDate
+                    
                 }
             /// Manages marking the plane as arrived or not at the first possible instant
-                .onReceive(timer) { _ in
+                .onReceive(planeArrivalTimer) { _ in
                     for (index, plane) in moidifiableUserdata.wrappedValue.planes.enumerated() {
                         let currentDate = Date()
                         if plane.isAirborne {
                             if currentDate >= plane.estimatedLandingTime! {
                                 moidifiableUserdata.wrappedValue.planes[index].markJetAsArrived(moidifiableUserdata)
                             }
+                        } else if plane.inMaintainance {
+                            if currentDate >= plane.endMaintainanceDate! {
+                                moidifiableUserdata.wrappedValue.planes[index].markJetAsMaintainanceDone()
+                            }
                         }
                     }
-                    if moidifiableUserdata.wrappedValue.currentlyHoldingFuel != moidifiableUserdata.wrappedValue.maxFuelHoldable {
-                        moidifiableUserdata.wrappedValue.currentlyHoldingFuel = moidifiableUserdata.wrappedValue.maxFuelHoldable
-                    }
+                }
+                .onReceive(fuelPriceTimer) { _ in
+                    calculateNextFuelPrice(userData: moidifiableUserdata)
+                    moidifiableUserdata.wrappedValue.lastFuelPriceCalculationDate = Date()
                 }
         }
     }

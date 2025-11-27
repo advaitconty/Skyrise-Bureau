@@ -12,6 +12,7 @@ import Combine
 struct MapView: View {
     @Namespace var mapScope
     @Namespace var namespace
+    @State var indexOfSelectedPlane: Int = -1
     @State var showMapSelector: Bool = false
     @State var mapType: MapStyle = .standard(elevation: .realistic, pointsOfInterest: .all)
     @AppStorage("mapType") var savedMapType: String = "Satelite"
