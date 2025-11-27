@@ -49,5 +49,8 @@ struct Skyrise_BureauApp: App {
             UserUpgradeView()
         }
         .modelContainer(sharedModelContainer)
+        WindowGroup("KEROX", id: "fuel") {
+            FuelPriceView()
+        }
     }
 }
