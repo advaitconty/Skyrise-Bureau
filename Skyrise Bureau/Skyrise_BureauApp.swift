@@ -73,9 +73,10 @@ struct Skyrise_BureauApp: App {
 
         Window("About Your Airline", id: "attributes") {
             UserUpgradeView()
+//            Text("stupid shit just work")
         }
-        .windowResizability(.contentSize)
         .modelContainer(sharedModelContainer)
+        .windowResizability(.contentSize)
         .commands {
             CommandGroup(replacing: .appInfo) {
                 Button {

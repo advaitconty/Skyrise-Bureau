@@ -7,7 +7,7 @@
 
 import Foundation
 
-let testUserData = UserData(name: "Advait",
+var testUserData = UserData(name: "Advait",
                             airlineName: "IndiGo Atlantic",
                             airlineIataCode: "6E",
                             planes: [

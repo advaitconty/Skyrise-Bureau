@@ -110,9 +110,16 @@ struct ContentView: View {
                         numberOfDeductionsToMakeForSalary = Int(moidifiableUserdata.wrappedValue.daysPassedSinceStartOfFinancialWeek / 7)
                         moidifiableUserdata.wrappedValue.daysPassedSinceStartOfFinancialWeek = moidifiableUserdata.wrappedValue.daysPassedSinceStartOfFinancialWeek % 7
                         moidifiableUserdata.wrappedValue.accountBalance = moidifiableUserdata.wrappedValue.accountBalance - Double(moidifiableUserdata.wrappedValue.cashToPayAsSalaryPerWeek * numberOfDeductionsToMakeForSalary)
-                        showFinancialsAvailableAlert = true
                     }
                     moidifiableUserdata.wrappedValue.lastLogin = todaysDate
+                    if days != 0 {
+                        for _ in 1...days {
+                            moidifiableUserdata.wrappedValue.flightAttendentHappiness -= Double.random(in: 0.01...0.03)
+                            moidifiableUserdata.wrappedValue.pilotHappiness -= Double.random(in: 0.01...0.03)
+                            moidifiableUserdata.wrappedValue.maintainanceCrewHappiness -= Double.random(in: 0.01...0.03)
+                            
+                        }
+                    }
                     
                     // Recalculate fuel price for the time passed since last open
                     let hoursSinceLastFuelUpdate = Calendar.current.dateComponents([.hour], from: moidifiableUserdata.wrappedValue.lastFuelPriceCalculationDate, to: todaysDate).hour ?? 0

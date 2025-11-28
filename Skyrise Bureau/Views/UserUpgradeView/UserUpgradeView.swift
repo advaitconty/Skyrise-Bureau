@@ -13,7 +13,7 @@ struct UserUpgradeView: View {
     @Environment(\.modelContext) var modelContext
     var userData: Binding<UserData> {
         Binding {
-            swiftDataUserData.first ?? testUserData
+            return swiftDataUserData.first ?? testUserData
         } set: { value in
             if let item = swiftDataUserData.first {
                 item.planes = value.planes
@@ -43,6 +43,17 @@ struct UserUpgradeView: View {
             }
         }
     }
+    /// Debug stuff
+    /// Keep in case above binding decides to cause problems again
+    /// stupid bindings
+//    var userData: Binding<UserData> {
+//        Binding {
+//            return testUserData
+//        } set: { value in
+//            testUserData = value
+//        }
+//    }
+
 
     @Environment(\.colorScheme) var colorScheme
     var body: some View {
@@ -74,7 +85,7 @@ struct UserUpgradeView: View {
             }
             ScrollView {
                 /// This is gonna be a v2 feature, will be a non-issue
-//                paycheckView()
+                paycheckView()
                 
                 // MARK: Airline Stats Start
                 HStack {
