@@ -70,6 +70,19 @@ extension WelcomeView {
                         .fill(Color.black.opacity(0.7))
                 )
                 .transition(.scale.combined(with: .opacity))
+                .onTapGesture {
+                    withAnimation {
+                        showEasterEggMessage = false
+                    }
+                }
+                .onAppear {
+                    // Auto-dismiss after 3 seconds
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                        withAnimation {
+                            showEasterEggMessage = false
+                        }
+                    }
+                }
             }
             
             if showBody {
