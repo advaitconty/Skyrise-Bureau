@@ -14,6 +14,23 @@ extension WelcomeView {
                 HStack {
                     Image(systemName: "airplane")
                         .font(.title)
+                        .foregroundColor(easterEggActivated ? .yellow : .primary)
+                        .scaleEffect(easterEggActivated ? 1.3 : 1.0)
+                        .rotationEffect(.degrees(easterEggActivated ? 360 : 0))
+                        .animation(.spring(response: 0.5, dampingFraction: 0.6), value: easterEggActivated)
+                        .onTapGesture {
+                            if !easterEggActivated {
+                                easterEggTapCount += 1
+                                if easterEggTapCount >= 7 {
+                                    withAnimation(.spring(response: 0.6, dampingFraction: 0.5)) {
+                                        easterEggActivated = true
+                                        showEasterEggMessage = true
+                                        // Give the user a starting bonus!
+                                        userDataForAddition.accountBalance += 500_000
+                                    }
+                                }
+                            }
+                        }
                     Text("Welcome to Skyrise Bureau!")
                         .font(.title)
                         .fontWidth(.expanded)
@@ -31,6 +48,30 @@ extension WelcomeView {
                 }
                 .transition(.push(from: .leading))
             }
+            
+            // Easter egg message
+            if showEasterEggMessage {
+                VStack {
+                    Text("✨ Secret Bonus Unlocked! ✨")
+                        .font(.headline)
+                        .fontWidth(.expanded)
+                        .foregroundColor(.yellow)
+                    Text("You found the hidden easter egg!")
+                        .font(.subheadline)
+                        .fontWidth(.condensed)
+                    Text("+$500,000 starting bonus!")
+                        .font(.caption)
+                        .fontWidth(.condensed)
+                        .foregroundColor(.green)
+                }
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.black.opacity(0.7))
+                )
+                .transition(.scale.combined(with: .opacity))
+            }
+            
             if showBody {
                 VStack {
                     Text("Select an airline name to get started!")

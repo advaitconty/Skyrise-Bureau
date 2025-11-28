@@ -55,6 +55,11 @@ struct WelcomeView: View {
     ///If above value is true, modelcontext will be cleared at start
     ///Now controlled from the main App Definition
     @State var closeWindow: Bool = false
+    
+    // Easter egg state
+    @State var easterEggTapCount: Int = 0
+    @State var showEasterEggMessage: Bool = false
+    @State var easterEggActivated: Bool = false
         
     var body: some View {
         VStack {
