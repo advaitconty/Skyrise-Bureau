@@ -18,6 +18,7 @@ extension UserUpgradeView {
             }
             HStack {
                 salaryViewItem()
+                Spacer()
             }
         }
     }

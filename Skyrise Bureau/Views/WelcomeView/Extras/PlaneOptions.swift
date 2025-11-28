@@ -44,9 +44,9 @@ extension WelcomeView {
                 }
             }
             .padding()
+            .frame(width: 350 - 50, height: 300)
             .background(fleetChoice == option ? .blue : (colorScheme == .dark ? Color(red: 18/255, green: 18/255, blue: 18/255) : Color(red: 237/255, green: 237/255, blue: 237/255)))
             .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
-            .frame(width: 350 - 50, height: 300)
             .shadow(color: colorScheme == .dark ? .white.opacity(0.01) : .black.opacity(0.1), radius: 15, x: 0, y: 5)
             .onTapGesture {
                 withAnimation {

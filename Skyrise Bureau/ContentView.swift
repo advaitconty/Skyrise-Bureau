@@ -103,7 +103,7 @@ struct ContentView: View {
                     
                     let todaysDate: Date = Date()
                     let calendar = Calendar.current
-                    guard let days = calendar.dateComponents([.day], from: calendar.startOfDay(for: todaysDate), to: calendar.startOfDay(for: moidifiableUserdata.wrappedValue.lastLogin)).day else { return }
+                    guard let days = calendar.dateComponents([.day], from: calendar.startOfDay(for: moidifiableUserdata.wrappedValue.lastLogin), to: calendar.startOfDay(for: todaysDate) ).day else { return }
                     moidifiableUserdata.wrappedValue.daysPassedSinceStartOfFinancialWeek = days + moidifiableUserdata.wrappedValue.daysPassedSinceStartOfFinancialWeek
                     if moidifiableUserdata.wrappedValue.daysPassedSinceStartOfFinancialWeek >= 7 {
                         let numberOfDeductionsToMakeForSalary: Int
@@ -113,6 +113,7 @@ struct ContentView: View {
                     }
                     moidifiableUserdata.wrappedValue.lastLogin = todaysDate
                     if days != 0 {
+                        print(days)
                         for _ in 1...days {
                             moidifiableUserdata.wrappedValue.flightAttendentHappiness -= Double.random(in: 0.01...0.03)
                             moidifiableUserdata.wrappedValue.pilotHappiness -= Double.random(in: 0.01...0.03)
