@@ -18,7 +18,7 @@ struct MapView: View {
     @AppStorage("mapType") var savedMapType: String = "Satelite"
     @Environment(\.colorScheme) var colorScheme
     @State var showSidebar: Bool = true
-    @State var sidebarWidth: Int = 200
+    @AppStorage("sidebarWidth") var sidebarWidth: Int = 200
     @State var cameraPosition: MapCameraPosition = .automatic
     @Binding var userData: UserData
     @State var selectedPlane: FleetItem? = nil

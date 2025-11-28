@@ -11,6 +11,7 @@ import MapKit
 extension MapView {
     // MARK: Map Controller
     func regularMapView() -> some View {
+        GeometryReader { reader in
         VStack(spacing:0) {
             VStack(spacing: 0) {
                 HStack {
@@ -50,19 +51,31 @@ extension MapView {
                 }
             }
             .padding()
+            Rectangle()
+                .frame(height: 3)
+                .foregroundStyle(.gray.opacity(0.5))
             HStack(spacing: 0) {
                 if showSidebar {
                     sidebarView()
                         .frame(width: CGFloat(sidebarWidth))
-                }
-                // Handle for resizing: (this shit not working rn)
-                Divider()
-                    .opacity(0)
+                    // Handle for resizing: (this shit not working rn)
+                    ZStack {
+                        Rectangle()
+                            .frame(width: 3)
+                            .foregroundStyle(.gray.opacity(0.5))
+                        RoundedRectangle(cornerRadius: 5.0)
+                            .frame(width: 10, height: 20)
+                        HStack {
+                            RoundedRectangle(cornerRadius: 5.0)
+                                .frame(width: 10, height: 20)
+                                .foregroundStyle(.gray.opacity(0.5))
+                        }
+                    }
                     .gesture(DragGesture().onChanged { value in
                         let newWidth = CGFloat(self.sidebarWidth) + value.translation.width
-                        
                         self.sidebarWidth = Int(min(500, max(150, newWidth)))
                     })
+                }
                 
                 ZStack(alignment: .topLeading) {
                     Map(position: $cameraPosition) {
@@ -116,6 +129,7 @@ extension MapView {
                     .clipShape(RoundedRectangle(cornerRadius: 5.0))
                     .padding()
                 }
+                .frame(width: showSidebar ? reader.size.width - CGFloat(sidebarWidth) : reader.size.width)
                 .onAppear {
                     if savedMapType == "Normal" {
                         mapType = .standard(elevation: .realistic, pointsOfInterest: .all)
@@ -124,6 +138,7 @@ extension MapView {
                     }
                 }
             }
+        }
         }
     }
 }
