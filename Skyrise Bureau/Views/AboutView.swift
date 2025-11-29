@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct AboutView: View {
-    let preRealease: Bool = true
-    let version: String = "0.9.9-⍺3"
+    let preRealease: Bool = false
+    let version: String = "1.0"
     @Environment(\.openURL) var openURL
     var body: some View {
         VStack {

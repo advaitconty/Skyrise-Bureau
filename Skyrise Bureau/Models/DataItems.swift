@@ -396,6 +396,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
         passengerSeatsUsed = seatsBooked
         userDataProvided.wrappedValue.accountBalance += revenue
         currentAirportLocation = nil
+        userDataProvided.wrappedValue.currentlyHoldingFuel -= Int(fuelRequired)
                 
         return DepartureDoneSuccessfullyItems(
             departedSuccessfully: true,
