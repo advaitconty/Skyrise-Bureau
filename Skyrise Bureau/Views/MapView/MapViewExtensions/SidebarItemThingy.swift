@@ -62,6 +62,20 @@ extension MapView {
                 }
                 Spacer()
             }
+            if plane.wrappedValue.assignedRoute != nil && !plane.wrappedValue.isAirborne {
+                VStack {
+                    VStack {
+                        editableLittleSmallBoxThingy(icon: "carseat.right", item: plane.assignedPricing.economy, placeholder: "$50")
+                        editableLittleSmallBoxThingy(icon: "star", item: plane.assignedPricing.premiumEconomy, placeholder: "$100")
+                    }
+                    VStack {
+                        editableLittleSmallBoxThingy(icon: "briefcase", item: plane.assignedPricing.business, placeholder: "$150")
+                        editableLittleSmallBoxThingy(icon: "crown", item: plane.assignedPricing.first, placeholder: "$200")
+                    }
+                }
+                .transition(.blurReplace)
+            }
+
             
             VStack {
                 HStack {

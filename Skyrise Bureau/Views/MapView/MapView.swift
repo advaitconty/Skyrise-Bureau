@@ -10,6 +10,7 @@ import MapKit
 import Combine
 
 struct MapView: View {
+    @State var refresh: Bool = false
     @Namespace var mapScope
     @Namespace var namespace
     @State var indexOfSelectedPlane: Int = -1
