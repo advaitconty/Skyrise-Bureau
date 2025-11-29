@@ -41,7 +41,7 @@ struct Skyrise_BureauApp: App {
         }
         .windowResizability(.contentSize)
         .modelContainer(sharedModelContainer)
-
+        
         Window("Skyrise Bureau", id: "main") {
             ContentView(resetUserData: resetUserData, useTestData: useTestData)
         }
@@ -55,7 +55,7 @@ struct Skyrise_BureauApp: App {
                 }
             }
         }
-
+        
         Window("Jet Set Emporium", id: "shop") {
             AirplaneStoreView()
         }
@@ -70,10 +70,10 @@ struct Skyrise_BureauApp: App {
                 }
             }
         }
-
+        
         Window("About Your Airline", id: "attributes") {
             UserUpgradeView()
-//            Text("stupid shit just work")
+            //            Text("stupid shit just work")
         }
         .modelContainer(sharedModelContainer)
         .windowResizability(.contentSize)
@@ -86,7 +86,7 @@ struct Skyrise_BureauApp: App {
                 }
             }
         }
-
+        
         Window("KEROX", id: "fuel") {
             FuelPriceView()
         }
@@ -105,7 +105,6 @@ struct Skyrise_BureauApp: App {
         Window("About Skyrise Bureau", id: "about") {
             AboutView()
         }
-        .windowResizability(.contentSize)
         .windowResizability(.contentSize)
     }
 }
