@@ -21,3 +21,10 @@ _(may or may not be stolen directly from the app store listing-)_
 ![](https://hc-cdn.hel1.your-objectstorage.com/s/v3/41b5abfb743f0d05f08ac9c14001d364dd63491f_frame_4.png)
 
 ![](https://hc-cdn.hel1.your-objectstorage.com/s/v3/2798d1dabfb2d0cb6f37a0b9c496ef6c10e678b6_frame_5.png)
+
+## What's next
+- [ ] Airline reputation
+- [x] Fuel system
+- [x] Maintainance system
+- [ ] Shop optimisations
+- [ ] Better airplane images
