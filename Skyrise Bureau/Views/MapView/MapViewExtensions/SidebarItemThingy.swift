@@ -15,6 +15,7 @@ extension MapView {
                 Button {
                     withAnimation {
                         selectedPlane = nil
+                        indexOfSelectedPlane = -1
                     }
                 } label: {
                     Image(systemName: "chevron.left")
@@ -51,13 +52,13 @@ extension MapView {
                     Text("No assigned route")
                         .fontWidth(.condensed)
                 } else {
-//                    if plane.wrappedValue.assignedRoute!.stopoverAirport == nil {
-//                        Text("Plane flies from \(plane.wrappedValue.assignedRoute!.originAirport.iata) to \(plane.wrappedValue.assignedRoute!.arrivalAirport.iata)")
-//                            .fontWidth(.condensed)
-//                    } else {
-                        Text("Plane flies from \(plane.wrappedValue.assignedRoute!.originAirport.iata) to \(plane.wrappedValue.assignedRoute!.arrivalAirport.iata)")
-                            .fontWidth(.condensed)
-//                    }
+                    //                    if plane.wrappedValue.assignedRoute!.stopoverAirport == nil {
+                    //                        Text("Plane flies from \(plane.wrappedValue.assignedRoute!.originAirport.iata) to \(plane.wrappedValue.assignedRoute!.arrivalAirport.iata)")
+                    //                            .fontWidth(.condensed)
+                    //                    } else {
+                    Text("Plane flies from \(plane.wrappedValue.assignedRoute!.originAirport.iata) to \(plane.wrappedValue.assignedRoute!.arrivalAirport.iata)")
+                        .fontWidth(.condensed)
+                    //                    }
                 }
                 Spacer()
             }
@@ -88,6 +89,8 @@ extension MapView {
                         currentLocationOfPlane = plane.wrappedValue.currentAirportLocation!
                         withAnimation {
                             showAirportPicker = true
+                            selectedPlane = nil
+                            indexOfSelectedPlane = -1
                         }
                     } label: {
                         Text("Arrival")
@@ -125,17 +128,15 @@ extension MapView {
                         }
                     }
                 } else if plane.wrappedValue.isAirborne {
-                    if refresh {
-                        HStack {
-                            Text("Arrival in \(plane.wrappedValue.timeTakenForTheJetToReturn!)")
-                                .fontWidth(.condensed)
-                            Spacer()
-                        }
-                    } else {
-                        HStack {
-                            Text("Arrival in \(plane.wrappedValue.timeTakenForTheJetToReturn!)")
-                                .fontWidth(.condensed)
-                            Spacer()
+                    if plane.wrappedValue.landingTime != nil {
+                        TimelineView(.periodic(from: .now, by: 1.0))  { context in
+                            HStack {
+                                Text("_\(plane.wrappedValue.timeTakenForJetToReturn(context.date)) to reach_")
+                                    .fontWidth(.condensed)
+                                    .contentTransition(.numericText(countsDown: true))
+                                    .id(refreshTimer)
+                                Spacer()
+                            }
                         }
                     }
                 } else if plane.wrappedValue.condition <= 0.15 {
@@ -152,16 +153,52 @@ extension MapView {
                         }
                     }
                 }
+                /// Price for jets
+                if plane.wrappedValue.assignedRoute != nil {
+                    VStack {
+                        littleSmallBoxField(icon: "carseat.right", item: Binding(get: { plane.wrappedValue.assignedPricing!.economy }, set: { plane.wrappedValue.assignedPricing!.economy = $0 }))
+                        littleSmallBoxField(icon: "star", item: Binding(get: { plane.wrappedValue.assignedPricing!.economy }, set: { plane.wrappedValue.assignedPricing!.economy = $0 }))
+                        littleSmallBoxField(icon: "briefcase", item: Binding(get: { plane.wrappedValue.assignedPricing!.economy }, set: { plane.wrappedValue.assignedPricing!.economy = $0 }))
+                        littleSmallBoxField(icon: "crown", item: Binding(get: { plane.wrappedValue.assignedPricing!.economy }, set: { plane.wrappedValue.assignedPricing!.economy = $0 }))
+                    }
+                }
+                
+                /// For the repair mechanics
+                if !plane.wrappedValue.inMaintainance && plane.wrappedValue.condition != 1.0 {
+                    if !plane.wrappedValue.isAirborne {
+                        VStack {
+                            ProgressView(value: plane.wrappedValue.condition) {
+                                HStack {
+                                    Text("Condition: \((selectedPlane!.condition * 100).withCommas)% worn")
+                                        .fontWidth(.condensed)
+                                    Spacer()
+                                    Button {
+                                        plane.wrappedValue.setJetUnderMaintainance($userData)
+                                    } label: {
+                                        Text("Repair")
+                                            .fontWidth(.condensed)
+                                    }
+                                    .disabled(AircraftDatabase.shared.allAircraft.first(where: { $0.id == plane.wrappedValue.aircraftID })!.maintenanceCostPerHour * plane.wrappedValue.lastHoursOfPlaneDuringMaintainance > userData.accountBalance)
+                                }
+                            }
+                        }
+                    }
+                } else if plane.wrappedValue.endMaintainanceDate != nil {
+                    TimelineView(.periodic(from: .now, by: 1.0))  { context in
+                        HStack {
+                            Text("\(plane.wrappedValue.timeTakenForJetToGetOutOfMaintainance(context.date)) to finish maintainace")
+                                .fontWidth(.condensed)
+                                .contentTransition(.numericText(countsDown: true))
+                            Spacer()
+                        }
+                    }
+                }
+                
                 HStack {
                     // For future implementations, add the stopover
                 }
             }
-            
             Spacer()
-                .onReceive(timer) { _ in
-                    refresh.toggle()
-                }
-            
         }
     }
 }

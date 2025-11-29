@@ -33,3 +33,19 @@ extension MapView {
         .clipShape(RoundedRectangle(cornerRadius: 4.0))
     }
 }
+
+extension MapView {
+    // MARK: Little small box textfield
+    func littleSmallBoxField(icon: String, item: Binding<Double>) -> some View {
+        HStack {
+            Image(systemName: icon)
+            TextField(String(item.wrappedValue), value: item, format: .currency(code: "USD"))
+                .fontWidth(.condensed)
+                .textFieldStyle(.roundedBorder)
+                .multilineTextAlignment(.trailing)
+        }
+        .padding(5)
+        .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
+        .clipShape(RoundedRectangle(cornerRadius: 4.0))
+    }
+}

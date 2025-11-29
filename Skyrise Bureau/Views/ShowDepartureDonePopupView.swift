@@ -50,7 +50,7 @@ struct ShowDepartureDonePopupView: View {
                 .fontWidth(.condensed)
         }
         .padding(5)
-        .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
+        .background(colorScheme == .dark ? .black.opacity(0.1) : .black.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 4.0))
     }
 
@@ -89,7 +89,8 @@ struct ShowDepartureDonePopupView: View {
         }
         .padding()
         .frame(maxWidth: 400)
-        .background(Color.white.opacity(0.75))
+        .background(.black.opacity(0.75))
+        .clipShape(RoundedRectangle(cornerRadius: 10.0))
     }
 }
 

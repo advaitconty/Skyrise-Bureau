@@ -43,6 +43,7 @@
     {
       "layers" : [
         {
+          "fill" : "automatic",
           "image-name" : "Frame 1-5.svg",
           "name" : "Plane",
           "position" : {

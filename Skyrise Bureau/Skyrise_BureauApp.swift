@@ -24,6 +24,9 @@ struct Skyrise_BureauApp: App {
     
     /// ENSURE ALL VARIABLES ABOVE ARE SET TO false BEFORE FINAL
     /// BUILD OF APP
+    
+    @Environment(\.openWindow) var openWindow
+    
     var body: some Scene {
         let sharedModelContainer: ModelContainer = {
             let schema = Schema([
@@ -33,21 +36,75 @@ struct Skyrise_BureauApp: App {
             return try! ModelContainer(for: schema, configurations: [config])
         }()
         
-        WindowGroup("Welcome to Skyrise Bureau!", id: "welcome") {
+        Window("Welcome to Skyrise Bureau!", id: "welcome") {
             WelcomeView(debug: resetUserData)
         }
+        .windowResizability(.contentSize)
         .modelContainer(sharedModelContainer)
-        WindowGroup("Skyrise Bureau", id: "main") {
+        
+        Window("Skyrise Bureau", id: "main") {
             ContentView(resetUserData: resetUserData, useTestData: useTestData)
         }
         .modelContainer(sharedModelContainer)
-        WindowGroup("Jet Set Emporium", id: "shop") {
+        .commands {
+            CommandGroup(replacing: .appInfo) {
+                Button {
+                    openWindow(id: "about")
+                } label: {
+                    Text("About Skyrise Bureau")
+                }
+            }
+        }
+        
+        Window("Jet Set Emporium", id: "shop") {
             AirplaneStoreView()
         }
+        .windowResizability(.contentSize)
         .modelContainer(sharedModelContainer)
-        WindowGroup("About Your Airline", id: "attributes") {
+        .commands {
+            CommandGroup(replacing: .appInfo) {
+                Button {
+                    openWindow(id: "about")
+                } label: {
+                    Text("About Skyrise Bureau")
+                }
+            }
+        }
+        
+        Window("About Your Airline", id: "attributes") {
             UserUpgradeView()
+            //            Text("stupid shit just work")
         }
         .modelContainer(sharedModelContainer)
+        .windowResizability(.contentSize)
+        .commands {
+            CommandGroup(replacing: .appInfo) {
+                Button {
+                    openWindow(id: "about")
+                } label: {
+                    Text("About Skyrise Bureau")
+                }
+            }
+        }
+        
+        Window("KEROX", id: "fuel") {
+            FuelPriceView()
+        }
+        .windowResizability(.contentSize)
+        .modelContainer(sharedModelContainer)
+        .commands {
+            CommandGroup(replacing: .appInfo) {
+                Button {
+                    openWindow(id: "about")
+                } label: {
+                    Text("About Skyrise Bureau")
+                }
+            }
+        }
+        
+        Window("About Skyrise Bureau", id: "about") {
+            AboutView()
+        }
+        .windowResizability(.contentSize)
     }
 }

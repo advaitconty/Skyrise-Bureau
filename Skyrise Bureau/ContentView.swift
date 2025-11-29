@@ -38,15 +38,17 @@ struct ContentView: View {
                 item.pilots = value.pilots
                 item.pilotHappiness = value.pilotHappiness
                 item.xp = value.xp
-                
+                print("saving userdata...")
                 try? modelContext.save()
+                print("saved userdata successfully")
             }
         }
     }
     @Environment(\.modelContext) var modelContext
     @Query var userData: [UserData]
     @State var showFinancialsAvailableAlert: Bool = false
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    let planeArrivalTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    let fuelPriceTimer = Timer.publish(every: 7200, on: .main, in: .common).autoconnect() // 2 hours
     var resetUserData: Bool
     var useTestData: DataTypeToUse
     var body: some View {
@@ -101,30 +103,54 @@ struct ContentView: View {
                     
                     let todaysDate: Date = Date()
                     let calendar = Calendar.current
-                    guard let days = calendar.dateComponents([.day], from: calendar.startOfDay(for: todaysDate), to: calendar.startOfDay(for: moidifiableUserdata.wrappedValue.lastLogin)).day else { return }
+                    guard let days = calendar.dateComponents([.day], from: calendar.startOfDay(for: moidifiableUserdata.wrappedValue.lastLogin), to: calendar.startOfDay(for: todaysDate) ).day else { return }
                     moidifiableUserdata.wrappedValue.daysPassedSinceStartOfFinancialWeek = days + moidifiableUserdata.wrappedValue.daysPassedSinceStartOfFinancialWeek
                     if moidifiableUserdata.wrappedValue.daysPassedSinceStartOfFinancialWeek >= 7 {
                         let numberOfDeductionsToMakeForSalary: Int
                         numberOfDeductionsToMakeForSalary = Int(moidifiableUserdata.wrappedValue.daysPassedSinceStartOfFinancialWeek / 7)
                         moidifiableUserdata.wrappedValue.daysPassedSinceStartOfFinancialWeek = moidifiableUserdata.wrappedValue.daysPassedSinceStartOfFinancialWeek % 7
                         moidifiableUserdata.wrappedValue.accountBalance = moidifiableUserdata.wrappedValue.accountBalance - Double(moidifiableUserdata.wrappedValue.cashToPayAsSalaryPerWeek * numberOfDeductionsToMakeForSalary)
-                        showFinancialsAvailableAlert = true
                     }
                     moidifiableUserdata.wrappedValue.lastLogin = todaysDate
+                    if days != 0 {
+                        print(days)
+                        for _ in 1...days {
+                            moidifiableUserdata.wrappedValue.flightAttendentHappiness -= Double.random(in: 0.01...0.03)
+                            moidifiableUserdata.wrappedValue.pilotHappiness -= Double.random(in: 0.01...0.03)
+                            moidifiableUserdata.wrappedValue.maintainanceCrewHappiness -= Double.random(in: 0.01...0.03)
+                            
+                        }
+                    }
+                    
+                    // Recalculate fuel price for the time passed since last open
+                    let hoursSinceLastFuelUpdate = Calendar.current.dateComponents([.hour], from: moidifiableUserdata.wrappedValue.lastFuelPriceCalculationDate, to: todaysDate).hour ?? 0
+                    if hoursSinceLastFuelUpdate >= 2 {
+                        let numberOfUpdates = hoursSinceLastFuelUpdate / 2
+                        for _ in 0..<numberOfUpdates {
+                            calculateNextFuelPrice(userData: moidifiableUserdata)
+                        }
+                    }
+                    moidifiableUserdata.wrappedValue.lastFuelPriceCalculationDate = todaysDate
+                    
                 }
             /// Manages marking the plane as arrived or not at the first possible instant
-                .onReceive(timer) { _ in
+                .onReceive(planeArrivalTimer) { _ in
                     for (index, plane) in moidifiableUserdata.wrappedValue.planes.enumerated() {
                         let currentDate = Date()
                         if plane.isAirborne && plane.estimatedLandingTime != nil {
                             if currentDate >= plane.estimatedLandingTime! {
                                 moidifiableUserdata.wrappedValue.planes[index].markJetAsArrived(moidifiableUserdata)
                             }
+                        } else if plane.inMaintainance {
+                            if currentDate >= plane.endMaintainanceDate! {
+                                moidifiableUserdata.wrappedValue.planes[index].markJetAsMaintainanceDone()
+                            }
                         }
                     }
-                    if moidifiableUserdata.wrappedValue.currentlyHoldingFuel != moidifiableUserdata.wrappedValue.maxFuelHoldable {
-                        moidifiableUserdata.wrappedValue.currentlyHoldingFuel = moidifiableUserdata.wrappedValue.maxFuelHoldable
-                    }
+                }
+                .onReceive(fuelPriceTimer) { _ in
+                    calculateNextFuelPrice(userData: moidifiableUserdata)
+                    moidifiableUserdata.wrappedValue.lastFuelPriceCalculationDate = Date()
                 }
         }
     }

@@ -18,7 +18,7 @@ extension AirplaneStoreView {
                 Spacer()
             }
             HStack {
-                Text("Available Cash: \(userData.accountBalance.withCommas)")
+                Text("Available Cash: $\(userData.accountBalance.withCommas)")
                     .font(.system(size: 14))
                     .fontWidth(.condensed)
                 Spacer()

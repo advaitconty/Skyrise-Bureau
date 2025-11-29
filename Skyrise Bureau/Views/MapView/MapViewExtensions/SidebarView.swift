@@ -36,8 +36,9 @@ extension MapView {
                                 var jetsDepartedSuccessfully: [DepartureDoneSuccessfullyItems] = []
                                 for (index, plane) in userData.planes.enumerated() {
                                     if !plane.isAirborne {
-                                        let attempt = userData.planes[index].departJet($userData)
+                                        var attempt = userData.planes[index].departJet($userData)
                                         if attempt.departedSuccessfully {
+                                            attempt.planeInfo = userData.planes[index]
                                             jetsDepartedSuccessfully.append(attempt)
                                         }
                                     }
@@ -87,6 +88,7 @@ extension MapView {
                                 Button {
                                     withAnimation {
                                         selectedPlane = plane
+                                        indexOfSelectedPlane = userData.planes.firstIndex(where: { $0.id == selectedPlane!.id })!
                                     }
                                 } label: {
                                     VStack {
@@ -136,7 +138,32 @@ extension MapView {
                                                     }
                                                 }
                                             }
+                                            if plane.landingTime != nil {
+                                                TimelineView(.periodic(from: .now, by: 1.0))  { context in
+                                                    HStack {
+                                                        Text("_\(plane.timeTakenForJetToReturn(context.date)) to reach_")
+                                                            .fontWidth(.condensed)
+                                                            .contentTransition(.numericText(countsDown: true))
+                                                            .id(refreshTimer)
+                                                        Spacer()
+                                                    }
+                                                }
+                                            }
+                                            
+                                            if plane.inMaintainance {
+                                                TimelineView(.periodic(from: .now, by: 1.0))  { context in
+                                                    HStack {
+                                                        Text("\(plane.timeTakenForJetToGetOutOfMaintainance(context.date)) to finish maintainace")
+                                                            .fontWidth(.condensed)
+                                                            .contentTransition(.numericText(countsDown: true))
+                                                        Spacer()
+                                                    }
+                                                }
+                                            }
                                         }
+                                    }
+                                    .onChange(of: refreshTimer) {
+                                        refreshTimer = true
                                     }
                                     .padding(1)
                                 }
@@ -151,13 +178,13 @@ extension MapView {
                                 Image(systemName: "cart")
                                 Spacer()
                             }
-//                            Button {
-//                                // Settings spawner, to add later
-//                            } label: {
-//                                Spacer()
-//                                Image(systemName: "gear")
-//                                Spacer()
-//                            }
+                                                        Button {
+                                                            openWindow(id: "fuel")
+                                                        } label: {
+                                                            Spacer()
+                                                            Image(systemName: "fuelpump")
+                                                            Spacer()
+                                                        }
                             Button {
                                 openWindow(id: "attributes")
                             } label: {
@@ -170,7 +197,12 @@ extension MapView {
                 }
                 .transition(.asymmetric(insertion: .slide, removal: .scale))
             } else {
-                sidebarItemView(plane: Binding(get: { return selectedPlane! }, set: { selectedPlane = $0 } ))
+                sidebarItemView(plane: Binding(get: {
+                    return selectedPlane!
+                }, set: {
+                    selectedPlane = $0
+                    userData.planes[indexOfSelectedPlane] = $0
+                } ))
                     .transition(.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .leading)))
             }
         }

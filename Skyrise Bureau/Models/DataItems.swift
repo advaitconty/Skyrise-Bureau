@@ -208,6 +208,17 @@ struct Airport: Codable, Identifiable, Hashable, Equatable {
     }
 }
 
+struct PricingConfig: Codable, Hashable {
+    var economy: Double
+    var premiumEconomy: Double
+    var business: Double
+    var first: Double
+    
+    var seatsUsed: Double {
+        return Double(economy) + Double(premiumEconomy) * 1.5 + Double(business) * 2.0 + Double(first) * 4.0
+    }
+}
+
 struct AirportDemand: Codable, Hashable {
     var passengerDemand: Double // relative scale, 0.0–10.0
     var cargoDemand: Double
@@ -263,7 +274,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
             let totalFlightDuration = landing.timeIntervalSince(takeoff)
             let elapsedTime = Date().timeIntervalSince(takeoff)
             let progress = min(max(elapsedTime / totalFlightDuration, 0), 1)
-            
+                
             let startLat = route.originAirport.latitude
             let startLon = route.originAirport.longitude
             let endLat = route.arrivalAirport.latitude
@@ -277,18 +288,28 @@ struct FleetItem: Codable, Identifiable, Equatable {
             return currentAirportLocation?.clLocationCoordinateItemForLocation ?? CLLocationCoordinate2D(latitude: 0, longitude: 0)
         }
     }
-    var assignedPricing: SeatingConfig = SeatingConfig(economy: 50, premiumEconomy: 100, business: 250, first: 500)
+    var assignedPricing: PricingConfig? = PricingConfig(economy: 100, premiumEconomy: 150, business: 250, first: 400)
     var passengerSeatsUsed: SeatingConfig? = nil
-    var timeTakenForTheJetToReturn: String? {
-        if landingTime != nil {
-            let formatter = DateComponentsFormatter()
-            formatter.allowedUnits = [.hour, .minute, .second]
-            formatter.unitsStyle = .short
-            formatter.zeroFormattingBehavior = .dropAll
-            return formatter.string(from: Date(), to: landingTime!)!
-        } else {
-            return nil
-        }
+    func timeTakenForJetToReturn(_ currentDate: Date) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.unitsStyle = .short
+        formatter.zeroFormattingBehavior = .dropAll
+        return formatter.string(from: currentDate, to: landingTime!)!
+        
+    }
+    
+    func timeTakenForJetToGetOutOfMaintainance(_ currentDate: Date) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.unitsStyle = .short
+        formatter.zeroFormattingBehavior = .dropAll
+        return formatter.string(from: currentDate, to: landingTime!)!
+    }
+    
+    mutating func markJetAsMaintainanceDone() {
+        inMaintainance = false
+        endMaintainanceDate = nil
     }
     
     mutating func departJet(_ userDataProvided: Binding<UserData>) -> DepartureDoneSuccessfullyItems {
@@ -375,19 +396,22 @@ struct FleetItem: Codable, Identifiable, Equatable {
         
         // Calculate revenue
         let revenue = Double(
-            seatsBooked.economy * pricing.economy +
-            seatsBooked.premiumEconomy * pricing.premiumEconomy +
-            seatsBooked.business * pricing.business +
-            seatsBooked.first * pricing.first
+            Double(seatsBooked.economy) * pricing.economy +
+            Double(seatsBooked.premiumEconomy) * pricing.premiumEconomy +
+            Double(seatsBooked.business) * pricing.business +
+            Double(seatsBooked.first) * pricing.first
         )
         
         // Update flight status
         isAirborne = true
         takeoffTime = Date()
         landingTime = takeoffTime!.adding(hours: Double(distance) / Double(planeSelected.cruiseSpeed))
+        estimatedLandingTime = takeoffTime!.adding(hours: Double(distance) / Double(planeSelected.cruiseSpeed))
         passengerSeatsUsed = seatsBooked
         userDataProvided.wrappedValue.accountBalance += revenue
-        
+        currentAirportLocation = nil
+        userDataProvided.wrappedValue.currentlyHoldingFuel -= Int(fuelRequired)
+                
         return DepartureDoneSuccessfullyItems(
             departedSuccessfully: true,
             moneyMade: revenue,
@@ -403,6 +427,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
         let db = AirportDatabase()
         let distanceFlown = db.calculateDistance(from: assignedRoute!.originAirport, to: assignedRoute!.arrivalAirport)
         let degradationRate = 1.0 / Double.random(in: 35000...65000)
+        lastHoursOfPlaneDuringMaintainance = lastHoursOfPlaneDuringMaintainance + Double(hours!)
         condition = max(0.0, 1.0 - Double(kilometersTravelledSinceLastMaintainence) * degradationRate)
         
         isAirborne = false
@@ -410,7 +435,21 @@ struct FleetItem: Codable, Identifiable, Equatable {
         landingTime = nil
         estimatedLandingTime = nil
         
+        currentAirportLocation = assignedRoute!.arrivalAirport
+        assignedRoute = Route(originAirport: assignedRoute! .arrivalAirport, arrivalAirport: assignedRoute!.arrivalAirport)
+        
         userDataProvided.wrappedValue.xp = userDataProvided.wrappedValue.xp + 1
+    }
+    
+    /// Repair starter
+    /// Set a timer
+    mutating func setJetUnderMaintainance(_ userDataProvided: Binding<UserData>) {
+        let currentDate = Date()
+        let selectedPlane = AircraftDatabase.shared.allAircraft.first(where: { $0.id == aircraftID })!
+        condition = 1.0
+        endMaintainanceDate = currentDate.adding(hours: 3.0)
+        userDataProvided.wrappedValue.accountBalance = userDataProvided.wrappedValue.accountBalance - selectedPlane.maintenanceCostPerHour * lastHoursOfPlaneDuringMaintainance
+        lastHoursOfPlaneDuringMaintainance = 0
     }
     
     /// Calculates demand multiplier based on user pricing vs market pricing
@@ -430,7 +469,9 @@ struct FleetItem: Codable, Identifiable, Equatable {
         // Clamp between 0.3 (70% demand loss) and 1.5 (50% demand boost)
         return min(max(demandChange, 0.3), 1.5)
     }
+    
 }
+
 
 /// SwiftData class
 /// name --> CEO name, airlineName --> name of the airline, airlineIataCode --> Airline IATA code, that will be used at the start of all
@@ -448,7 +489,10 @@ class UserData {
     var airlineReputation: Double = 0.6
     var reliabilityIndex: Double = 0.7
     var fuelDiscountMultiplier: Double = 1
-    var lastFuelPrice: Double = 0.75 // Starting at this price, lowest will be 0.45, max will be 1.4, based on how much fuel user purchases
+    var lastFuelPrice: Double = 750
+    var fuelPurchasedByUserAtLastFuelPrice: Double = 0
+    var currentFuelPrice: Double = 750
+    var lastFewFuelPricesForGraph: [Double] = [1100, 2100, 300, 1700, 2600, 900, 1400, 1300, 2700, 750]
     var pilots: Int = 3
     var flightAttendents: Int = 6
     var maintainanceCrew: Int = 4 // 4 for each plane - fixed amount
@@ -467,11 +511,11 @@ class UserData {
     var deliveryHubs: [Airport]
     var accountBalance: Double
     var lastLogin: Date = Date()
+    var lastFuelPriceCalculationDate: Date = Date()
     var amountSpentOnFuelInTheLastWeek: Double = 0
     var amountSpentOnPlanesInTheLastWeek: Double = 0
     var amountSpentOnHubsAccquisitionInTheLastWeek: Double = 0
     var amountOfMoneyMadeFromDepartures: Double = 0
-    var planesAccquired: [Aircraft] = []
     var hubsAcquired: [Airport] = []
     var daysPassedSinceStartOfFinancialWeek: Int = 0
     var cashToPayAsSalaryPerWeek: Int {
@@ -482,6 +526,23 @@ class UserData {
     }
     var xpRequiredForNextXPLevel: Int {
         return levels - (xp % levels)
+    }
+    // For fuel calculations
+    var fuelUsedInDepartingAllJets: Double {
+        let airportDB = AirportDatabase()
+        var totalFuelConsumptionOfAllPlanes: Double = 0
+        var totalDistanceOfPlanesTravelled: Double = 0
+        
+        for plane in planes {
+            totalFuelConsumptionOfAllPlanes += AircraftDatabase.shared.allAircraft.first(where: { $0.id == plane.aircraftID })!.fuelBurnRate
+            if let assignedRoute = plane.assignedRoute {
+                totalDistanceOfPlanesTravelled += Double(airportDB.calculateDistance(from: assignedRoute.originAirport, to: assignedRoute.arrivalAirport))
+            }
+        }
+        
+        let averageFuelConsumptionOfAllPlanes = totalFuelConsumptionOfAllPlanes / Double(planes.count)
+        
+        return averageFuelConsumptionOfAllPlanes * totalDistanceOfPlanesTravelled
     }
     
     init(name: String, airlineName: String, airlineIataCode: String, planes: [FleetItem], xp: Int, xpPoints: Int = 0, levels: Int, airlineReputation: Double, reliabilityIndex: Double, fuelDiscountMultiplier: Double, lastFuelPrice: Double, pilots: Int, flightAttendents: Int, maintainanceCrew: Int, currentlyHoldingFuel: Int, maxFuelHoldable: Int, weeklyPilotSalary: Int, weeklyFlightAttendentSalary: Int, weeklyFlightMaintainanceCrewSalary: Int, pilotHappiness: Double, flightAttendentHappiness: Double, maintainanceCrewHappiness: Double, campaignRunning: Bool, campaignEffectiveness: Double? = nil, deliveryHubs: [Airport], accountBalance: Double) {
@@ -512,13 +573,16 @@ class UserData {
         self.deliveryHubs = deliveryHubs
         self.accountBalance = accountBalance
         self.lastLogin = Date()
+        self.lastFuelPriceCalculationDate = Date()
         self.amountSpentOnFuelInTheLastWeek = 0
         self.amountSpentOnPlanesInTheLastWeek = 0
         self.amountSpentOnHubsAccquisitionInTheLastWeek = 0
         self.amountOfMoneyMadeFromDepartures = 0
-        self.planesAccquired = []
         self.hubsAcquired = []
         self.daysPassedSinceStartOfFinancialWeek = 0
+        self.fuelPurchasedByUserAtLastFuelPrice = 0
+        self.currentFuelPrice = 750
+        self.lastFewFuelPricesForGraph = [1100, 2100, 300, 1700, 2600, 900, 1400, 1300, 2700, 750]
     }
 }
 

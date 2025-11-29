@@ -13,18 +13,20 @@ struct MapView: View {
     @State var refresh: Bool = false
     @Namespace var mapScope
     @Namespace var namespace
+    @State var indexOfSelectedPlane: Int = -1
     @State var showMapSelector: Bool = false
     @State var mapType: MapStyle = .standard(elevation: .realistic, pointsOfInterest: .all)
     @AppStorage("mapType") var savedMapType: String = "Satelite"
     @Environment(\.colorScheme) var colorScheme
     @State var showSidebar: Bool = true
-    @State var sidebarWidth: Int = 200
+    @AppStorage("sidebarWidth") var sidebarWidth: Int = 200
     @State var cameraPosition: MapCameraPosition = .automatic
     @Binding var userData: UserData
     @State var selectedPlane: FleetItem? = nil
     @State var showAirportPicker: Bool = false
     @State var userDoneSelectedAirport: Bool = false
     @State var aircraftDatabase: AircraftDatabase = AircraftDatabase()
+    @State var refreshTimer: Bool = true
     @State var temporarilySelectedAirportHolderVariableThingamajik: Airport = Airport(
         name: "Toronto Pearson International Airport",
         city: "Toronto",
@@ -77,10 +79,13 @@ struct MapView: View {
                     }
                 }
             } else {
-                AirportPickerView(maxRange: maxRangeOfSelectedJet, startAirport: currentLocationOfPlane, moveOn: $userDoneSelectedAirport, finalAirportSelected: $temporarilySelectedAirportHolderVariableThingamajik)
+                AirportPickerView(airportText: "Please select your port of arrival", maxRange: maxRangeOfSelectedJet, startAirport: currentLocationOfPlane, moveOn: $userDoneSelectedAirport, finalAirportSelected: $temporarilySelectedAirportHolderVariableThingamajik)
                     .transition(.move(edge: .top))
                     .padding()
             }
+        }
+        .onReceive(timer) { _ in
+            refreshTimer = false
         }
         .onChange(of: userDoneSelectedAirport) { originalValue, newValue in
             if newValue {

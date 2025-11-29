@@ -9,11 +9,26 @@ import SwiftUI
 import SwiftData
 
 struct UserUpgradeView: View {
+    @State var showAirportPickerView: Bool = false
+    @State var selectedAirport: Airport = Airport(
+        name: "Soote",
+        city: "Dubai",
+        country: "United Arab Emirates",
+        iata: "DXB",
+        icao: "OMDB",
+        region: .asia,
+        latitude: 25.2532,
+        longitude: 55.3657,
+        runwayLength: 4000,
+        elevation: 19,
+        demand: AirportDemand(passengerDemand: 10.0, cargoDemand: 9.0, businessTravelRatio: 0.78, tourismBoost: 0.88),
+        facilities: AirportFacilities(terminalCapacity: 230000, cargoCapacity: 4800, gatesAvailable: 120, slotEfficiency: 0.94)
+    )
     @Query var swiftDataUserData: [UserData]
     @Environment(\.modelContext) var modelContext
     var userData: Binding<UserData> {
         Binding {
-            swiftDataUserData.first ?? testUserData
+            return swiftDataUserData.first ?? testUserData
         } set: { value in
             if let item = swiftDataUserData.first {
                 item.planes = value.planes
@@ -43,54 +58,75 @@ struct UserUpgradeView: View {
             }
         }
     }
+    /// Debug stuff
+    /// Keep in case above binding decides to cause problems again
+    /// stupid bindings
+//    var userData: Binding<UserData> {
+//        Binding {
+//            return testUserData
+//        } set: { value in
+//            testUserData = value
+//        }
+//    }
+
 
     @Environment(\.colorScheme) var colorScheme
     var body: some View {
         VStack {
-            VStack {
-                HStack {
-                    TextField(userData.wrappedValue.airlineName, text: userData.airlineName)
-                        .textFieldStyle(.plain)
-                        .font(.largeTitle)
-                        .fontWidth(.expanded)
-                    Spacer()
+            if showAirportPickerView {
+                AirportPickerView(airportText: "Please select your new hub airport", maxRange: 0, startAirport: nil, moveOn: $showAirportPickerView, finalAirportSelected: $selectedAirport, disallowedAirports: userData.wrappedValue.deliveryHubs)
+                    .transition(.move(edge: .leading))
+                    .padding()
+            } else {
+                VStack {
+                    VStack {
+                        HStack {
+                            TextField(userData.wrappedValue.airlineName, text: userData.airlineName)
+                                .textFieldStyle(.plain)
+                                .font(.largeTitle)
+                                .fontWidth(.expanded)
+                            Spacer()
+                        }
+                        HStack(spacing: 0) {
+                            Text("As managed by ".uppercased())
+                                .font(.caption2)
+                                .fontWidth(.expanded)
+                            TextField(userData.wrappedValue.name, text: userData.name)
+                                .textFieldStyle(.plain)
+                                .font(.caption2)
+                                .fontWidth(.expanded)
+                            Spacer()
+                        }
+                        HStack {
+                            Text("ACTIVE RESERVES: $\(userData.wrappedValue.accountBalance.withCommas)".uppercased())
+                                .font(.caption2)
+                                .fontWidth(.expanded)
+                            Spacer()
+                        }
+                    }
+                    ScrollView {
+                        /// This is gonna be a v2 feature, will be a non-issue
+                        paycheckView()
+                        
+                        // MARK: Airline Stats Start
+                        HStack {
+                            Text("AIRLINE INFO")
+                                .font(.title2)
+                                .fontWidth(.expanded)
+                            Spacer()
+                        }
+                        // Hub airports
+                        hubAirportsView()
+                        
+                        // Planes
+                        planeStatsViewForUpgrades()
+                    }
                 }
-                HStack(spacing: 0) {
-                    Text("As managed by ".uppercased())
-                        .font(.caption2)
-                        .fontWidth(.expanded)
-                    TextField(userData.wrappedValue.name, text: userData.name)
-                        .textFieldStyle(.plain)
-                        .font(.caption2)
-                        .fontWidth(.expanded)
-                    Spacer()
-                }
-                HStack {
-                    Text("ACTIVE RESERVES: $\(userData.wrappedValue.accountBalance.withCommas)".uppercased())
-                        .font(.caption2)
-                        .fontWidth(.expanded)
-                    Spacer()
-                }
-            }
-            ScrollView {
-                /// This is gonna be a v2 feature, will be a non-issue
-//                paycheckView()
-                
-                // MARK: Airline Stats Start
-                HStack {
-                    Text("AIRLINE INFO")
-                        .font(.title2)
-                        .fontWidth(.expanded)
-                    Spacer()
-                }
-                // Hub airports
-                hubAirportsView()
-                
-                // Planes
-                planeStatsViewForUpgrades()
+                .padding()
+                .transition(.move(edge: .leading))
             }
         }
-        .padding()
+        .frame(width: 600, height: 400)
     }
 }
 

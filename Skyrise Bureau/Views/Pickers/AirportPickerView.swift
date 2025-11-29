@@ -9,7 +9,7 @@ import SwiftUI
 import MapKit
 
 struct AirportPickerView: View {
-    @State var airportText: String = "Please select your starting airport"
+    @State var airportText: String = "Please select your main hub of operations"
     @State var maxRange: Int
     let startAirport: Airport?
     @Binding var moveOn: Bool
@@ -24,6 +24,7 @@ struct AirportPickerView: View {
     @State var cameraPosition: MapCameraPosition = .automatic
     @Binding var finalAirportSelected: Airport
     var airportDatabase: AirportDatabase = AirportDatabase()
+    var disallowedAirports: [Airport] = []
     
     var filteredAirports: [Airport] {
         AirportDatabase.shared.allAirports.filter { airport in
@@ -37,8 +38,7 @@ struct AirportPickerView: View {
             }
             
             let sameAirport = airport == startAirport
-            /// TODO: Figure out why it is not working
-            return rangeMax && matchesSearch && !sameAirport
+            return rangeMax && matchesSearch && !sameAirport && !disallowedAirports.contains(where: { $0.icao == airport.icao })
         }
     }
     
