@@ -62,10 +62,8 @@ struct WelcomeView: View {
                 pageOneView()
             } else if viewPage == 2 {
                 AirportPickerView(maxRange: 0, startAirport: nil, moveOn: Binding(get: {viewPage == 2}, set: { if $0 == true { withAnimation(completionCriteria: .removed) { viewPage = 3 } completion: { print("Completed") } } else { withAnimation { viewPage = 2 } } }), finalAirportSelected: $selectedHomeBase)
-                    .transition(.slide)
             } else if viewPage == 3 {
                 pageThreeView()
-                    .transition(.slide)
                     .onAppear {
                         userDataForAddition.deliveryHubs.append(selectedHomeBase)
                     }
