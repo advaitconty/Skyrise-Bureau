@@ -1,7 +1,6 @@
 # Skyrise Bureau
 An airline manager, inspired by [this](https://airlinemanager.net), built fully in SwiftUI! Also available on the app store _soon_
 
-HEAD
 _P.S.: This is a project made part of Hack Club's [Midnight](https://midnight.hackclub.com), available to all teens from ages 13 to 18!_
 
 ## Quirks and Features
