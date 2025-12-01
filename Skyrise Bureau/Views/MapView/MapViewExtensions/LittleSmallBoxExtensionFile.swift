@@ -19,7 +19,7 @@ extension MapView {
         .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 4.0))
     }
-    func editableLittleSmallBoxThingy(icon: String, item: Binding<Int>, placeholder: String) -> some View {
+    func editableLittleSmallBoxThingy(icon: String, item: Binding<Double>, placeholder: String) -> some View {
         HStack {
             Image(systemName: icon)
             Text("$")

@@ -61,15 +61,15 @@ struct UserUpgradeView: View {
     /// Debug stuff
     /// Keep in case above binding decides to cause problems again
     /// stupid bindings
-//    var userData: Binding<UserData> {
-//        Binding {
-//            return testUserData
-//        } set: { value in
-//            testUserData = value
-//        }
-//    }
-
-
+    //    var userData: Binding<UserData> {
+    //        Binding {
+    //            return testUserData
+    //        } set: { value in
+    //            testUserData = value
+    //        }
+    //    }
+    
+    @State var screen: Int = 2
     @Environment(\.colorScheme) var colorScheme
     var body: some View {
         VStack {
@@ -101,25 +101,67 @@ struct UserUpgradeView: View {
                             Text("ACTIVE RESERVES: $\(userData.wrappedValue.accountBalance.withCommas)".uppercased())
                                 .font(.caption2)
                                 .fontWidth(.expanded)
+                                .contentTransition(.numericText(countsDown: true))
                             Spacer()
                         }
                     }
-                    ScrollView {
-                        /// This is gonna be a v2 feature, will be a non-issue
-                        paycheckView()
-                        
-                        // MARK: Airline Stats Start
-                        HStack {
-                            Text("AIRLINE INFO")
-                                .font(.title2)
+                    HStack {
+                        Button {
+                            withAnimation(.smooth, completionCriteria: .removed) {
+                                screen = 1
+                            } completion: {
+                                print("Screen changed")
+                            }
+                        } label: {
+                            Spacer()
+                            Text("PAYCHECKS AND HUBS")
                                 .fontWidth(.expanded)
+                                .font(.caption)
                             Spacer()
                         }
-                        // Hub airports
-                        hubAirportsView()
+                        .buttonStyle(.borderedProminent)
+                        .tint(screen == 1 ? .accentColor : .gray)
                         
-                        // Planes
-                        planeStatsViewForUpgrades()
+                        
+                        Button {
+                            withAnimation(.snappy(duration: 0.75), completionCriteria: .removed) {
+                                screen = 2
+                            } completion: {
+                                print("Screen changed")
+                            }
+                        } label: {
+                            Spacer()
+                            Text("REPUTATION")
+                                .fontWidth(.expanded)
+                                .font(.caption)
+                            Spacer()
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .tint(screen == 2 ? .accentColor : .gray)
+                    }
+                    if screen == 1 {
+                        ScrollView {
+                            /// This is gonna be a v2 feature, will be a non-issue
+                            paycheckView()
+                            
+                            // MARK: Airline Stats Start
+                            HStack {
+                                Text("AIRLINE INFO")
+                                    .font(.title2)
+                                    .fontWidth(.expanded)
+                                Spacer()
+                            }
+                            // Hub airports
+                            hubAirportsView()
+                            
+                            // Planes
+                            planeStatsViewForUpgrades()
+                        }
+                        
+                            .transition(.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .leading)))
+                    } else {
+                        reputationView()
+                            .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .trailing)))
                     }
                 }
                 .padding()

@@ -135,8 +135,8 @@ struct ContentView: View {
                 }
             /// Manages marking the plane as arrived or not at the first possible instant
                 .onReceive(planeArrivalTimer) { _ in
+                    let currentDate = Date()
                     for (index, plane) in moidifiableUserdata.wrappedValue.planes.enumerated() {
-                        let currentDate = Date()
                         if plane.isAirborne && plane.estimatedLandingTime != nil {
                             if currentDate >= plane.estimatedLandingTime! {
                                 moidifiableUserdata.wrappedValue.planes[index].markJetAsArrived(moidifiableUserdata)
@@ -145,6 +145,11 @@ struct ContentView: View {
                             if currentDate >= plane.endMaintainanceDate! {
                                 moidifiableUserdata.wrappedValue.planes[index].markJetAsMaintainanceDone()
                             }
+                        }
+                    }
+                    if moidifiableUserdata.wrappedValue.campaignRunning {
+                        if moidifiableUserdata.wrappedValue.campaignEnd! <= currentDate {
+                            resetCampaignUponEnd(userData: moidifiableUserdata)
                         }
                     }
                 }

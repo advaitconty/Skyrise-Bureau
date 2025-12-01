@@ -162,18 +162,6 @@ struct SeatingConfig: Codable, Hashable {
         return economy + premiumEconomy + business + first
     }
 }
-
-struct PricingConfig: Codable, Hashable {
-    var economy: Double
-    var premiumEconomy: Double
-    var business: Double
-    var first: Double
-    
-    var seatsUsed: Double {
-        return Double(economy) + Double(premiumEconomy) * 1.5 + Double(business) * 2.0 + Double(first) * 4.0
-    }
-}
-
 // MARK: - Airport Enums and Models
 
 enum Region: String, Codable, CaseIterable {
@@ -288,7 +276,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
             return currentAirportLocation?.clLocationCoordinateItemForLocation ?? CLLocationCoordinate2D(latitude: 0, longitude: 0)
         }
     }
-    var assignedPricing: PricingConfig? = PricingConfig(economy: 100, premiumEconomy: 150, business: 250, first: 400)
+    var assignedPricing: PricingConfig = PricingConfig(economy: 100, premiumEconomy: 150, business: 250, first: 400)
     var passengerSeatsUsed: SeatingConfig? = nil
     func timeTakenForJetToReturn(_ currentDate: Date) -> String {
         let formatter = DateComponentsFormatter()
@@ -304,7 +292,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
         formatter.allowedUnits = [.hour, .minute, .second]
         formatter.unitsStyle = .short
         formatter.zeroFormattingBehavior = .dropAll
-        return formatter.string(from: currentDate, to: landingTime!)!
+        return formatter.string(from: currentDate, to: endMaintainanceDate!)!
     }
     
     mutating func markJetAsMaintainanceDone() {
@@ -448,7 +436,9 @@ struct FleetItem: Codable, Identifiable, Equatable {
         let selectedPlane = AircraftDatabase.shared.allAircraft.first(where: { $0.id == aircraftID })!
         condition = 1.0
         endMaintainanceDate = currentDate.adding(hours: 3.0)
+        print(userDataProvided.wrappedValue.accountBalance)
         userDataProvided.wrappedValue.accountBalance = userDataProvided.wrappedValue.accountBalance - selectedPlane.maintenanceCostPerHour * lastHoursOfPlaneDuringMaintainance
+        print(userDataProvided.wrappedValue.accountBalance)
         lastHoursOfPlaneDuringMaintainance = 0
     }
     
@@ -463,7 +453,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
         let priceRatio = userPrice / marketPrice
         // Formula: demand = priceRatio^(-elasticity)
         // If priceRatio = 0.8 (20% discount) → demand increases
-        // If priceRatio = 1.2 (20% premium) → demand decreases
+        // If priceRatio = 1.2 (20% premium) → demand dec   reases
         let demandChange = pow(priceRatio, -elasticity)
         
         // Clamp between 0.3 (70% demand loss) and 1.5 (50% demand boost)
@@ -518,6 +508,7 @@ class UserData {
     var amountOfMoneyMadeFromDepartures: Double = 0
     var hubsAcquired: [Airport] = []
     var daysPassedSinceStartOfFinancialWeek: Int = 0
+    var campaignEnd: Date? = nil
     var cashToPayAsSalaryPerWeek: Int {
         return weeklyPilotSalary * pilots + weeklyFlightAttendentSalary * flightAttendents + weeklyFlightMaintainanceCrewSalary * maintainanceCrew
     }
@@ -596,6 +587,21 @@ func amountOfNotDepartedPlanes(_ userData: UserData) -> Int {
     }
     
     return numberOfunDepartedPlanes
+}
+
+func timeTakenForCampaignEnd(_ currentDate: Date, userData: UserData) -> String {
+    let formatter = DateComponentsFormatter()
+    formatter.allowedUnits = [.hour, .minute, .second]
+    formatter.unitsStyle = .short
+    formatter.zeroFormattingBehavior = .dropAll
+    return formatter.string(from: currentDate, to: userData.campaignEnd!)!
+}
+
+func resetCampaignUponEnd(userData: Binding<UserData>) {
+    userData.wrappedValue.campaignRunning = false
+    userData.wrappedValue.airlineReputation = 0.6
+    userData.wrappedValue.campaignEnd = nil
+    userData.wrappedValue.campaignEffectiveness = nil
 }
 
 /// Exists for the sole purpose of maps

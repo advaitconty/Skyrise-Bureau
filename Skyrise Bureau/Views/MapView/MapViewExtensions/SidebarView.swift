@@ -169,6 +169,15 @@ extension MapView {
                                 }
                             }
                         }
+                        if userData.campaignRunning {
+                            HStack {
+                                TimelineView(.periodic(from: .now, by: 1)) { context in
+                                    Text("\(userData.campaignEffectiveness!.withCommas)% boost on reputation, ending in \(timeTakenForCampaignEnd(context.date, userData: userData))")
+                                        .fontWidth(.condensed)
+                                }
+                                Spacer()
+                            }
+                        }
                         Spacer()
                         HStack {
                             Button {

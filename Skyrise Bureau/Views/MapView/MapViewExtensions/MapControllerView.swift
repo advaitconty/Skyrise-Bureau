@@ -19,7 +19,7 @@ extension MapView {
                         .font(Font.caption2)
                         .fontWidth(.expanded)
                     +
-                    Text(" - as managed by \(userData.name)")
+                    Text(" - \((userData.airlineReputation * 100).withCommas)% known")
                         .font(Font.caption)
                         .fontWidth(.expanded)
                     Spacer()
