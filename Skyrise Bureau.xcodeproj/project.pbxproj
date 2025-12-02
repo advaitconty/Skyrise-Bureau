@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		F1050A902EC78D82001A25E6 /* Skyrise.icon in Resources */ = {isa = PBXBuildFile; fileRef = F1050A8F2EC78D82001A25E6 /* Skyrise.icon */; };
 		F1B94CB52EBE005C002A260A /* CompactSlider in Frameworks */ = {isa = PBXBuildFile; productRef = F1B94CB42EBE005C002A260A /* CompactSlider */; };
+		F1FF15F22EDEA90500B98198 /* PoweredTouchBar in Frameworks */ = {isa = PBXBuildFile; productRef = F1FF15F12EDEA90500B98198 /* PoweredTouchBar */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F1B94CB52EBE005C002A260A /* CompactSlider in Frameworks */,
+				F1FF15F22EDEA90500B98198 /* PoweredTouchBar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,6 +89,7 @@
 			name = "Skyrise Bureau";
 			packageProductDependencies = (
 				F1B94CB42EBE005C002A260A /* CompactSlider */,
+				F1FF15F12EDEA90500B98198 /* PoweredTouchBar */,
 			);
 			productName = "Skyrise Bureau";
 			productReference = F1BA0D342EBAF3150019BC2A /* Skyrise Bureau.app */;
@@ -118,6 +121,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				F1B94CB32EBE005C002A260A /* XCRemoteSwiftPackageReference "CompactSlider" */,
+				F1FF15F02EDEA90500B98198 /* XCRemoteSwiftPackageReference "PoweredTouchBar" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F1BA0D352EBAF3150019BC2A /* Products */;
@@ -419,6 +423,14 @@
 				minimumVersion = 2.0.9;
 			};
 		};
+		F1FF15F02EDEA90500B98198 /* XCRemoteSwiftPackageReference "PoweredTouchBar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pkasila/PoweredTouchBar.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -426,6 +438,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F1B94CB32EBE005C002A260A /* XCRemoteSwiftPackageReference "CompactSlider" */;
 			productName = CompactSlider;
+		};
+		F1FF15F12EDEA90500B98198 /* PoweredTouchBar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F1FF15F02EDEA90500B98198 /* XCRemoteSwiftPackageReference "PoweredTouchBar" */;
+			productName = PoweredTouchBar;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

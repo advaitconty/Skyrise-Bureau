@@ -84,6 +84,7 @@ struct MapView: View {
                     .padding()
             }
         }
+        .focusable()
         .onReceive(timer) { _ in
             refreshTimer = false
         }
@@ -133,6 +134,9 @@ struct MapView: View {
             withAnimation {
                 showAirportPicker = false
             }
+        }
+        .touchBar {
+            TouchbarController(indexOfSelectedPlane: $indexOfSelectedPlane, selectedPlane: $selectedPlane, showSidebar: $showSidebar, savedMapType: $savedMapType, showTakeoffPopup: $showTakeoffPopup, takeoffItems: $takeoffItems)
         }
     }
 }

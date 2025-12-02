@@ -63,6 +63,8 @@ struct TouchbarController: View {
                     } label: {
                         Image(systemName: "sidebar.left")
                     }
+                    .frame(minHeight: 28)
+                    .buttonStyle(.bordered)
                     Text("Skyrise Bureau")
                         .fontWidth(.expanded)
                 }
@@ -75,13 +77,14 @@ struct TouchbarController: View {
                 } label: {
                     Image(systemName: "chevron.left")
                 }
+                .buttonStyle(.bordered)
                 
                 Text("\(selectedPlane!.aircraftname)")
                     .fontWidth(.expanded)
                 Text("(\(selectedPlane!.registration))")
                     .fontWidth(.condensed)
                 Spacer()
-                if !selectedPlane!.isAirborne {
+                if !selectedPlane!.isAirborne && selectedPlane!.assignedPricing != nil {
                     Button {
                         let departureStatus = moidifiableUserdata.wrappedValue.planes[indexOfSelectedPlane].departJet(moidifiableUserdata)
                         selectedPlane = moidifiableUserdata.wrappedValue.planes[indexOfSelectedPlane]
@@ -105,6 +108,7 @@ struct TouchbarController: View {
                         Text("Depart")
                             .fontWidth(.condensed)
                     }
+                    .buttonStyle(.bordered)
                 } else {
                     Text("Flying to \(selectedPlane!.assignedRoute!.arrivalAirport.iata)")
                         .fontWidth(.condensed)

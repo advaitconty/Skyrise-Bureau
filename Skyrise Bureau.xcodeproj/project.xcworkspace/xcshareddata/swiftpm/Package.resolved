@@ -1,5 +1,5 @@
 {
-  "originHash" : "c20a6caaa781761228ffa6659b9ea42f3aacbd6cdf1a6756363f1bb9a333991d",
+  "originHash" : "8d1790a8c9258024330ab15ff1dcdca26637bc18190df43428fc234513dfb790",
   "pins" : [
     {
       "identity" : "compactslider",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "f07c7a5d03a2d9541aae1b7ebff861b77561ee31",
         "version" : "2.0.9"
+      }
+    },
+    {
+      "identity" : "poweredtouchbar",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pkasila/PoweredTouchBar.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "f259212915c8c4c2035efe93e2c5f9ebcd1af48d"
       }
     }
   ],
