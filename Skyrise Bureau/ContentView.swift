@@ -153,7 +153,7 @@ struct ContentView: View {
                         }
                     }
                     
-                    if moidifiableUserdata.wrappedValue.progressToNextXPLevel >= 1 {
+                    if moidifiableUserdata.wrappedValue.xpRequiredForNextXPLevel == 0 {
                         moidifiableUserdata.wrappedValue.xp = 0
                         moidifiableUserdata.wrappedValue.levels += 1
                         moidifiableUserdata.wrappedValue.xpPoints += 1
