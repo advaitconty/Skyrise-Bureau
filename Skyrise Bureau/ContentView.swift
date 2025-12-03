@@ -152,6 +152,12 @@ struct ContentView: View {
                             resetCampaignUponEnd(userData: moidifiableUserdata)
                         }
                     }
+                    
+                    if moidifiableUserdata.wrappedValue.progressToNextXPLevel >= 1 {
+                        moidifiableUserdata.wrappedValue.xp = 0
+                        moidifiableUserdata.wrappedValue.levels += 1
+                        moidifiableUserdata.wrappedValue.xpPoints += 1
+                    }
                 }
                 .onReceive(fuelPriceTimer) { _ in
                     calculateNextFuelPrice(userData: moidifiableUserdata)
