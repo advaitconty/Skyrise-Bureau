@@ -69,7 +69,7 @@ struct UserUpgradeView: View {
     //        }
     //    }
     
-    @State var screen: Int = 3
+    @State var screen: Int = 1
     @Environment(\.colorScheme) var colorScheme
     var body: some View {
         VStack {
