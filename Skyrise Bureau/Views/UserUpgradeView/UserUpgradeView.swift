@@ -74,7 +74,7 @@ struct UserUpgradeView: View {
     var body: some View {
         VStack {
             if showAirportPickerView {
-                AirportPickerView(airportText: "Please select your new hub airport", maxRange: 0, startAirport: nil, moveOn: $showAirportPickerView, finalAirportSelected: $selectedAirport, disallowedAirports: userData.wrappedValue.deliveryHubs)
+                AirportPickerView(airportText: "Please select your new hub airport", maxRange: 0, startAirport: nil, moveOn: $showAirportPickerView, finalAirportSelected: $selectedAirport, disallowedAirports: userData.wrappedValue.deliveryHubs, userData: userData.wrappedValue)
                     .transition(.move(edge: .leading))
                     .padding()
             } else {

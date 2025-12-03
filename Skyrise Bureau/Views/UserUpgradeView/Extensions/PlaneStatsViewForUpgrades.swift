@@ -29,7 +29,7 @@ extension UserUpgradeView {
                     .fontWidth(.condensed)
                     .multilineTextAlignment(.trailing)
             }
-            Text("\(Int(plane.hoursFlown.wrappedValue).withCommas)h flown - \(plane.isAirborne.wrappedValue ? "currently flying" : plane.currentAirportLocation.wrappedValue.map { "at \($0.iata)" } ?? "unknown location")")
+            Text("\(Int(plane.hoursFlown.wrappedValue).withCommas)h flown - \(plane.isAirborne.wrappedValue ? "currently flying" : plane.currentAirportLocation.wrappedValue.map { "at \($0.reportCorrectCodeForUserData(userData.wrappedValue))" } ?? "unknown location")")
                 .font(.caption)
                 .fontWidth(.condensed)
         }

@@ -191,6 +191,14 @@ struct Airport: Codable, Identifiable, Hashable, Equatable {
     var clLocationCoordinateItemForLocation: CLLocationCoordinate2D {
         return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
+    func reportCorrectCodeForUserData(_ userData: UserData) -> String {
+        switch userData.preferedAirlineCodeType {
+        case .iata:
+            return iata
+        case .icao:
+            return icao
+        }
+    }
     static func == (lhs: Airport, rhs: Airport) -> Bool {
         return lhs.icao == rhs.icao
     }

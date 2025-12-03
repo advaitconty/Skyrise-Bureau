@@ -106,5 +106,10 @@ struct Skyrise_BureauApp: App {
             AboutView()
         }
         .windowResizability(.contentSize)
+        
+        Settings {
+            SettingsView()
+        }
+        .modelContainer(sharedModelContainer)
     }
 }

@@ -12,11 +12,11 @@ import Foundation
 extension MapView {
     // MARK: Airport pin annotation
     func airportAnnotation(_ airport: Airport) -> some MapContent {
-        Annotation(airport.iata, coordinate: airport.clLocationCoordinateItemForLocation) {
+        Annotation(airport.reportCorrectCodeForUserData(userData), coordinate: airport.clLocationCoordinateItemForLocation) {
             ZStack {
                 RoundedRectangle(cornerRadius: 5)
                     .fill(userData.deliveryHubs.contains(airport) ? Color.accentColor :(colorScheme == .dark ? Color.cyan : Color.black))
-                Text(airport.iata)
+                Text(airport.reportCorrectCodeForUserData(userData))
                     .foregroundStyle(colorScheme == .dark ? .black : .cyan)
                     .padding(5)
                     .fontWidth(temporarilySelectedAirportToGetMoreInformationOn == airport ? .expanded : .compressed)

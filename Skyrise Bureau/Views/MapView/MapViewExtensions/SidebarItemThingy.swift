@@ -56,7 +56,7 @@ extension MapView {
                     //                        Text("Plane flies from \(plane.wrappedValue.assignedRoute!.originAirport.iata) to \(plane.wrappedValue.assignedRoute!.arrivalAirport.iata)")
                     //                            .fontWidth(.condensed)
                     //                    } else {
-                    Text("Plane flies from \(plane.wrappedValue.assignedRoute!.originAirport.iata) to \(plane.wrappedValue.assignedRoute!.arrivalAirport.iata)")
+                    Text("Plane flies from \(plane.wrappedValue.assignedRoute!.originAirport.reportCorrectCodeForUserData(userData)) to \(plane.wrappedValue.assignedRoute!.arrivalAirport.reportCorrectCodeForUserData(userData))")
                         .fontWidth(.condensed)
                     //                    }
                 }

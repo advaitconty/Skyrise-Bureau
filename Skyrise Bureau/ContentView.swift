@@ -160,6 +160,10 @@ struct ContentView: View {
                 .onAppear {
                     let notificationsManager = NotificationsManager()
                     notificationsManager.requestPermission()
+                    
+                    /// COMMENT FOR FINAL REALEASE
+                    /// debug stub to remove all notifications
+//                    notificationsManager.removeAll()
                 }
         }
     }

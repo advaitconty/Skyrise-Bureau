@@ -57,8 +57,10 @@ struct TouchbarController: View {
             if indexOfSelectedPlane == -1 && selectedPlane == nil {
                 HStack {
                     Button {
-                        withAnimation {
-                            showSidebar.toggle()
+                        DispatchQueue.main.async {
+                            withAnimation {
+                                showSidebar.toggle()
+                            }
                         }
                     } label: {
                         Image(systemName: "sidebar.left")
@@ -110,7 +112,7 @@ struct TouchbarController: View {
                     }
                     .buttonStyle(.bordered)
                 } else {
-                    Text("Flying to \(selectedPlane!.assignedRoute!.arrivalAirport.iata)")
+                    Text("Flying to \(selectedPlane!.assignedRoute!.arrivalAirport.reportCorrectCodeForUserData(moidifiableUserdata.wrappedValue))")
                         .fontWidth(.condensed)
                 }
             }

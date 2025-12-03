@@ -79,7 +79,7 @@ struct MapView: View {
                     }
                 }
             } else {
-                AirportPickerView(airportText: "Please select your port of arrival", maxRange: maxRangeOfSelectedJet, startAirport: currentLocationOfPlane, moveOn: $userDoneSelectedAirport, finalAirportSelected: $temporarilySelectedAirportHolderVariableThingamajik)
+                AirportPickerView(airportText: "Please select your port of arrival", maxRange: maxRangeOfSelectedJet, startAirport: currentLocationOfPlane, moveOn: $userDoneSelectedAirport, finalAirportSelected: $temporarilySelectedAirportHolderVariableThingamajik, userData: userData)
                     .transition(.move(edge: .top))
                     .padding()
             }

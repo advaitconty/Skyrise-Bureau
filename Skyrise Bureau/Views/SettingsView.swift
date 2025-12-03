@@ -11,6 +11,7 @@ import SwiftData
 struct SettingsView: View {
     @State var showNotificationsLog: Bool = false
     @ObservedObject var notificationsManager = NotificationsManager()
+    @State var notifications: [NotificationItem] = []
     var moidifiableUserdata: Binding<UserData> {
         Binding {
             userData.first ?? testUserData
@@ -143,8 +144,11 @@ struct SettingsView: View {
             /// Notifications stats for nerds
             Group {
                 Button {
-                    withAnimation {
-                        showNotificationsLog.toggle()
+                    Task {
+                        await notificationsManager.fetchPendingNotifications()
+                        withAnimation {
+                            showNotificationsLog.toggle()
+                        }
                     }
                 } label: {
                     HStack {
@@ -158,35 +162,32 @@ struct SettingsView: View {
                 .tint(showNotificationsLog ? .accent : .gray)
                 
                 if showNotificationsLog {
-                    if notificationsManager.returnAllNotificationScheduledForStatsForNerds().count == 0 {
+                    ScrollView {
                         HStack {
                             Text("All scheduled notifications: ".uppercased())
                                 .fontWidth(.expanded)
-                            +
-                            Text("No scheduled notifications")
-                                .fontWidth(.condensed)
                             Spacer()
                         }
-                    } else {
-                        ScrollView {
-                            HStack {
-                                Text("All scheduled notifications: ".uppercased())
+                        ForEach(notificationsManager.notifications, id: \.id) { notification in
+                            Divider()
+                            VStack {
+                                HStack {
+                                Text("\(notification.notificationTitle) - ")
                                     .fontWidth(.expanded)
+                                +
+                                Text("\(notification.notificationBody)")
+                                    .fontWidth(.condensed)
                                 Spacer()
-                            }
-                            ForEach(notificationsManager.returnAllNotificationScheduledForStatsForNerds(), id: \.id) { notification in
-                                Divider()
-                                VStack {
-                                    Text("\(notification.notificationTitle) - ")
-                                        .fontWidth(.expanded)
-                                    +
-                                    Text("\(notification.notificationBody) - ")
+                                }
+                                HStack {
+                                    Text("Scheduled for \(notification.formattedSendTime)")
                                         .fontWidth(.condensed)
-                                    Text("Scheduled for ")
+                                    Spacer()
                                 }
                             }
                         }
                     }
+                    .frame(minHeight: 100)
                 }
             }
         }

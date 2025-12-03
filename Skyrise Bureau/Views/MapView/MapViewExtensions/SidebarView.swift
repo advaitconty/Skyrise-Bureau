@@ -120,7 +120,7 @@ extension MapView {
                                                     if let stopoverAirport = assignedRoute.stopoverAirport {
                                                     } else {
                                                         HStack {
-                                                            Text("_Flying from \(assignedRoute.originAirport.iata) to \(assignedRoute.arrivalAirport.iata)_")
+                                                            Text("_Flying from \(assignedRoute.originAirport.reportCorrectCodeForUserData(userData)) to \(assignedRoute.arrivalAirport.reportCorrectCodeForUserData(userData))_")
                                                                 .fontWidth(.condensed)
                                                             Spacer()
                                                         }
@@ -132,7 +132,7 @@ extension MapView {
                                             if let currentAirportLocation = plane.currentAirportLocation {
                                                 if !plane.isAirborne {
                                                     HStack {
-                                                        Text("_Plane is sitting at \(currentAirportLocation.iata)_")
+                                                        Text("_Plane is sitting at \(currentAirportLocation.reportCorrectCodeForUserData(userData))_")
                                                             .fontWidth(.condensed)
                                                         Spacer()
                                                     }

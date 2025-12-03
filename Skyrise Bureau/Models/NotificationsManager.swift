@@ -14,11 +14,18 @@ struct NotificationItem: Codable {
     var notificationTitle: String
     var notificationBody: String
     var notificationSendTime: Date
+    var formattedSendTime: String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter.string(from: notificationSendTime)
+    }
 }
 
 class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenterDelegate {
     static let shared = NotificationsManager()
     private let center = UNUserNotificationCenter.current()
+    @Published var notifications: [NotificationItem] = []
     
     override init() {
         super.init()
@@ -41,7 +48,7 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
                 content.title = "\(planeInvolved!.aircraftname) is ready to get back in the skies"
                 content.body = "Depart your jet by hopping back on to Skyrise Bureau!"
             case .arrival:
-                content.title = "\(planeInvolved!.aircraftname) (\(planeInvolved!.registration)) has just landed at \(planeInvolved!.assignedRoute!.arrivalAirport)!"
+                content.title = "\(planeInvolved!.aircraftname) (\(planeInvolved!.registration)) has just landed at \(planeInvolved!.assignedRoute!.arrivalAirport.reportCorrectCodeForUserData(userData))!"
                 content.body = "Hop back on and keep it in the skies to maximise profits."
             case .campaignEnd:
                 content.title = "Your marketing campaign has ended!"
@@ -67,24 +74,32 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
         }
     }
     
+    func fetchPendingNotifications() async -> [NotificationItem] {
+        await withCheckedContinuation { continuation in
+            center.getPendingNotificationRequests { requests in
+                let items = requests.map { request -> NotificationItem in
+                    var item = NotificationItem(
+                        notificationTitle: request.content.title,
+                        notificationBody: request.content.body,
+                        notificationSendTime: Date()
+                    )
+                    if let trigger = request.trigger as? UNCalendarNotificationTrigger {
+                        item.notificationSendTime = trigger.nextTriggerDate() ?? Date()
+                    }
+                    return item
+                }
+                DispatchQueue.main.async {
+                    self.notifications = items
+                }
+                continuation.resume(returning: items)
+            }
+        }
+    }
+    
+    /// DEBUG FUNCTIONS
+    /// To remove all existing planned notifications
     func removeAll() {
         center.removeAllDeliveredNotifications()
         center.removeAllPendingNotificationRequests()
-    }
-    
-    func returnAllNotificationScheduledForStatsForNerds() -> [NotificationItem] {
-        var notificationItemsList: [NotificationItem] = []
-        center.getPendingNotificationRequests { requests in
-            for request in requests {
-                var itemToAppend: NotificationItem = NotificationItem(notificationTitle: request.content.title, notificationBody: request.content.body, notificationSendTime: Date())
-                if let trigger = request.trigger as? UNCalendarNotificationTrigger {
-                    itemToAppend.notificationSendTime = trigger.nextTriggerDate() ?? Date()
-                } else if let trigger = request.trigger as? UNTimeIntervalNotificationTrigger {
-                    print("Scheduled in: \(trigger.timeInterval) seconds")
-                }
-                notificationItemsList.append(itemToAppend)
-            }
-        }
-        return notificationItemsList
     }
 }
