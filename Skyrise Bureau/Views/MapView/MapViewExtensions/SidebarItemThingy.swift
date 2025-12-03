@@ -56,7 +56,7 @@ extension MapView {
                     //                        Text("Plane flies from \(plane.wrappedValue.assignedRoute!.originAirport.iata) to \(plane.wrappedValue.assignedRoute!.arrivalAirport.iata)")
                     //                            .fontWidth(.condensed)
                     //                    } else {
-                    Text("Plane flies from \(plane.wrappedValue.assignedRoute!.originAirport.iata) to \(plane.wrappedValue.assignedRoute!.arrivalAirport.iata)")
+                    Text("Plane flies from \(plane.wrappedValue.assignedRoute!.originAirport.reportCorrectCodeForUserData(userData)) to \(plane.wrappedValue.assignedRoute!.arrivalAirport.reportCorrectCodeForUserData(userData))")
                         .fontWidth(.condensed)
                     //                    }
                 }
@@ -156,10 +156,10 @@ extension MapView {
                 /// Price for jets
                 if plane.wrappedValue.assignedRoute != nil {
                     VStack {
-                        littleSmallBoxField(icon: "carseat.right", item: Binding(get: { plane.wrappedValue.assignedPricing!.economy }, set: { plane.wrappedValue.assignedPricing!.economy = $0 }))
-                        littleSmallBoxField(icon: "star", item: Binding(get: { plane.wrappedValue.assignedPricing!.economy }, set: { plane.wrappedValue.assignedPricing!.economy = $0 }))
-                        littleSmallBoxField(icon: "briefcase", item: Binding(get: { plane.wrappedValue.assignedPricing!.economy }, set: { plane.wrappedValue.assignedPricing!.economy = $0 }))
-                        littleSmallBoxField(icon: "crown", item: Binding(get: { plane.wrappedValue.assignedPricing!.economy }, set: { plane.wrappedValue.assignedPricing!.economy = $0 }))
+                        littleSmallBoxField(icon: "carseat.right", item: Binding(get: { plane.wrappedValue.assignedPricing.economy }, set: { plane.wrappedValue.assignedPricing.economy = $0 }))
+                        littleSmallBoxField(icon: "star", item: Binding(get: { plane.wrappedValue.assignedPricing.premiumEconomy }, set: { plane.wrappedValue.assignedPricing.premiumEconomy = $0 }))
+                        littleSmallBoxField(icon: "briefcase", item: Binding(get: { plane.wrappedValue.assignedPricing.business }, set: { plane.wrappedValue.assignedPricing.business = $0 }))
+                        littleSmallBoxField(icon: "crown", item: Binding(get: { plane.wrappedValue.assignedPricing.first }, set: { plane.wrappedValue.assignedPricing.first = $0 }))
                     }
                 }
                 
@@ -174,6 +174,8 @@ extension MapView {
                                     Spacer()
                                     Button {
                                         plane.wrappedValue.setJetUnderMaintainance($userData)
+                                        let notificationsManager = NotificationsManager()
+                                        notificationsManager.schedule(notificationType: .maintainanceEnd, planeInvolved: plane.wrappedValue, date: plane.wrappedValue.endMaintainanceDate!, userData: userData)
                                     } label: {
                                         Text("Repair")
                                             .fontWidth(.condensed)

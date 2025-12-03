@@ -25,6 +25,7 @@ struct AirportPickerView: View {
     @Binding var finalAirportSelected: Airport
     var airportDatabase: AirportDatabase = AirportDatabase()
     var disallowedAirports: [Airport] = []
+    let userData: UserData
     
     var filteredAirports: [Airport] {
         AirportDatabase.shared.allAirports.filter { airport in
@@ -149,7 +150,7 @@ struct AirportPickerView: View {
                             }
                             HStack {
                                 littleSmallBoxThingy(icon: "building.2", item: airport.city)
-                                littleSmallBoxThingy(icon: "airplane", item: "\(airport.iata)/\(airport.icao)")
+                                littleSmallBoxThingy(icon: "airplane", item: "\(airport.reportCorrectCodeForUserData(userData))/\(airport.icao)")
                                 littleSmallBoxThingy(icon: "road.lanes", item: "\(airport.runwayLength)m")
                                 littleSmallBoxThingy(icon: "flag", item: "\(airport.country)")
                             }
@@ -173,7 +174,7 @@ struct AirportPickerView: View {
                                     ZStack {
                                         RoundedRectangle(cornerRadius: 5)
                                             .fill(colorScheme == .dark ? Color.cyan : Color.black)
-                                        Text(airport.iata)
+                                        Text(airport.reportCorrectCodeForUserData(userData))
                                             .font(airport == selectedAirport ? .largeTitle : .body)
                                             .foregroundStyle(colorScheme == .dark ? .black : .cyan)
                                             .padding(5)

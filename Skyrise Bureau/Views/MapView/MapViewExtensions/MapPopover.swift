@@ -22,7 +22,7 @@ extension MapView {
             
             HStack {
                 littleSmallBoxThingy(icon: "building.2", item: airport.city)
-                littleSmallBoxThingy(icon: "airplane", item: "\(airport.iata)/\(airport.icao)")
+                littleSmallBoxThingy(icon: "airplane", item: "\(airport.reportCorrectCodeForUserData(userData))/\(airport.icao)")
                 littleSmallBoxThingy(icon: "road.lanes", item: "\(airport.runwayLength)m")
                 littleSmallBoxThingy(icon: "flag", item: "\(airport.country)")
             }

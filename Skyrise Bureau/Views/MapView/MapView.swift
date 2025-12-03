@@ -79,11 +79,12 @@ struct MapView: View {
                     }
                 }
             } else {
-                AirportPickerView(airportText: "Please select your port of arrival", maxRange: maxRangeOfSelectedJet, startAirport: currentLocationOfPlane, moveOn: $userDoneSelectedAirport, finalAirportSelected: $temporarilySelectedAirportHolderVariableThingamajik)
+                AirportPickerView(airportText: "Please select your port of arrival", maxRange: maxRangeOfSelectedJet, startAirport: currentLocationOfPlane, moveOn: $userDoneSelectedAirport, finalAirportSelected: $temporarilySelectedAirportHolderVariableThingamajik, userData: userData)
                     .transition(.move(edge: .top))
                     .padding()
             }
         }
+        .focusable()
         .onReceive(timer) { _ in
             refreshTimer = false
         }
@@ -133,6 +134,14 @@ struct MapView: View {
             withAnimation {
                 showAirportPicker = false
             }
+        }
+        .touchBar {
+            TouchbarController(indexOfSelectedPlane: $indexOfSelectedPlane, selectedPlane: $selectedPlane, showSidebar: $showSidebar, savedMapType: $savedMapType, showTakeoffPopup: $showTakeoffPopup, takeoffItems: $takeoffItems)
+                .id(showSidebar)
+                .focusable()
+        }
+        .onChange(of: showSidebar) {
+            print(showSidebar)
         }
     }
 }

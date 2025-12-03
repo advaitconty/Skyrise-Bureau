@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AboutView: View {
     let preRealease: Bool = false
-    let version: String = "1.0"
+    let version: String = "1.1"
     @Environment(\.openURL) var openURL
     var body: some View {
         VStack {

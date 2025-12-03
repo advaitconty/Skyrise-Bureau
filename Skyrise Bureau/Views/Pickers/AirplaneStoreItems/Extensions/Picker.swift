@@ -24,7 +24,7 @@ extension AirplaneStoreView {
                                     airportToDeliverPlaneTo = airport
                                 }
                             } label: {
-                                Text("\(countryNameToEmoji(airport.country)) \(airport.iata)")
+                                Text("\(countryNameToEmoji(airport.country)) \(airport.reportCorrectCodeForUserData(userData.wrappedValue))")
                                     .fontWidth(.expanded)
                             }
                             .buttonStyle(.borderedProminent)
@@ -35,7 +35,7 @@ extension AirplaneStoreView {
                                     airportToDeliverPlaneTo = airport
                                 }
                             } label: {
-                                Text("\(countryNameToEmoji(airport.country)) \(airport.iata)")
+                                Text("\(countryNameToEmoji(airport.country)) \(airport.reportCorrectCodeForUserData(userData.wrappedValue))")
                                     .fontWidth(.condensed)
                             }
                             .buttonStyle(.bordered)

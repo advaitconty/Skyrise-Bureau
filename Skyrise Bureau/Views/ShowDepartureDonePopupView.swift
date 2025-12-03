@@ -48,6 +48,7 @@ struct ShowDepartureDonePopupView: View {
             Image(systemName: icon)
             Text(item)
                 .fontWidth(.condensed)
+                .foregroundStyle(.white)
         }
         .padding(5)
         .background(colorScheme == .dark ? .black.opacity(0.1) : .black.opacity(0.1))
@@ -62,6 +63,7 @@ struct ShowDepartureDonePopupView: View {
                     /// TO DO: Research a way that keeps this grammatically correct automatically
                         .font(.title)
                         .fontWidth(.expanded)
+                        .foregroundStyle(.white)
                     Spacer()
                         .onReceive(timer) { _ in
                             count = count + 1
@@ -77,6 +79,7 @@ struct ShowDepartureDonePopupView: View {
                     Text("Successfully served:")
                         .font(.title3)
                         .fontWidth(.expanded)
+                        .foregroundStyle(.white)
                     Spacer()
                 }
                 HStack {

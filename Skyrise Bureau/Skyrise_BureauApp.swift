@@ -20,7 +20,7 @@ struct Skyrise_BureauApp: App {
     let resetUserData: Bool = false
     
     /// For the usage of any test data
-    let useTestData: DataTypeToUse = .endGame
+    let useTestData: DataTypeToUse = .none
     
     /// ENSURE ALL VARIABLES ABOVE ARE SET TO false BEFORE FINAL
     /// BUILD OF APP
@@ -30,9 +30,9 @@ struct Skyrise_BureauApp: App {
     var body: some Scene {
         let sharedModelContainer: ModelContainer = {
             let schema = Schema([
-                UserData.self
+                UserData.self,
             ])
-            let config = ModelConfiguration()
+            let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
             return try! ModelContainer(for: schema, configurations: [config])
         }()
         
@@ -106,5 +106,10 @@ struct Skyrise_BureauApp: App {
             AboutView()
         }
         .windowResizability(.contentSize)
+        
+        Settings {
+            SettingsView()
+        }
+        .modelContainer(sharedModelContainer)
     }
 }

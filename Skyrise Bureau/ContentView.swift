@@ -135,8 +135,8 @@ struct ContentView: View {
                 }
             /// Manages marking the plane as arrived or not at the first possible instant
                 .onReceive(planeArrivalTimer) { _ in
+                    let currentDate = Date()
                     for (index, plane) in moidifiableUserdata.wrappedValue.planes.enumerated() {
-                        let currentDate = Date()
                         if plane.isAirborne && plane.estimatedLandingTime != nil {
                             if currentDate >= plane.estimatedLandingTime! {
                                 moidifiableUserdata.wrappedValue.planes[index].markJetAsArrived(moidifiableUserdata)
@@ -147,10 +147,29 @@ struct ContentView: View {
                             }
                         }
                     }
+                    if moidifiableUserdata.wrappedValue.campaignRunning {
+                        if moidifiableUserdata.wrappedValue.campaignEnd! <= currentDate {
+                            resetCampaignUponEnd(userData: moidifiableUserdata)
+                        }
+                    }
+                    
+                    if moidifiableUserdata.wrappedValue.xpRequiredForNextXPLevel == 0 {
+                        moidifiableUserdata.wrappedValue.xp = 0
+                        moidifiableUserdata.wrappedValue.levels += 1
+                        moidifiableUserdata.wrappedValue.xpPoints += 1
+                    }
                 }
                 .onReceive(fuelPriceTimer) { _ in
                     calculateNextFuelPrice(userData: moidifiableUserdata)
                     moidifiableUserdata.wrappedValue.lastFuelPriceCalculationDate = Date()
+                }
+                .onAppear {
+                    let notificationsManager = NotificationsManager()
+                    notificationsManager.requestPermission()
+                    
+                    /// COMMENT FOR FINAL REALEASE
+                    /// debug stub to remove all notifications
+//                    notificationsManager.removeAll()
                 }
         }
     }

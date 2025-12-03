@@ -162,18 +162,6 @@ struct SeatingConfig: Codable, Hashable {
         return economy + premiumEconomy + business + first
     }
 }
-
-struct PricingConfig: Codable, Hashable {
-    var economy: Double
-    var premiumEconomy: Double
-    var business: Double
-    var first: Double
-    
-    var seatsUsed: Double {
-        return Double(economy) + Double(premiumEconomy) * 1.5 + Double(business) * 2.0 + Double(first) * 4.0
-    }
-}
-
 // MARK: - Airport Enums and Models
 
 enum Region: String, Codable, CaseIterable {
@@ -202,6 +190,14 @@ struct Airport: Codable, Identifiable, Hashable, Equatable {
     var facilities: AirportFacilities
     var clLocationCoordinateItemForLocation: CLLocationCoordinate2D {
         return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
+    func reportCorrectCodeForUserData(_ userData: UserData) -> String {
+        switch userData.preferedAirlineCodeType {
+        case .iata:
+            return iata
+        case .icao:
+            return icao
+        }
     }
     static func == (lhs: Airport, rhs: Airport) -> Bool {
         return lhs.icao == rhs.icao
@@ -288,7 +284,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
             return currentAirportLocation?.clLocationCoordinateItemForLocation ?? CLLocationCoordinate2D(latitude: 0, longitude: 0)
         }
     }
-    var assignedPricing: PricingConfig? = PricingConfig(economy: 100, premiumEconomy: 150, business: 250, first: 400)
+    var assignedPricing: PricingConfig = PricingConfig(economy: 100, premiumEconomy: 150, business: 250, first: 400)
     var passengerSeatsUsed: SeatingConfig? = nil
     func timeTakenForJetToReturn(_ currentDate: Date) -> String {
         let formatter = DateComponentsFormatter()
@@ -304,7 +300,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
         formatter.allowedUnits = [.hour, .minute, .second]
         formatter.unitsStyle = .short
         formatter.zeroFormattingBehavior = .dropAll
-        return formatter.string(from: currentDate, to: landingTime!)!
+        return formatter.string(from: currentDate, to: endMaintainanceDate!)!
     }
     
     mutating func markJetAsMaintainanceDone() {
@@ -411,6 +407,10 @@ struct FleetItem: Codable, Identifiable, Equatable {
         userDataProvided.wrappedValue.accountBalance += revenue
         currentAirportLocation = nil
         userDataProvided.wrappedValue.currentlyHoldingFuel -= Int(fuelRequired)
+        
+        let notificationsManager = NotificationsManager()
+        
+        notificationsManager.schedule(notificationType: .arrival, planeInvolved: self, date: landingTime!, userData: userDataProvided.wrappedValue)
                 
         return DepartureDoneSuccessfullyItems(
             departedSuccessfully: true,
@@ -448,7 +448,9 @@ struct FleetItem: Codable, Identifiable, Equatable {
         let selectedPlane = AircraftDatabase.shared.allAircraft.first(where: { $0.id == aircraftID })!
         condition = 1.0
         endMaintainanceDate = currentDate.adding(hours: 3.0)
+        print(userDataProvided.wrappedValue.accountBalance)
         userDataProvided.wrappedValue.accountBalance = userDataProvided.wrappedValue.accountBalance - selectedPlane.maintenanceCostPerHour * lastHoursOfPlaneDuringMaintainance
+        print(userDataProvided.wrappedValue.accountBalance)
         lastHoursOfPlaneDuringMaintainance = 0
     }
     
@@ -463,7 +465,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
         let priceRatio = userPrice / marketPrice
         // Formula: demand = priceRatio^(-elasticity)
         // If priceRatio = 0.8 (20% discount) → demand increases
-        // If priceRatio = 1.2 (20% premium) → demand decreases
+        // If priceRatio = 1.2 (20% premium) → demand dec   reases
         let demandChange = pow(priceRatio, -elasticity)
         
         // Clamp between 0.3 (70% demand loss) and 1.5 (50% demand boost)
@@ -473,11 +475,24 @@ struct FleetItem: Codable, Identifiable, Equatable {
 }
 
 
+/// new stuff for settings
+/// notifications and airline code
+enum AllowedNotificationTypes: Codable {
+    case arrival, maintainanceEnd, campaignEnd
+}
+
+enum PreferedAirlineCodeType: Codable {
+    case iata, icao
+}
+
 /// SwiftData class
 /// name --> CEO name, airlineName --> name of the airline, airlineIataCode --> Airline IATA code, that will be used at the start of all
 /// flights under that airline, planes [FleetItem] --> Contains a list of the planes
 @Model
 class UserData {
+    /// New for settings
+    var allowedNotificationTypes: [AllowedNotificationTypes] = [AllowedNotificationTypes.arrival, AllowedNotificationTypes.maintainanceEnd, AllowedNotificationTypes.campaignEnd]
+    var preferredAirlineCodeType: String = "iata"
     var name: String
     var airlineName: String
     var airlineIataCode: String
@@ -518,6 +533,15 @@ class UserData {
     var amountOfMoneyMadeFromDepartures: Double = 0
     var hubsAcquired: [Airport] = []
     var daysPassedSinceStartOfFinancialWeek: Int = 0
+    var campaignEnd: Date? = nil
+    var baseReputation: Double = 0.6
+    var preferedAirlineCodeType: PreferedAirlineCodeType {
+        if preferredAirlineCodeType == "iata" {
+            return .iata
+        } else {
+            return .icao
+        }
+    }
     var cashToPayAsSalaryPerWeek: Int {
         return weeklyPilotSalary * pilots + weeklyFlightAttendentSalary * flightAttendents + weeklyFlightMaintainanceCrewSalary * maintainanceCrew
     }
@@ -546,6 +570,8 @@ class UserData {
     }
     
     init(name: String, airlineName: String, airlineIataCode: String, planes: [FleetItem], xp: Int, xpPoints: Int = 0, levels: Int, airlineReputation: Double, reliabilityIndex: Double, fuelDiscountMultiplier: Double, lastFuelPrice: Double, pilots: Int, flightAttendents: Int, maintainanceCrew: Int, currentlyHoldingFuel: Int, maxFuelHoldable: Int, weeklyPilotSalary: Int, weeklyFlightAttendentSalary: Int, weeklyFlightMaintainanceCrewSalary: Int, pilotHappiness: Double, flightAttendentHappiness: Double, maintainanceCrewHappiness: Double, campaignRunning: Bool, campaignEffectiveness: Double? = nil, deliveryHubs: [Airport], accountBalance: Double) {
+        self.preferredAirlineCodeType = "iata"
+        self.allowedNotificationTypes = [AllowedNotificationTypes.arrival, AllowedNotificationTypes.maintainanceEnd, AllowedNotificationTypes.campaignEnd]
         self.name = name
         self.airlineName = airlineName
         self.airlineIataCode = airlineIataCode
@@ -596,6 +622,21 @@ func amountOfNotDepartedPlanes(_ userData: UserData) -> Int {
     }
     
     return numberOfunDepartedPlanes
+}
+
+func timeTakenForCampaignEnd(_ currentDate: Date, userData: UserData) -> String {
+    let formatter = DateComponentsFormatter()
+    formatter.allowedUnits = [.hour, .minute, .second]
+    formatter.unitsStyle = .short
+    formatter.zeroFormattingBehavior = .dropAll
+    return formatter.string(from: currentDate, to: userData.campaignEnd!)!
+}
+
+func resetCampaignUponEnd(userData: Binding<UserData>) {
+    userData.wrappedValue.campaignRunning = false
+    userData.wrappedValue.airlineReputation = userData.wrappedValue.baseReputation
+    userData.wrappedValue.campaignEnd = nil
+    userData.wrappedValue.campaignEffectiveness = nil
 }
 
 /// Exists for the sole purpose of maps
