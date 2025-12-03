@@ -534,6 +534,7 @@ class UserData {
     var hubsAcquired: [Airport] = []
     var daysPassedSinceStartOfFinancialWeek: Int = 0
     var campaignEnd: Date? = nil
+    var baseReputation: Double = 0.6
     var preferedAirlineCodeType: PreferedAirlineCodeType {
         if preferredAirlineCodeType == "iata" {
             return .iata
@@ -633,7 +634,7 @@ func timeTakenForCampaignEnd(_ currentDate: Date, userData: UserData) -> String 
 
 func resetCampaignUponEnd(userData: Binding<UserData>) {
     userData.wrappedValue.campaignRunning = false
-    userData.wrappedValue.airlineReputation = 0.6
+    userData.wrappedValue.airlineReputation = userData.wrappedValue.baseReputation
     userData.wrappedValue.campaignEnd = nil
     userData.wrappedValue.campaignEffectiveness = nil
 }

@@ -69,7 +69,7 @@ struct UserUpgradeView: View {
     //        }
     //    }
     
-    @State var screen: Int = 2
+    @State var screen: Int = 3
     @Environment(\.colorScheme) var colorScheme
     var body: some View {
         VStack {
@@ -79,31 +79,38 @@ struct UserUpgradeView: View {
                     .padding()
             } else {
                 VStack {
-                    VStack {
-                        HStack {
-                            TextField(userData.wrappedValue.airlineName, text: userData.airlineName)
-                                .textFieldStyle(.plain)
-                                .font(.largeTitle)
-                                .fontWidth(.expanded)
-                            Spacer()
+                    HStack {
+                        VStack {
+                            HStack {
+                                TextField(userData.wrappedValue.airlineName, text: userData.airlineName)
+                                    .textFieldStyle(.plain)
+                                    .font(.largeTitle)
+                                    .fontWidth(.expanded)
+                                Spacer()
+                            }
+                            HStack(spacing: 0) {
+                                Text("As managed by ".uppercased())
+                                    .font(.caption2)
+                                    .fontWidth(.expanded)
+                                TextField(userData.wrappedValue.name, text: userData.name)
+                                    .textFieldStyle(.plain)
+                                    .font(.caption2)
+                                    .fontWidth(.expanded)
+                                Spacer()
+                            }
+                            HStack {
+                                Text("ACTIVE RESERVES: $\(userData.wrappedValue.accountBalance.withCommas)".uppercased())
+                                    .font(.caption2)
+                                    .fontWidth(.expanded)
+                                    .contentTransition(.numericText(countsDown: true))
+                                Spacer()
+                            }
                         }
-                        HStack(spacing: 0) {
-                            Text("As managed by ".uppercased())
-                                .font(.caption2)
-                                .fontWidth(.expanded)
-                            TextField(userData.wrappedValue.name, text: userData.name)
-                                .textFieldStyle(.plain)
-                                .font(.caption2)
-                                .fontWidth(.expanded)
-                            Spacer()
-                        }
-                        HStack {
-                            Text("ACTIVE RESERVES: $\(userData.wrappedValue.accountBalance.withCommas)".uppercased())
-                                .font(.caption2)
-                                .fontWidth(.expanded)
-                                .contentTransition(.numericText(countsDown: true))
-                            Spacer()
-                        }
+                        Text("\(userData.wrappedValue.xpPoints)")
+                            .fontWidth(.expanded)
+                            .font(.largeTitle)
+                        Text("AVAILABLE\nXP POINTS")
+                            .fontWidth(.expanded)
                     }
                     HStack {
                         Button {
@@ -114,7 +121,7 @@ struct UserUpgradeView: View {
                             }
                         } label: {
                             Spacer()
-                            Text("PAYCHECKS AND HUBS")
+                            Text("SALARY AND HUBS")
                                 .fontWidth(.expanded)
                                 .font(.caption)
                             Spacer()
@@ -138,6 +145,22 @@ struct UserUpgradeView: View {
                         }
                         .buttonStyle(.borderedProminent)
                         .tint(screen == 2 ? .accentColor : .gray)
+                        
+                        Button {
+                            withAnimation(.snappy(duration: 0.75), completionCriteria: .removed) {
+                                screen = 3
+                            } completion: {
+                                print("Screen changed")
+                            }
+                        } label: {
+                            Spacer()
+                            Text("UPGRADES")
+                                .fontWidth(.expanded)
+                                .font(.caption)
+                            Spacer()
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .tint(screen == 3 ? .accentColor : .gray)
                     }
                     if screen == 1 {
                         ScrollView {
@@ -157,11 +180,13 @@ struct UserUpgradeView: View {
                             // Planes
                             planeStatsViewForUpgrades()
                         }
-                        
-                            .transition(.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .leading)))
-                    } else {
+                        .transition(.asymmetric(insertion: .slide, removal: .opacity))
+                    } else if screen == 2 {
                         reputationView()
-                            .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .trailing)))
+                            .transition(.asymmetric(insertion: .slide, removal: .opacity))
+                    } else if screen == 3 {
+                        upgradeView()
+                            .transition(.asymmetric(insertion: .slide, removal: .opacity))
                     }
                 }
                 .padding()

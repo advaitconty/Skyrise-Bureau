@@ -137,6 +137,11 @@ struct MapView: View {
         }
         .touchBar {
             TouchbarController(indexOfSelectedPlane: $indexOfSelectedPlane, selectedPlane: $selectedPlane, showSidebar: $showSidebar, savedMapType: $savedMapType, showTakeoffPopup: $showTakeoffPopup, takeoffItems: $takeoffItems)
+                .id(showSidebar)
+                .focusable()
+        }
+        .onChange(of: showSidebar) {
+            print(showSidebar)
         }
     }
 }
