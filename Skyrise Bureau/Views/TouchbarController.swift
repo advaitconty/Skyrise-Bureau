@@ -56,62 +56,26 @@ struct TouchbarController: View {
         HStack {
             if indexOfSelectedPlane == -1 && selectedPlane == nil {
                 HStack {
-                    Button {
-                        DispatchQueue.main.async {
-                            withAnimation {
-                                showSidebar.toggle()
-                            }
-                        }
-                    } label: {
-                        Image(systemName: "sidebar.left")
-                    }
-                    .frame(minHeight: 28)
-                    .buttonStyle(.bordered)
                     Text("Skyrise Bureau")
                         .fontWidth(.expanded)
                 }
             } else {
-                Button {
-                    withAnimation {
-                        selectedPlane = nil
-                        indexOfSelectedPlane = -1
-                    }
-                } label: {
-                    Image(systemName: "chevron.left")
-                }
-                .buttonStyle(.bordered)
+//                Button {
+//                    withAnimation {
+//                        selectedPlane = nil
+//                        indexOfSelectedPlane = -1
+//                    }
+//                } label: {
+//                    Image(systemName: "chevron.left")
+//                }
+//                .buttonStyle(.bordered)
                 
                 Text("\(selectedPlane!.aircraftname)")
                     .fontWidth(.expanded)
                 Text("(\(selectedPlane!.registration))")
                     .fontWidth(.condensed)
                 Spacer()
-                if !selectedPlane!.isAirborne && selectedPlane!.assignedPricing != nil {
-                    Button {
-                        let departureStatus = moidifiableUserdata.wrappedValue.planes[indexOfSelectedPlane].departJet(moidifiableUserdata)
-                        selectedPlane = moidifiableUserdata.wrappedValue.planes[indexOfSelectedPlane]
-                        print(departureStatus)
-                        if departureStatus.departedSuccessfully {
-                            takeoffItems = DepartureDoneSuccessfullyItemsToShow(planesTakenOff: [moidifiableUserdata.wrappedValue.planes[indexOfSelectedPlane]],
-                                                                                economyPassenegersServed: departureStatus.seatsUsedInPlane!.economy,
-                                                                                premiumEconomyPassenegersServed: departureStatus.seatsUsedInPlane!.premiumEconomy,
-                                                                                businessPassengersServed: departureStatus.seatsUsedInPlane!.business,
-                                                                                firstClassPassengersServed: departureStatus.seatsUsedInPlane!.first,
-                                                                                maxEconomyPassenegersServed: departureStatus.seatingConfigOfJet!.economy,
-                                                                                maxPremiumEconomyPassenegersServed: departureStatus.seatingConfigOfJet!.premiumEconomy,
-                                                                                maxBusinessPassengersServed: departureStatus.seatingConfigOfJet!.business,
-                                                                                maxFirstClassPassengersServed: departureStatus.seatingConfigOfJet!.first,
-                                                                                moneyMade: departureStatus.moneyMade!)
-                            withAnimation {
-                                showTakeoffPopup = true
-                            }
-                        }
-                    } label: {
-                        Text("Depart")
-                            .fontWidth(.condensed)
-                    }
-                    .buttonStyle(.bordered)
-                } else {
+                if selectedPlane!.isAirborne && selectedPlane!.assignedRoute != nil {
                     Text("Flying to \(selectedPlane!.assignedRoute!.arrivalAirport.reportCorrectCodeForUserData(moidifiableUserdata.wrappedValue))")
                         .fontWidth(.condensed)
                 }
