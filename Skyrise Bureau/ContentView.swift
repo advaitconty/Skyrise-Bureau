@@ -157,6 +157,10 @@ struct ContentView: View {
                     calculateNextFuelPrice(userData: moidifiableUserdata)
                     moidifiableUserdata.wrappedValue.lastFuelPriceCalculationDate = Date()
                 }
+                .onAppear {
+                    let notificationsManager = NotificationsManager()
+                    notificationsManager.requestPermission()
+                }
         }
     }
 }

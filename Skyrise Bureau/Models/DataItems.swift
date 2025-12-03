@@ -399,6 +399,10 @@ struct FleetItem: Codable, Identifiable, Equatable {
         userDataProvided.wrappedValue.accountBalance += revenue
         currentAirportLocation = nil
         userDataProvided.wrappedValue.currentlyHoldingFuel -= Int(fuelRequired)
+        
+        let notificationsManager = NotificationsManager()
+        
+        notificationsManager.schedule(notificationType: .arrival, planeInvolved: self, date: landingTime!, userData: userDataProvided.wrappedValue)
                 
         return DepartureDoneSuccessfullyItems(
             departedSuccessfully: true,
@@ -463,11 +467,24 @@ struct FleetItem: Codable, Identifiable, Equatable {
 }
 
 
+/// new stuff for settings
+/// notifications and airline code
+enum AllowedNotificationTypes: Codable {
+    case arrival, maintainanceEnd, campaignEnd
+}
+
+enum PreferedAirlineCodeType: Codable {
+    case iata, icao
+}
+
 /// SwiftData class
 /// name --> CEO name, airlineName --> name of the airline, airlineIataCode --> Airline IATA code, that will be used at the start of all
 /// flights under that airline, planes [FleetItem] --> Contains a list of the planes
 @Model
 class UserData {
+    /// New for settings
+    var allowedNotificationTypes: [AllowedNotificationTypes] = [AllowedNotificationTypes.arrival, AllowedNotificationTypes.maintainanceEnd, AllowedNotificationTypes.campaignEnd]
+    var preferredAirlineCodeType: String = "iata"
     var name: String
     var airlineName: String
     var airlineIataCode: String
@@ -509,6 +526,13 @@ class UserData {
     var hubsAcquired: [Airport] = []
     var daysPassedSinceStartOfFinancialWeek: Int = 0
     var campaignEnd: Date? = nil
+    var preferedAirlineCodeType: PreferedAirlineCodeType {
+        if preferredAirlineCodeType == "iata" {
+            return .iata
+        } else {
+            return .icao
+        }
+    }
     var cashToPayAsSalaryPerWeek: Int {
         return weeklyPilotSalary * pilots + weeklyFlightAttendentSalary * flightAttendents + weeklyFlightMaintainanceCrewSalary * maintainanceCrew
     }
@@ -537,6 +561,8 @@ class UserData {
     }
     
     init(name: String, airlineName: String, airlineIataCode: String, planes: [FleetItem], xp: Int, xpPoints: Int = 0, levels: Int, airlineReputation: Double, reliabilityIndex: Double, fuelDiscountMultiplier: Double, lastFuelPrice: Double, pilots: Int, flightAttendents: Int, maintainanceCrew: Int, currentlyHoldingFuel: Int, maxFuelHoldable: Int, weeklyPilotSalary: Int, weeklyFlightAttendentSalary: Int, weeklyFlightMaintainanceCrewSalary: Int, pilotHappiness: Double, flightAttendentHappiness: Double, maintainanceCrewHappiness: Double, campaignRunning: Bool, campaignEffectiveness: Double? = nil, deliveryHubs: [Airport], accountBalance: Double) {
+        self.preferredAirlineCodeType = "iata"
+        self.allowedNotificationTypes = [AllowedNotificationTypes.arrival, AllowedNotificationTypes.maintainanceEnd, AllowedNotificationTypes.campaignEnd]
         self.name = name
         self.airlineName = airlineName
         self.airlineIataCode = airlineIataCode

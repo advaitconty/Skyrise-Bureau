@@ -174,6 +174,8 @@ extension MapView {
                                     Spacer()
                                     Button {
                                         plane.wrappedValue.setJetUnderMaintainance($userData)
+                                        let notificationsManager = NotificationsManager()
+                                        notificationsManager.schedule(notificationType: .maintainanceEnd, planeInvolved: plane.wrappedValue, date: plane.wrappedValue.endMaintainanceDate!, userData: userData)
                                     } label: {
                                         Text("Repair")
                                             .fontWidth(.condensed)

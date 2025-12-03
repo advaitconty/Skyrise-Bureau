@@ -30,9 +30,9 @@ struct Skyrise_BureauApp: App {
     var body: some Scene {
         let sharedModelContainer: ModelContainer = {
             let schema = Schema([
-                UserData.self
+                UserData.self,
             ])
-            let config = ModelConfiguration()
+            let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
             return try! ModelContainer(for: schema, configurations: [config])
         }()
         
