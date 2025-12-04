@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "787-2.jpeg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "compression-type" : "lossless"
+  }
+}

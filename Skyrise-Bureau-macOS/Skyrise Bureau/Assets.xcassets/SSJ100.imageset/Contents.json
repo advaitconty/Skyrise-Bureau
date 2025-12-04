@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "1200px-Sukhoi_Superjet_100_(5096752902)_(cropped).jpg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "compression-type" : "lossless"
+  }
+}

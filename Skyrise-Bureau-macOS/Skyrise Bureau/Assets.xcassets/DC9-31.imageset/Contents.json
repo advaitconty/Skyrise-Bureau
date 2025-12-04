@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "McDonnell_Douglas_DC-9-31,_USAir_AN0197452.jpeg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "compression-type" : "lossless"
+  }
+}

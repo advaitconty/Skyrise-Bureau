@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "Airbus_A220-300.jpg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "compression-type" : "lossless"
+  }
+}

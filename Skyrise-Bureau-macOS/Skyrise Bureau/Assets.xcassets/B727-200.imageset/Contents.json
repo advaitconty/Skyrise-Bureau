@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "B-727_Iberia_(cropped).jpg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "compression-type" : "lossless"
+  }
+}

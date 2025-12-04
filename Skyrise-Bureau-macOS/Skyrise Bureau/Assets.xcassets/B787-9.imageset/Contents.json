@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "Boeing_787_N1015B_ANA_Airlines_(27611880663)_(cropped).jpg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "compression-type" : "lossless"
+  }
+}
