@@ -88,3 +88,7 @@ struct AirplaneStoreView: View {
         }
     }
 }
+
+#Preview {
+    AirplaneStoreView()
+}

@@ -33,7 +33,11 @@ struct Skyrise_BureauApp: App {
                 UserData.self,
             ])
             let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-            return try! ModelContainer(for: schema, configurations: [config])
+            do {
+                return try! ModelContainer(for: schema, configurations: [config])
+            } catch {
+                print(error)
+            }
         }()
         
         Window("Welcome to Skyrise Bureau!", id: "welcome") {
