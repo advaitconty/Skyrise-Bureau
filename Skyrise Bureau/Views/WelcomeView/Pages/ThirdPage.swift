@@ -72,7 +72,11 @@ extension WelcomeView {
                             userDataForAddition.maintainanceCrew = userDataForAddition.planes.count * 3
                             
                             modelContext.insert(userDataForAddition)
-                            try? modelContext.save()
+                            do {
+                                try modelContext.save()
+                            } catch {
+                                print("Error saving user data in setup: \(error.localizedDescription)")
+                            }
                             openWindow(id: "main")
                             closeWindow = true
                         } label: {

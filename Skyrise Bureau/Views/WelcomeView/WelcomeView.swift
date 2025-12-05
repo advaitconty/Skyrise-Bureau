@@ -77,11 +77,19 @@ struct WelcomeView: View {
                     print(item)
                     modelContext.delete(item)
                 }
-                try? modelContext.save()
+                do {
+                    try modelContext.save()
+                } catch {
+                    print("Error clearing debug data: \(error.localizedDescription)")
+                }
             } else {
                 if originalUserData.count >= 1 {
                     modelContext.insert(userDataForAddition)
-                    try? modelContext.save()
+                    do {
+                        try modelContext.save()
+                    } catch {
+                        print("Error saving initial user data: \(error.localizedDescription)")
+                    }
                     openWindow(id: "main")
                     closeWindow = true
                 }

@@ -27,14 +27,19 @@ struct Skyrise_BureauApp: App {
     
     @Environment(\.openWindow) var openWindow
     
+    var sharedModelContainer: ModelContainer {
+        let schema = Schema([
+            UserData.self,
+        ])
+        let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        do {
+            return try ModelContainer(for: schema, configurations: [config])
+        } catch {
+            fatalError("Failed to create ModelContainer: \(error.localizedDescription)")
+        }
+    }
+    
     var body: some Scene {
-        let sharedModelContainer: ModelContainer = {
-            let schema = Schema([
-                UserData.self,
-            ])
-            let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-            return try! ModelContainer(for: schema, configurations: [config])
-        }()
         
         Window("Welcome to Skyrise Bureau!", id: "welcome") {
             WelcomeView(debug: resetUserData)

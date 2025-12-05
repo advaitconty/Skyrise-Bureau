@@ -54,7 +54,14 @@ struct UserUpgradeView: View {
                 item.pilotHappiness = value.pilotHappiness
                 item.xp = value.xp
                 
-                try? modelContext.save()
+                // Ensure save happens on main actor
+                Task { @MainActor in
+                    do {
+                        try modelContext.save()
+                    } catch {
+                        print("Error saving userdata: \(error.localizedDescription)")
+                    }
+                }
             }
         }
     }
