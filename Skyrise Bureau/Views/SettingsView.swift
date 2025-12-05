@@ -41,16 +41,12 @@ struct SettingsView: View {
                 item.pilots = value.pilots
                 item.pilotHappiness = value.pilotHappiness
                 item.xp = value.xp
-                
-                // Ensure save happens on main actor
-                Task { @MainActor in
-                    do {
-                        print("saving userdata...")
-                        try modelContext.save()
-                        print("saved userdata successfully")
-                    } catch {
-                        print("Error saving userdata: \(error.localizedDescription)")
-                    }
+                print("saving userdata...")
+                do {
+                    try modelContext.save()
+                    print("saved userdata successfully")
+                } catch {
+                    print("Error saving userdata: \(error.localizedDescription)")
                 }
             }
         }
