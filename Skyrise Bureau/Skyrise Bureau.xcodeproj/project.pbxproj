@@ -7,16 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F1C816B02EE2DF8A004B2019 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1C816AE2EE2DF87004B2019 /* MapKit.framework */; };
 		F1E07FC72EE16E6600440249 /* CompactSlider in Frameworks */ = {isa = PBXBuildFile; productRef = F1E07FC62EE16E6600440249 /* CompactSlider */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F1C816AE2EE2DF87004B2019 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		F1E07F322EE16AB000440249 /* Skyrise Bureau.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Skyrise Bureau.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		F1C816AC2EE2DF2D004B2019 /* Exceptions for "Skyrise Bureau" folder in "Skyrise Bureau" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Skyrise-Bureau-Info.plist",
+			);
+			target = F1E07F312EE16AB000440249 /* Skyrise Bureau */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		F1E07F342EE16AB000440249 /* Skyrise Bureau */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F1C816AC2EE2DF2D004B2019 /* Exceptions for "Skyrise Bureau" folder in "Skyrise Bureau" target */,
+			);
 			path = "Skyrise Bureau";
 			sourceTree = "<group>";
 		};
@@ -27,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F1C816B02EE2DF8A004B2019 /* MapKit.framework in Frameworks */,
 				F1E07FC72EE16E6600440249 /* CompactSlider in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -34,10 +50,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F1C816AD2EE2DF87004B2019 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F1C816AE2EE2DF87004B2019 /* MapKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		F1E07F292EE16AB000440249 = {
 			isa = PBXGroup;
 			children = (
 				F1E07F342EE16AB000440249 /* Skyrise Bureau */,
+				F1C816AD2EE2DF87004B2019 /* Frameworks */,
 				F1E07F332EE16AB000440249 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -265,17 +290,20 @@
 				DEVELOPMENT_TEAM = MK2VQ82S9T;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Skyrise-Bureau-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Skyrise Bureau";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.contyadvait.ipad.Skyrise-Bureau";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.contyadvait.Skyrise-Bureau";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -297,11 +325,14 @@
 				DEVELOPMENT_TEAM = MK2VQ82S9T;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Skyrise-Bureau-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Skyrise Bureau";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

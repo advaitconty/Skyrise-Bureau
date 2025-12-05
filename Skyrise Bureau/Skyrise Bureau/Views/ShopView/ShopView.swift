@@ -44,16 +44,28 @@ struct ShopView: View {
                             /// Remove upon final release
                             selectedPlane = filteredPlanes[52]
                         }
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "xmark")
-                            .font(.largeTitle)
-                            .symbolRenderingMode(.hierarchical)
+                    if #available(iOS 26.0, *) {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "xmark")
+                                .font(.largeTitle)
+                                .symbolRenderingMode(.hierarchical)
+                        }
+                        .tint(.gray)
+                        .hoverEffect()
+                        .buttonStyle(.glass)
+                    } else {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "xmark")
+                                .font(.largeTitle)
+                                .symbolRenderingMode(.hierarchical)
+                        }
+                        .tint(.gray)
+                        .hoverEffect()
                     }
-                    .tint(.gray)
-                    .hoverEffect()
-                    .buttonStyle(.glass)
                 }
                 .padding([.top, .leading, .trailing])
                 NavigationSplitView {
@@ -65,16 +77,28 @@ struct ShopView: View {
                             }
                         }
                     }
-                    HStack {
+                    if #available(iOS 26.0, *) {
                         HStack {
-                            Image(systemName: "magnifyingglass")
-                            TextField("Search for planes", text: $searchTerm)
-                                .fontWidth(.condensed)
-                                .textFieldStyle(.automatic)
-                        }.padding()
+                            HStack {
+                                Image(systemName: "magnifyingglass")
+                                TextField("Search for planes", text: $searchTerm)
+                                    .fontWidth(.condensed)
+                                    .textFieldStyle(.automatic)
+                            }.padding()
+                        }
+                        .glassEffect(.regular, in: Capsule())
+                        .padding()
+                    } else {
+                        HStack {
+                            HStack {
+                                Image(systemName: "magnifyingglass")
+                                TextField("Search for planes", text: $searchTerm)
+                                    .fontWidth(.condensed)
+                                    .textFieldStyle(.automatic)
+                            }.padding()
+                        }
+                        .padding()
                     }
-                    .glassEffect(.regular, in: Capsule())
-                    .padding()
                 } detail: {
                     if selectedPlane != nil {
                         planeConfiguratorView(selectedPlane!)

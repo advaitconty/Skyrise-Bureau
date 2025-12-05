@@ -19,6 +19,9 @@
     {
       "layers" : [
         {
+          "blend-mode" : "normal",
+          "fill" : "none",
+          "glass" : true,
           "image-name" : "Frame 1-6.svg",
           "name" : "Radar",
           "opacity" : 1,
@@ -43,7 +46,8 @@
     {
       "layers" : [
         {
-          "fill" : "automatic",
+          "blend-mode" : "screen",
+          "fill" : "none",
           "image-name" : "Frame 1-5.svg",
           "name" : "Plane",
           "position" : {

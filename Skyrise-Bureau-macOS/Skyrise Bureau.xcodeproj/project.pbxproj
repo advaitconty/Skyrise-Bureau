@@ -7,13 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F1500B052EE12C8000E7C985 /* Skyrise.icon in Resources */ = {isa = PBXBuildFile; fileRef = F1500B042EE12C8000E7C985 /* Skyrise.icon */; };
 		F1B94CB52EBE005C002A260A /* CompactSlider in Frameworks */ = {isa = PBXBuildFile; productRef = F1B94CB42EBE005C002A260A /* CompactSlider */; };
 		F1FF15F22EDEA90500B98198 /* PoweredTouchBar in Frameworks */ = {isa = PBXBuildFile; productRef = F1FF15F12EDEA90500B98198 /* PoweredTouchBar */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F1500B042EE12C8000E7C985 /* Skyrise.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = Skyrise.icon; sourceTree = "<group>"; };
 		F1BA0D342EBAF3150019BC2A /* Skyrise Bureau.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Skyrise Bureau.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -54,7 +52,6 @@
 		F1BA0D2B2EBAF3150019BC2A = {
 			isa = PBXGroup;
 			children = (
-				F1500B042EE12C8000E7C985 /* Skyrise.icon */,
 				F1BA0D362EBAF3150019BC2A /* Skyrise Bureau */,
 				F1BA0D352EBAF3150019BC2A /* Products */,
 			);
@@ -138,7 +135,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F1500B052EE12C8000E7C985 /* Skyrise.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

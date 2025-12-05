@@ -86,24 +86,42 @@ extension ShopView {
                     
                     if !showAllSeatsFilled {
                         if showNotAllSeatsFullWarning {
-                            Image(systemName: "exclamationmark.triangle.fill")
-                                .symbolRenderingMode(.multicolor)
-
-                            Text("Not all seats are full on this plane. You can fit up to \(-1 * Int(preferedSeatingConfig.seatsUsed) + selectedPlane!.maxSeats) more economy seats on this jet.")
+                            HStack {
+                                Image(systemName: "exclamationmark.triangle.fill")
+                                    .symbolRenderingMode(.multicolor)
+                                
+                                Text("Not all seats are full on this plane. You can fit up to \(-1 * Int(preferedSeatingConfig.seatsUsed) + selectedPlane!.maxSeats) more economy seats on this jet.")
+                                    .fontWidth(.condensed)
+                            }
                         }
                         
-                        Button {
-                            userData.planes.append(FleetItem(aircraftID: plane.modelCode, aircraftname: aircraftName, registration: registration, hoursFlown: 0, seatingLayout: preferedSeatingConfig, kilometersTravelledSinceLastMaintainence: 0))
-                            userData.maintainanceCrew += 3
-                            userData.pilots += plane.pilots
-                            userData.flightAttendents += plane.flightAttendents
-                            dismiss()
-                        } label: {
-                            Text("Purchase for $\(plane.purchasePrice.withCommas)")
-                                .fontWidth(.condensed)
+                        if #available(iOS 26.0, *) {
+                            Button {
+                                userData.planes.append(FleetItem(aircraftID: plane.modelCode, aircraftname: aircraftName, registration: registration, hoursFlown: 0, seatingLayout: preferedSeatingConfig, kilometersTravelledSinceLastMaintainence: 0))
+                                userData.maintainanceCrew += 3
+                                userData.pilots += plane.pilots
+                                userData.flightAttendents += plane.flightAttendents
+                                dismiss()
+                            } label: {
+                                Text("Purchase for $\(plane.purchasePrice.withCommas)")
+                                    .fontWidth(.condensed)
+                            }
+                            .buttonStyle(.glassProminent)
+                            .hoverEffect()
+                        } else {
+                            Button {
+                                userData.planes.append(FleetItem(aircraftID: plane.modelCode, aircraftname: aircraftName, registration: registration, hoursFlown: 0, seatingLayout: preferedSeatingConfig, kilometersTravelledSinceLastMaintainence: 0))
+                                userData.maintainanceCrew += 3
+                                userData.pilots += plane.pilots
+                                userData.flightAttendents += plane.flightAttendents
+                                dismiss()
+                            } label: {
+                                Text("Purchase for $\(plane.purchasePrice.withCommas)")
+                                    .fontWidth(.condensed)
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .hoverEffect()
                         }
-                        .buttonStyle(.glassProminent)
-                        .hoverEffect()
                     } else {
                         HStack {
                             Image(systemName: "exclamationmark.octagon.fill")

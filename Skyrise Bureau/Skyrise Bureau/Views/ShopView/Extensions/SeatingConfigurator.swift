@@ -30,33 +30,65 @@ extension ShopView {
                         .contentTransition(.numericText(countsDown: true))
                     
                     HStack {
-                        Button {
-                            withAnimation {
-                                if preferedSeatingConfig.economy != 0 {
-                                    preferedSeatingConfig.economy -= 1
+                        if #available(iOS 26.0, *) {
+                            Button {
+                                withAnimation {
+                                    if preferedSeatingConfig.economy != 0 {
+                                        preferedSeatingConfig.economy -= 1
+                                    }
                                 }
+                            } label: {
+                                Image(systemName: "minus")
+                                    .frame(width: 10, height: 10)
                             }
-                        } label: {
-                            Image(systemName: "minus")
-                                .frame(width: 10, height: 10)
-                        }
-                        .buttonStyle(.glassProminent)
-                        .tint(.red)
-                        .hoverEffect()
-
-                        Button {
-                            withAnimation {
-                                if selectedPlane!.maxSeats != preferedSeatingConfig.economy {
-                                    preferedSeatingConfig.economy += 1
+                            .buttonStyle(.glassProminent)
+                            .tint(.red)
+                            .hoverEffect()
+                        } else {
+                            Button {
+                                withAnimation {
+                                    if preferedSeatingConfig.economy != 0 {
+                                        preferedSeatingConfig.economy -= 1
+                                    }
                                 }
+                            } label: {
+                                Image(systemName: "minus")
+                                    .frame(width: 10, height: 10)
                             }
-                        } label: {
-                            Image(systemName: "plus")
-                                .frame(width: 10, height: 10)
+                            .buttonStyle(.borderedProminent)
+                            .tint(.red)
+                            .hoverEffect()
                         }
-                        .buttonStyle(.glassProminent)
-                        .tint(.green)
-                        .hoverEffect()
+                        
+                        if #available(iOS 26.0, *) {
+                            Button {
+                                withAnimation {
+                                    if selectedPlane!.maxSeats != preferedSeatingConfig.economy {
+                                        preferedSeatingConfig.economy += 1
+                                    }
+                                }
+                            } label: {
+                                Image(systemName: "plus")
+                                    .frame(width: 10, height: 10)
+                            }
+                            .buttonStyle(.glassProminent)
+                            .tint(.green)
+                            .hoverEffect()
+                        } else {
+                            Button {
+                                withAnimation {
+                                    if selectedPlane!.maxSeats != preferedSeatingConfig.economy {
+                                        preferedSeatingConfig.economy += 1
+                                    }
+                                }
+                            } label: {
+                                Image(systemName: "plus")
+                                    .frame(width: 10, height: 10)
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .tint(.green)
+                            .hoverEffect()
+                        }
                     }
                 }
                 
@@ -74,35 +106,67 @@ extension ShopView {
                         .fontWidth(.condensed)
                         .contentTransition(.numericText(countsDown: true))
                     HStack {
-                        Button {
-                            withAnimation {
-                                if preferedSeatingConfig.premiumEconomy != 0 {
-                                    preferedSeatingConfig.premiumEconomy -= 1
+                        if #available(iOS 26.0, *) {
+                            Button {
+                                withAnimation {
+                                    if preferedSeatingConfig.premiumEconomy != 0 {
+                                        preferedSeatingConfig.premiumEconomy -= 1
+                                    }
                                 }
+                            } label: {
+                                Image(systemName: "minus")
+                                    .frame(width: 10, height: 10)
                             }
-                        } label: {
-                            Image(systemName: "minus")
-                                .frame(width: 10, height: 10)
+                            .buttonStyle(.glassProminent)
+                            .tint(.red)
+                            .hoverEffect()
+                        } else {
+                            Button {
+                                withAnimation {
+                                    if preferedSeatingConfig.premiumEconomy != 0 {
+                                        preferedSeatingConfig.premiumEconomy -= 1
+                                    }
+                                }
+                            } label: {
+                                Image(systemName: "minus")
+                                    .frame(width: 10, height: 10)
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .tint(.red)
+                            .hoverEffect()
                         }
-                        .buttonStyle(.glassProminent)
-                        .tint(.red)
-                        .hoverEffect()
                         
-                        Button {
-                            withAnimation {
-                                if selectedPlane!.maxSeats != Int(Double(preferedSeatingConfig.premiumEconomy) / 1.5) {
-                                    preferedSeatingConfig.premiumEconomy += 1
+                        if #available(iOS 26.0, *) {
+                            Button {
+                                withAnimation {
+                                    if selectedPlane!.maxSeats != Int(Double(preferedSeatingConfig.premiumEconomy) / 1.5) {
+                                        preferedSeatingConfig.premiumEconomy += 1
+                                    }
                                 }
+                            } label: {
+                                Image(systemName: "plus")
+                                    .frame(width: 10, height: 10)
                             }
-                        } label: {
-                            Image(systemName: "plus")
-                                .frame(width: 10, height: 10)
+                            .buttonStyle(.glassProminent)
+                            .tint(.green)
+                            .hoverEffect()
+                        } else {
+                            Button {
+                                withAnimation {
+                                    if selectedPlane!.maxSeats != Int(Double(preferedSeatingConfig.premiumEconomy) / 1.5) {
+                                        preferedSeatingConfig.premiumEconomy += 1
+                                    }
+                                }
+                            } label: {
+                                Image(systemName: "plus")
+                                    .frame(width: 10, height: 10)
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .tint(.green)
+                            .hoverEffect()
                         }
-                        .buttonStyle(.glassProminent)
-                        .tint(.green)
-                        .hoverEffect()
                     }
-
+                    
                 }
                 
                 VStack {
@@ -119,33 +183,65 @@ extension ShopView {
                         .fontWidth(.condensed)
                         .contentTransition(.numericText(countsDown: true))
                     HStack {
-                        Button {
-                            withAnimation {
-                                if preferedSeatingConfig.business != 0 {
-                                    preferedSeatingConfig.business -= 1
+                        if #available(iOS 26.0, *) {
+                            Button {
+                                withAnimation {
+                                    if preferedSeatingConfig.business != 0 {
+                                        preferedSeatingConfig.business -= 1
+                                    }
                                 }
+                            } label: {
+                                Image(systemName: "minus")
+                                    .frame(width: 10, height: 10)
                             }
-                        } label: {
-                            Image(systemName: "minus")
-                                .frame(width: 10, height: 10)
+                            .buttonStyle(.glassProminent)
+                            .tint(.red)
+                            .hoverEffect()
+                        } else {
+                            Button {
+                                withAnimation {
+                                    if preferedSeatingConfig.business != 0 {
+                                        preferedSeatingConfig.business -= 1
+                                    }
+                                }
+                            } label: {
+                                Image(systemName: "minus")
+                                    .frame(width: 10, height: 10)
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .tint(.red)
+                            .hoverEffect()
                         }
-                        .buttonStyle(.glassProminent)
-                        .tint(.red)
-                        .hoverEffect()
                         
-                        Button {
-                            withAnimation {
-                                if selectedPlane!.maxSeats != Int(Double(preferedSeatingConfig.business) / 2.0) {
-                                    preferedSeatingConfig.business += 1
+                        if #available(iOS 26.0, *) {
+                            Button {
+                                withAnimation {
+                                    if selectedPlane!.maxSeats != Int(Double(preferedSeatingConfig.business) / 2.0) {
+                                        preferedSeatingConfig.business += 1
+                                    }
                                 }
+                            } label: {
+                                Image(systemName: "plus")
+                                    .frame(width: 10, height: 10)
                             }
-                        } label: {
-                            Image(systemName: "plus")
-                                .frame(width: 10, height: 10)
+                            .buttonStyle(.glassProminent)
+                            .tint(.green)
+                            .hoverEffect()
+                        } else {
+                            Button {
+                                withAnimation {
+                                    if selectedPlane!.maxSeats != Int(Double(preferedSeatingConfig.business) / 2.0) {
+                                        preferedSeatingConfig.business += 1
+                                    }
+                                }
+                            } label: {
+                                Image(systemName: "plus")
+                                    .frame(width: 10, height: 10)
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .tint(.green)
+                            .hoverEffect()
                         }
-                        .buttonStyle(.glassProminent)
-                        .tint(.green)
-                        .hoverEffect()
                     }
                 }
                 
@@ -163,35 +259,67 @@ extension ShopView {
                         .fontWidth(.condensed)
                         .contentTransition(.numericText(countsDown: true))
                     HStack {
-                        Button {
-                            withAnimation {
-                                if preferedSeatingConfig.first != 0 {
-                                    preferedSeatingConfig.first -= 1
+                        if #available(iOS 26.0, *) {
+                            Button {
+                                withAnimation {
+                                    if preferedSeatingConfig.first != 0 {
+                                        preferedSeatingConfig.first -= 1
+                                    }
                                 }
+                            } label: {
+                                Image(systemName: "minus")
+                                    .frame(width: 10, height: 10)
                             }
-                        } label: {
-                            Image(systemName: "minus")
-                                .frame(width: 10, height: 10)
+                            .buttonStyle(.glassProminent)
+                            .tint(.red)
+                            .hoverEffect()
+                        } else {
+                            Button {
+                                withAnimation {
+                                    if preferedSeatingConfig.first != 0 {
+                                        preferedSeatingConfig.first -= 1
+                                    }
+                                }
+                            } label: {
+                                Image(systemName: "minus")
+                                    .frame(width: 10, height: 10)
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .tint(.red)
+                            .hoverEffect()
                         }
-                        .buttonStyle(.glassProminent)
-                        .tint(.red)
-                        .hoverEffect()
                         
-                        Button {
-                            withAnimation {
-                                if selectedPlane!.maxSeats != Int(Double(preferedSeatingConfig.first) / 4.0) {
-                                    preferedSeatingConfig.first += 1
+                        if #available(iOS 26.0, *) {
+                            Button {
+                                withAnimation {
+                                    if selectedPlane!.maxSeats != Int(Double(preferedSeatingConfig.first) / 4.0) {
+                                        preferedSeatingConfig.first += 1
+                                    }
                                 }
+                            } label: {
+                                Image(systemName: "plus")
+                                    .frame(width: 10, height: 10)
                             }
-                        } label: {
-                            Image(systemName: "plus")
-                                .frame(width: 10, height: 10)
+                            .buttonStyle(.glassProminent)
+                            .tint(.green)
+                            .hoverEffect()
+                        } else {
+                            Button {
+                                withAnimation {
+                                    if selectedPlane!.maxSeats != Int(Double(preferedSeatingConfig.first) / 4.0) {
+                                        preferedSeatingConfig.first += 1
+                                    }
+                                }
+                            } label: {
+                                Image(systemName: "plus")
+                                    .frame(width: 10, height: 10)
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .tint(.green)
+                            .hoverEffect()
                         }
-                        .buttonStyle(.glassProminent)
-                        .tint(.green)
-                        .hoverEffect()
                     }
-
+                    
                 }
             }
             .onChange(of: preferedSeatingConfig) {
