@@ -25,6 +25,7 @@ extension MapManagerView {
                     VStack {
                         HStack {
                             Text("Plane is flying from \(plane.assignedRoute!.originAirport.reportCorrectCodeForUserData(userData)) to \(plane.assignedRoute!.arrivalAirport.reportCorrectCodeForUserData(userData))")
+                                .fontWidth(.condensed)
                             Spacer()
                         }
                         HStack {
@@ -38,6 +39,7 @@ extension MapManagerView {
                 } else {
                     HStack {
                         Text("Plane is currently on the ground at \(plane.currentAirportLocation!.reportCorrectCodeForUserData(userData)). Assigned to fly from \(plane.assignedRoute!.originAirport.reportCorrectCodeForUserData(userData)) to \(plane.assignedRoute!.arrivalAirport.reportCorrectCodeForUserData(userData))")
+                            .fontWidth(.condensed)
                         Spacer()
                     }
                 }
