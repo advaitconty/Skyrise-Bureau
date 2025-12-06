@@ -9,8 +9,15 @@ import SwiftUI
 
 struct SetupView: View {
     @Binding var userData: UserData
+    @State var screenNum: Int = 1
+    @State var moveOnFromInitialAnimation: Bool = false
     var body: some View {
-        /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Hello, world!@*/Text("Hello, world!")/*@END_MENU_TOKEN@*/
+        VStack {
+            if screenNum == 1 {
+                firstScreenView()
+            }
+        }
+        .padding()
     }
 }
 
