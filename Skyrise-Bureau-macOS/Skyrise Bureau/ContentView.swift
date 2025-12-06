@@ -113,7 +113,6 @@ struct ContentView: View {
                     }
                     moidifiableUserdata.wrappedValue.lastLogin = todaysDate
                     if days != 0 {
-                        print(days)
                         for _ in 1...days {
                             moidifiableUserdata.wrappedValue.flightAttendentHappiness -= Double.random(in: 0.01...0.03)
                             moidifiableUserdata.wrappedValue.pilotHappiness -= Double.random(in: 0.01...0.03)

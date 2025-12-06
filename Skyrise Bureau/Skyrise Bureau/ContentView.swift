@@ -14,12 +14,174 @@ struct ContentView: View {
     @State var showWelcome: Bool = false
     @Environment(\.modelContext) var modelContext
     @Query var userData: [UserData]
+    @AppStorage("showSetupScreen") var showSetupScreen: Bool = false
+    var modifiableUserData: Binding<UserData> {
+        Binding {
+            return userData.first ?? testUserDataEndgame
+        } set: { value in
+            if let item = userData.first {
+                item.planes = value.planes
+                item.deliveryHubs = value.deliveryHubs
+                item.airlineIataCode = value.airlineIataCode
+                item.airlineName = value.airlineName
+                item.name = value.name
+                item.accountBalance = value.accountBalance
+                item.airlineReputation = value.airlineReputation
+                item.campaignEffectiveness = value.campaignEffectiveness
+                item.campaignRunning = value.campaignRunning
+                item.currentlyHoldingFuel = value.currentlyHoldingFuel
+                item.flightAttendentHappiness = value.flightAttendentHappiness
+                item.flightAttendents = value.flightAttendents
+                item.fuelDiscountMultiplier = value.fuelDiscountMultiplier
+                item.lastFuelPrice = value.lastFuelPrice
+                item.levels = value.levels
+                item.maintainanceCrew = value.maintainanceCrew
+                item.maintainanceCrewHappiness = value.maintainanceCrewHappiness
+                item.maxFuelHoldable = value.maxFuelHoldable
+                item.pilotHappiness = value.pilotHappiness
+                item.pilots = value.pilots
+                item.pilotHappiness = value.pilotHappiness
+                item.xp = value.xp
+                print("saving userdata...")
+                try? modelContext.save()
+                print("saved userdata successfully")
+            }
+        }
+    }
+    let planeArrivalTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    let fuelPriceTimer = Timer.publish(every: 7200, on: .main, in: .common).autoconnect()
     let resetUserData: Bool
     let useTestData: DataTypeToUse
     
     var body: some View {
         VStack {
-            Text("Hello")
+            MapManagerView(userData: modifiableUserData)
+                .onAppear {
+                    /// DEBUG CONTENT:
+                    /// DO NOT REMOVE. Ensure all passed through variables are updated accordingly
+                    if resetUserData {
+                        for userDataItem in userData {
+                            modelContext.delete(userDataItem)
+                        }
+                        try? modelContext.save()
+                    }
+                    if useTestData != .none {
+                        var value: UserData
+                        if useTestData == .regular {
+                            value = testUserData
+                        } else if useTestData == .flyingPlanes {
+                            value = testUserDataWithFlyingPlanes
+                        } else {
+                            value = testUserDataEndgame
+                        }
+                        
+                        if let item = userData.first {
+                            item.planes = value.planes
+                            item.deliveryHubs = value.deliveryHubs
+                            item.airlineIataCode = value.airlineIataCode
+                            item.airlineName = value.airlineName
+                            item.name = value.name
+                            item.accountBalance = value.accountBalance
+                            item.airlineReputation = value.airlineReputation
+                            item.campaignEffectiveness = value.campaignEffectiveness
+                            item.campaignRunning = value.campaignRunning
+                            item.currentlyHoldingFuel = value.currentlyHoldingFuel
+                            item.flightAttendentHappiness = value.flightAttendentHappiness
+                            item.flightAttendents = value.flightAttendents
+                            item.fuelDiscountMultiplier = value.fuelDiscountMultiplier
+                            item.lastFuelPrice = value.lastFuelPrice
+                            item.levels = value.levels
+                            item.maintainanceCrew = value.maintainanceCrew
+                            item.maintainanceCrewHappiness = value.maintainanceCrewHappiness
+                            item.maxFuelHoldable = value.maxFuelHoldable
+                            item.pilotHappiness = value.pilotHappiness
+                            item.pilots = value.pilots
+                            item.pilotHappiness = value.pilotHappiness
+                            item.xp = value.xp
+                            
+                            try? modelContext.save()
+                        }
+                    }
+                    
+                    /// NOrmal content
+                    /// This stuff stays
+                    
+                    // Salary Deduction
+                    let todaysDate: Date = Date()
+                    let calendar = Calendar.current
+                    guard let days = calendar.dateComponents([.day], from: calendar.startOfDay(for: modifiableUserData.wrappedValue.lastLogin), to: calendar.startOfDay(for: todaysDate) ).day else { return }
+                    modifiableUserData.wrappedValue.daysPassedSinceStartOfFinancialWeek = days + modifiableUserData.wrappedValue.daysPassedSinceStartOfFinancialWeek
+                    if modifiableUserData.wrappedValue.daysPassedSinceStartOfFinancialWeek >= 7 {
+                        let numberOfDeductionsToMakeForSalary: Int
+                        numberOfDeductionsToMakeForSalary = Int(modifiableUserData.wrappedValue.daysPassedSinceStartOfFinancialWeek / 7)
+                        modifiableUserData.wrappedValue.daysPassedSinceStartOfFinancialWeek = modifiableUserData.wrappedValue.daysPassedSinceStartOfFinancialWeek % 7
+                        modifiableUserData.wrappedValue.accountBalance = modifiableUserData.wrappedValue.accountBalance - Double(modifiableUserData.wrappedValue.cashToPayAsSalaryPerWeek * numberOfDeductionsToMakeForSalary)
+                    }
+                    
+                    // Login date update thingy
+                    modifiableUserData.wrappedValue.lastLogin = todaysDate
+                    
+                    // Happiness reduction
+                    if days != 0 {
+                        for _ in 1...days {
+                            modifiableUserData.wrappedValue.flightAttendentHappiness -= Double.random(in: 0.01...0.03)
+                            modifiableUserData.wrappedValue.pilotHappiness -= Double.random(in: 0.01...0.03)
+                            modifiableUserData.wrappedValue.maintainanceCrewHappiness -= Double.random(in: 0.01...0.03)
+                            
+                        }
+                    }
+                    
+                    // Recalculate fuel price for the time passed since last open
+                    let hoursSinceLastFuelUpdate = Calendar.current.dateComponents([.hour], from: modifiableUserData.wrappedValue.lastFuelPriceCalculationDate, to: todaysDate).hour ?? 0
+                    if hoursSinceLastFuelUpdate >= 2 {
+                        let numberOfUpdates = hoursSinceLastFuelUpdate / 2
+                        for _ in 0..<numberOfUpdates {
+                            calculateNextFuelPrice(userData: modifiableUserData)
+                        }
+                    }
+                    modifiableUserData.wrappedValue.lastFuelPriceCalculationDate = todaysDate
+
+                }
+            /// Manages marking the plane as arrived or not at the first possible instant
+                .onReceive(planeArrivalTimer) { _ in
+                    let currentDate = Date()
+                    for (index, plane) in modifiableUserData.wrappedValue.planes.enumerated() {
+                        if plane.isAirborne && plane.estimatedLandingTime != nil {
+                            if currentDate >= plane.estimatedLandingTime! {
+                                modifiableUserData.wrappedValue.planes[index].markJetAsArrived(modifiableUserData)
+                            }
+                        } else if plane.inMaintainance {
+                            if currentDate >= plane.endMaintainanceDate! {
+                                modifiableUserData.wrappedValue.planes[index].markJetAsMaintainanceDone()
+                            }
+                        }
+                    }
+                    if modifiableUserData.wrappedValue.campaignRunning {
+                        if modifiableUserData.wrappedValue.campaignEnd! <= currentDate {
+                            resetCampaignUponEnd(userData: modifiableUserData)
+                        }
+                    }
+                    
+                    if modifiableUserData.wrappedValue.xpRequiredForNextXPLevel == 0 {
+                        modifiableUserData.wrappedValue.levels += 1
+                        modifiableUserData.wrappedValue.xpPoints += 1
+                    }
+                }
+                .onReceive(fuelPriceTimer) { _ in
+                    calculateNextFuelPrice(userData: modifiableUserData)
+                    modifiableUserData.wrappedValue.lastFuelPriceCalculationDate = Date()
+                }
+                .onAppear {
+                    let notificationsManager = NotificationsManager()
+                    notificationsManager.requestPermission()
+                    
+                    /// COMMENT FOR FINAL REALEASE
+                    /// debug stub to remove all notifications
+//                    notificationsManager.removeAll()
+                }
+                .fullScreenCover(isPresented: $showSetupScreen) {
+                    SetupView(userData: modifiableUserData)
+                }
         }
     }
 }
