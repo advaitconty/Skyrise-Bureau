@@ -21,6 +21,7 @@ class Clock: ObservableObject {
 }
 
 struct MapManagerView: View {
+    @State var airportSelector: Bool = false
     @Namespace var mapScope
     @Namespace var namespace
     @State var mapType: MapStyle = .standard(elevation: .realistic, pointsOfInterest: .all)
@@ -32,6 +33,7 @@ struct MapManagerView: View {
     @State var selectedJet: Int? = nil
     @State var showSidebar: Bool = true
     @StateObject var clock = Clock()
+    @State var openSettings: Bool = false
     
     var body: some View {
         if UIDevice.current.isPad {
@@ -161,7 +163,8 @@ struct MapManagerView: View {
                                                 .hoverEffect()
                                                 
                                                 Button {
-                                                    
+                                                    print("SUMMON")
+                                                    openSettings = true
                                                 } label: {
                                                     HStack {
                                                         Spacer()
@@ -209,7 +212,7 @@ struct MapManagerView: View {
                                                 .hoverEffect()
                                                 
                                                 Button {
-                                                    
+                                                    openSettings = true
                                                 } label: {
                                                     HStack {
                                                         Spacer()
@@ -268,6 +271,28 @@ struct MapManagerView: View {
             }
             .statusBarHidden(true)
             .ignoresSafeArea()
+            .sheet(isPresented: $openSettings) {
+                SettingsView(userData: $userData)
+            }
+            .fullScreenCover(isPresented: $airportSelector) {
+                AirportPickerView(airportSelected: Binding {
+                    return userData.planes[selectedJet!].assignedRoute!.arrivalAirport
+                } set: {
+                    userData.planes[selectedJet!].assignedRoute!.arrivalAirport = $0
+                }, airportSelectionText: "Select your destination airport",
+                                  userData: userData,
+                                  maxRange: AircraftDatabase.shared.allAircraft.first(where: { $0.id == $userData.wrappedValue.planes[selectedJet!].aircraftID })!.maxRange,
+                                  startAirport: userData.planes[selectedJet!].currentAirportLocation,
+                                  finishedPickingScreen: Binding {
+                    return !openSettings
+                } set: {
+                    print($0)
+                    if $0 {
+                        print("check")
+                        openSettings = false
+                    }
+                })
+            }
         } else if UIDevice.current.isPhone {
             GeometryReader { reader in
                 // map item
@@ -370,7 +395,9 @@ struct MapManagerView: View {
                 }
                 .padding()
             }
-            
+            .sheet(isPresented: $openSettings) {
+                SettingsView(userData: $userData)
+            }
         }
     }
 }

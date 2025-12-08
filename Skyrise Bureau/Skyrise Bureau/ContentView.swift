@@ -179,6 +179,7 @@ struct ContentView: View {
                     SetupView(userData: modifiableUserData)
                 }
         }
+        .statusBarHidden()
     }
 }
 

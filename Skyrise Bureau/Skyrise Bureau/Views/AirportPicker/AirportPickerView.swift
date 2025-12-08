@@ -10,13 +10,14 @@ import MapKit
 
 struct AirportPickerView: View {
     @Binding var airportSelected: Airport
-    let airportSelectionText: String = "Select your first airport"
+    var airportSelectionText: String = "Select your first airport"
     @State var searchTerm: String = ""
     var airportDatabase: AirportDatabase = AirportDatabase()
     var disallowedAirports: [Airport] = []
-    let userData: UserData
-    let maxRange: Int = 0
-    let startAirport: Airport? = nil
+    var userData: UserData
+    var maxRange: Int = 0
+    var startAirport: Airport? = nil
+    @Environment(\.dismiss) var dismiss
     @State var mapCameraPosition: MapCameraPosition = .automatic
     @Binding var finishedPickingScreen: Bool
     
@@ -58,6 +59,9 @@ struct AirportPickerView: View {
                                     withAnimation {
                                         finishedPickingScreen = true
                                     }
+                                    if startAirport != nil {
+                                        dismiss()
+                                    }
                                 } label: {
                                     Image(systemName: "arrow.right")
                                     Text("Next")
@@ -78,6 +82,9 @@ struct AirportPickerView: View {
                                 Button {
                                     withAnimation {
                                         finishedPickingScreen = true
+                                    }
+                                    if startAirport != nil {
+                                        dismiss()
                                     }
                                 } label: {
                                     Image(systemName: "arrow.right")

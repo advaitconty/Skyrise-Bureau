@@ -126,8 +126,8 @@ struct AirportPickerView: View {
                     Button {
                         withAnimation {
                             finalAirportSelected = selectedAirport!
-                            moveOn = true
                         }
+                        moveOn = true
                     } label: {
                         Image(systemName: "arrow.right")
                         Text("Next")

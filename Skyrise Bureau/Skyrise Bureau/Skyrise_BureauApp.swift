@@ -35,7 +35,7 @@ struct Skyrise_BureauApp: App {
         }()
         
         WindowGroup() {
-            MapManagerView(userData: .constant(testUserDataEndgame))
+            ContentView(resetUserData: resetUserData, useTestData: useTestData)
         }
         .modelContainer(sharedModelContainer)
     }

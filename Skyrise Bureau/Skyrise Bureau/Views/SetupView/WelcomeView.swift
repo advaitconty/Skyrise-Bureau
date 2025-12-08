@@ -40,7 +40,3 @@ struct SetupView: View {
         }
     }
 }
-
-#Preview {
-    SetupView(userData: .constant(testUserData))
-}

@@ -119,7 +119,10 @@ extension MapManagerView {
                         Spacer()
                         if #available(iOS 26.0, *) {
                             Button {
-                                
+                                if userData.planes[selectedJet!].assignedRoute == nil {
+                                    userData.planes[selectedJet!].assignedRoute = Route(originAirport: userData.planes[selectedJet!].currentAirportLocation!, arrivalAirport: getRandomAirportWithinPlaneRange(maxRange: AircraftDatabase.shared.allAircraft.first(where: { $0.id == userData.planes[selectedJet!].aircraftID })!.maxRange, startAirport: userData.planes[selectedJet!].currentAirportLocation!))
+                                }
+                                airportSelector = true
                             } label: {
                                 Text("Arrival")
                                     .fontWidth(.condensed)
@@ -129,7 +132,7 @@ extension MapManagerView {
                         } else {
                             
                             Button {
-                                
+                                airportSelector = true
                             } label: {
                                 Text("Arrival")
                                     .fontWidth(.condensed)

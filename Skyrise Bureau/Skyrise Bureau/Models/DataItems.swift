@@ -645,3 +645,20 @@ func resetCampaignUponEnd(userData: Binding<UserData>) {
 enum AirportType: Codable {
     case departure, arrival, stopover
 }
+
+func getRandomAirportWithinPlaneRange(maxRange: Int, startAirport: Airport) -> Airport {
+    var filteredAirports: [Airport] = []
+    let airportDatabase = AirportDatabase()
+    for airport in AirportDatabase.shared.allAirports {
+        let rangeMax: Bool
+        if maxRange != 0 {
+            rangeMax = airportDatabase.calculateDistance(from: startAirport, to: airport) <= maxRange
+        } else {
+            rangeMax = true
+        }
+        if rangeMax && airport != startAirport {
+            filteredAirports.append(airport)
+        }
+    }
+    return filteredAirports.randomElement()!
+}
