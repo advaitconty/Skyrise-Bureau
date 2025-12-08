@@ -14,7 +14,7 @@ struct ContentView: View {
     @State var showWelcome: Bool = false
     @Environment(\.modelContext) var modelContext
     @Query var userData: [UserData]
-    @AppStorage("showSetupScreen") var showSetupScreen: Bool = false
+    @AppStorage("showSetupScreen") var showSetupScreen: Bool = true
     var modifiableUserData: Binding<UserData> {
         Binding {
             return userData.first ?? testUserDataEndgame
@@ -174,10 +174,6 @@ struct ContentView: View {
                 .onAppear {
                     let notificationsManager = NotificationsManager()
                     notificationsManager.requestPermission()
-                    
-                    /// COMMENT FOR FINAL REALEASE
-                    /// debug stub to remove all notifications
-//                    notificationsManager.removeAll()
                 }
                 .fullScreenCover(isPresented: $showSetupScreen) {
                     SetupView(userData: modifiableUserData)

@@ -9,7 +9,7 @@ import SwiftUI
 import MapKit
 
 struct AirportPickerView: View {
-    @State var airportSelected: Airport? = nil
+    @Binding var airportSelected: Airport
     let airportSelectionText: String = "Select your first airport"
     @State var searchTerm: String = ""
     var airportDatabase: AirportDatabase = AirportDatabase()
@@ -18,6 +18,7 @@ struct AirportPickerView: View {
     let maxRange: Int = 0
     let startAirport: Airport? = nil
     @State var mapCameraPosition: MapCameraPosition = .automatic
+    @Binding var finishedPickingScreen: Bool
     
     var filteredAirports: [Airport] {
         AirportDatabase.shared.allAirports.filter { airport in
@@ -39,22 +40,24 @@ struct AirportPickerView: View {
         GeometryReader { reader in
             ZStack(alignment: .topLeading) {
                 mapItem()
-                .ignoresSafeArea()
-            
-            HStack {
-                VStack {
-                    sidebarView(height: reader.size.height)
-                }
-                .padding()
-                VStack {
-                    if #available(iOS 26.0, *) {
-                        HStack {
-                            Text(airportSelectionText)
-                                .font(.largeTitle)
-                                .fontWidth(.expanded)
-                            Spacer()
+                    .ignoresSafeArea()
+                
+                HStack {
+                    VStack {
+                        sidebarView(height: reader.size.height)
+                    }
+                    .padding()
+                    VStack {
+                        if #available(iOS 26.0, *) {
+                            HStack {
+                                Text(airportSelectionText)
+                                    .font(.largeTitle)
+                                    .fontWidth(.expanded)
+                                Spacer()
                                 Button {
-                                    
+                                    withAnimation {
+                                        finishedPickingScreen = true
+                                    }
                                 } label: {
                                     Image(systemName: "arrow.right")
                                     Text("Next")
@@ -62,52 +65,45 @@ struct AirportPickerView: View {
                                 }
                                 .buttonStyle(.glass)
                                 .hoverEffect()
-                        }
-                        .padding()
-                        .glassEffect()
-                        .padding()
-                    } else {
-                        HStack {
-                            Text(airportSelectionText)
-                                .font(.largeTitle)
-                                .fontWidth(.expanded)
-                            Spacer()
-                            if airportSelected != nil {
-                                
-                                    Button {
-                                        
-                                    } label: {
-                                        Image(systemName: "arrow.right")
-                                        Text("Next")
-                                    }
-                                    .buttonStyle(.bordered)
-                                    .hoverEffect()
-
                             }
+                            .padding()
+                            .glassEffect()
+                            .padding()
+                        } else {
+                            HStack {
+                                Text(airportSelectionText)
+                                    .font(.largeTitle)
+                                    .fontWidth(.expanded)
+                                Spacer()
+                                Button {
+                                    withAnimation {
+                                        finishedPickingScreen = true
+                                    }
+                                } label: {
+                                    Image(systemName: "arrow.right")
+                                    Text("Next")
+                                }
+                                .buttonStyle(.bordered)
+                                .hoverEffect()
+                                
+                            }
+                            .padding()
+                            .background(.ultraThinMaterial)
+                            .clipShape(RoundedRectangle(cornerRadius: 10.0))
+                            .padding()
                         }
-                        .padding()
-                        .background(.ultraThinMaterial)
-                        .clipShape(RoundedRectangle(cornerRadius: 10.0))
-                        .padding()
-                    }
-                    Spacer()
-                        .onChange(of: airportSelected) { oldValue, newValue in
-                            if let airport = newValue {
+                        Spacer()
+                            .onChange(of: airportSelected) { oldValue, newValue in
                                 withAnimation {
                                     mapCameraPosition = .region(MKCoordinateRegion(
-                                        center: CLLocationCoordinate2D(latitude: airport.latitude, longitude: airport.longitude),
+                                        center: CLLocationCoordinate2D(latitude: airportSelected.latitude, longitude: airportSelected.longitude),
                                         span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
                                     ))
                                 }
                             }
-                        }
+                    }
                 }
             }
         }
     }
-}
-}
-
-#Preview {
-    AirportPickerView(userData: testUserData)
 }

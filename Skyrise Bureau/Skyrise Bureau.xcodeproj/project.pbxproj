@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F1C61CB92EE6B94A00D48691 /* CompactSlider in Frameworks */ = {isa = PBXBuildFile; productRef = F1C61CB82EE6B94A00D48691 /* CompactSlider */; };
 		F1C816B02EE2DF8A004B2019 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1C816AE2EE2DF87004B2019 /* MapKit.framework */; };
-		F1E07FC72EE16E6600440249 /* CompactSlider in Frameworks */ = {isa = PBXBuildFile; productRef = F1E07FC62EE16E6600440249 /* CompactSlider */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,7 +30,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F1C816B02EE2DF8A004B2019 /* MapKit.framework in Frameworks */,
-				F1E07FC72EE16E6600440249 /* CompactSlider in Frameworks */,
+				F1C61CB92EE6B94A00D48691 /* CompactSlider in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,7 +82,7 @@
 			);
 			name = "Skyrise Bureau";
 			packageProductDependencies = (
-				F1E07FC62EE16E6600440249 /* CompactSlider */,
+				F1C61CB82EE6B94A00D48691 /* CompactSlider */,
 			);
 			productName = "Skyrise Bureau";
 			productReference = F1E07F322EE16AB000440249 /* Skyrise Bureau.app */;
@@ -113,7 +113,7 @@
 			mainGroup = F1E07F292EE16AB000440249;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				F1E07FC52EE16E6600440249 /* XCRemoteSwiftPackageReference "CompactSlider" */,
+				F1C61CB72EE6B94A00D48691 /* XCRemoteSwiftPackageReference "CompactSlider" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F1E07F332EE16AB000440249 /* Products */;
@@ -369,9 +369,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		F1E07FC52EE16E6600440249 /* XCRemoteSwiftPackageReference "CompactSlider" */ = {
+		F1C61CB72EE6B94A00D48691 /* XCRemoteSwiftPackageReference "CompactSlider" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/buh/CompactSlider.git";
+			repositoryURL = "https://github.com/buh/CompactSlider";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 2.1.0;
@@ -380,9 +380,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		F1E07FC62EE16E6600440249 /* CompactSlider */ = {
+		F1C61CB82EE6B94A00D48691 /* CompactSlider */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F1E07FC52EE16E6600440249 /* XCRemoteSwiftPackageReference "CompactSlider" */;
+			package = F1C61CB72EE6B94A00D48691 /* XCRemoteSwiftPackageReference "CompactSlider" */;
 			productName = CompactSlider;
 		};
 /* End XCSwiftPackageProductDependency section */
