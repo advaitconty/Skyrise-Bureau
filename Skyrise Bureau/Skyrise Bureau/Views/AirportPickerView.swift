@@ -9,7 +9,7 @@ import SwiftUI
 import MapKit
 
 struct AirportPickerView: View {
-    @State var airportSelected: Airport = AirportDatabase.shared.allAirports.randomElement()!
+    @State var airportSelected: Airport? = nil
     let airportSelectionText: String = "Select your first airport"
     @State var searchTerm: String = ""
     var airportDatabase: AirportDatabase = AirportDatabase()
@@ -17,6 +17,7 @@ struct AirportPickerView: View {
     let userData: UserData
     let maxRange: Int = 0
     let startAirport: Airport? = nil
+    @State var mapCameraPosition: MapCameraPosition = .automatic
     
     var filteredAirports: [Airport] {
         AirportDatabase.shared.allAirports.filter { airport in
@@ -37,149 +38,12 @@ struct AirportPickerView: View {
     var body: some View {
         GeometryReader { reader in
             ZStack(alignment: .topLeading) {
-                Map {
-                    let info = DeviceInfo.modelAndIsMSeries
-                    if info.isMSeries {
-                        if #available(iOS 26, *) {
-                        ForEach(filteredAirports, id: \.uniqueID) { airport in
-                            Annotation(airport.name, coordinate: airport.clLocationCoordinateItemForLocation) {
-                                ZStack {
-                                if airportSelected == airport {
-                                    Color.accentColor
-                                        .clipShape(Capsule())
-                                }
-                                    Text(airport.reportCorrectCodeForUserData(userData))
-                                        .fontWidth(airportSelected == airport ? .expanded : .condensed)
-                                        .padding()
-                                }
-                                .glassEffect()
-                            }
-                        }
-                        } else {
-                            ForEach(filteredAirports, id: \.uniqueID) { airport in
-                                Annotation(airport.name, coordinate: airport.clLocationCoordinateItemForLocation) {
-                                    ZStack {
-                                        Text(airport.reportCorrectCodeForUserData(userData))
-                                            .fontWidth(airportSelected == airport ? .expanded : .condensed)
-                                            .padding(5)
-                                    }
-                                    .background(.ultraThinMaterial)
-                                    .clipShape(RoundedRectangle(cornerRadius: 7.5))
-                                }
-                            }
-                        }
-                    } else {
-                        ForEach(filteredAirports, id: \.uniqueID) { airport in
-                            Annotation(airport.name, coordinate: airport.clLocationCoordinateItemForLocation) {
-                                ZStack {
-                                    Text(airport.reportCorrectCodeForUserData(userData))
-                                        .fontWidth(airportSelected == airport ? .expanded : .condensed)                                        .padding(5)
-                                }
-                                .background(.cyan)
-                                .clipShape(RoundedRectangle(cornerRadius: 7.5))
-                            }
-                        }
-                    }
-            }
-            .ignoresSafeArea()
+                mapItem()
+                .ignoresSafeArea()
             
             HStack {
                 VStack {
-                    VStack {
-                        if #available(iOS 26.0, *) {
-                            HStack {
-                                Image(systemName: "magnifyingglass")
-                                TextField("Some airport name...", text: $searchTerm)
-                                    .fontWidth(.condensed)
-                            }
-                            .padding()
-                            .glassEffect()
-
-                        } else {
-                            HStack {
-                                Image(systemName: "magnifyingglass")
-                                TextField("Some airport name...", text: $searchTerm)
-                                    .fontWidth(.condensed)
-                                    .textFieldStyle(.roundedBorder)
-                            }
-                            .padding()
-                        }
-                        ScrollView {
-                            ForEach(filteredAirports, id: \.uniqueID) { airport in
-                                if airport == airportSelected {
-                                    Button {
-                                        withAnimation {
-                                            airportSelected = airport
-                                        }
-                                    } label: {
-                                        VStack {
-                                            HStack {
-                                                Text(airport.name)
-                                                    .font(.title)
-                                                    .fontWidth(.expanded)
-                                                Spacer()
-                                            }
-                                            HStack {
-                                                Text("\(airport.iata) (\(airport.icao))")
-                                                    .fontWidth(.condensed)
-                                                Spacer()
-                                                Text(airport.region.rawValue)
-                                                    .fontWidth(.condensed)
-                                            }
-                                            HStack {
-                                                Text("Max Runway length: \(airport.runwayLength.withCommas)m")
-                                                    .fontWidth(.condensed)
-                                                Spacer()
-                                                Text("Elevation: \(airport.elevation)m")
-                                                    .fontWidth(.condensed)
-                                            }
-                                        }
-                                        .padding()
-                                        .background(.indigo)
-                                        .clipShape(RoundedRectangle(cornerRadius: 10.0))
-                                    }
-                                    .buttonStyle(.plain)
-                                } else {
-                                    Button {
-                                        withAnimation {
-                                            airportSelected = airport
-                                        }
-                                    } label: {
-                                        VStack {
-                                            HStack {
-                                                Text(airport.name)
-                                                    .font(.title)
-                                                    .fontWidth(.expanded)
-                                                Spacer()
-                                            }
-                                            HStack {
-                                                Text("\(airport.iata) (\(airport.icao))")
-                                                    .fontWidth(.condensed)
-                                                Spacer()
-                                                Text(airport.region.rawValue)
-                                                    .fontWidth(.condensed)
-                                            }
-                                            HStack {
-                                                Text("Max Runway length: \(airport.runwayLength.withCommas)m")
-                                                    .fontWidth(.condensed)
-                                                Spacer()
-                                                Text("Elevation: \(airport.elevation)m")
-                                                    .fontWidth(.condensed)
-                                            }
-                                        }
-                                        .padding()
-                                        .background(.ultraThickMaterial)
-                                        .clipShape(RoundedRectangle(cornerRadius: 10.0))
-                                    }
-                                    .buttonStyle(.plain)
-                                }
-                            }
-                        }
-                    }
-                    .padding()
-                    .frame(width: CGFloat(300), height: reader.size.height - 30)
-                    .background(.thinMaterial)
-                    .clipShape(RoundedRectangle(cornerRadius: 25.0))
+                    sidebarView(height: reader.size.height)
                 }
                 .padding()
                 VStack {
@@ -189,7 +53,6 @@ struct AirportPickerView: View {
                                 .font(.largeTitle)
                                 .fontWidth(.expanded)
                             Spacer()
-                            if #available(iOS 26.0, *) {
                                 Button {
                                     
                                 } label: {
@@ -199,16 +62,6 @@ struct AirportPickerView: View {
                                 }
                                 .buttonStyle(.glass)
                                 .hoverEffect()
-                            } else {
-                                Button {
-                                    
-                                } label: {
-                                    Image(systemName: "arrow.right")
-                                    Text("Next")
-                                }
-                                .buttonStyle(.bordered)
-                                .hoverEffect()
-                            }
                         }
                         .padding()
                         .glassEffect()
@@ -219,25 +72,17 @@ struct AirportPickerView: View {
                                 .font(.largeTitle)
                                 .fontWidth(.expanded)
                             Spacer()
-                            if #available(iOS 26.0, *) {
-                                Button {
-                                    
-                                } label: {
-                                    Image(systemName: "arrow.right")
-                                    Text("Next")
-                                        .fontWidth(.condensed)
-                                }
-                                .buttonStyle(.glass)
-                                .hoverEffect()
-                            } else {
-                                Button {
-                                    
-                                } label: {
-                                    Image(systemName: "arrow.right")
-                                    Text("Next")
-                                }
-                                .buttonStyle(.bordered)
-                                .hoverEffect()
+                            if airportSelected != nil {
+                                
+                                    Button {
+                                        
+                                    } label: {
+                                        Image(systemName: "arrow.right")
+                                        Text("Next")
+                                    }
+                                    .buttonStyle(.bordered)
+                                    .hoverEffect()
+
                             }
                         }
                         .padding()
@@ -246,6 +91,16 @@ struct AirportPickerView: View {
                         .padding()
                     }
                     Spacer()
+                        .onChange(of: airportSelected) { oldValue, newValue in
+                            if let airport = newValue {
+                                withAnimation {
+                                    mapCameraPosition = .region(MKCoordinateRegion(
+                                        center: CLLocationCoordinate2D(latitude: airport.latitude, longitude: airport.longitude),
+                                        span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+                                    ))
+                                }
+                            }
+                        }
                 }
             }
         }

@@ -139,34 +139,35 @@ struct AirportPickerView: View {
                 .fontWidth(.condensed)
                 .textFieldStyle(.roundedBorder)
             HStack {
-                ScrollView {
-                    ForEach(filteredAirports, id: \.id) { airport in
-                        VStack {
-                            HStack(spacing: 0) {
-                                Text("\(countryNameToEmoji(airport.country)) ")
-                                    .font(.title)
-                                Text("\(airport.name)")
-                                    .font(.title)
-                                    .fontWidth(.expanded)
-                                Spacer()
+                // MARK: Sidebar
+                    ScrollView {
+                        ForEach(filteredAirports, id: \.id) { airport in
+                            VStack {
+                                HStack(spacing: 0) {
+                                    Text("\(countryNameToEmoji(airport.country)) ")
+                                        .font(.title)
+                                    Text("\(airport.name)")
+                                        .font(.title)
+                                        .fontWidth(.expanded)
+                                    Spacer()
+                                }
+                                HStack {
+                                    littleSmallBoxThingy(icon: "building.2", item: airport.city)
+                                    littleSmallBoxThingy(icon: "airplane", item: "\(airport.reportCorrectCodeForUserData(userData))/\(airport.icao)")
+                                    littleSmallBoxThingy(icon: "road.lanes", item: "\(airport.runwayLength)m")
+                                    littleSmallBoxThingy(icon: "flag", item: "\(airport.country)")
+                                }
                             }
-                            HStack {
-                                littleSmallBoxThingy(icon: "building.2", item: airport.city)
-                                littleSmallBoxThingy(icon: "airplane", item: "\(airport.reportCorrectCodeForUserData(userData))/\(airport.icao)")
-                                littleSmallBoxThingy(icon: "road.lanes", item: "\(airport.runwayLength)m")
-                                littleSmallBoxThingy(icon: "flag", item: "\(airport.country)")
-                            }
-                        }
-                        .padding(5)
-                        .background(selectedAirport == airport ? .blue : (colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1)))
-                        .clipShape(RoundedRectangle(cornerRadius: 10.0))
-                        .onTapGesture {
-                            withAnimation {
-                                selectedAirport = airport
+                            .padding(5)
+                            .background(selectedAirport == airport ? .blue : (colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1)))
+                            .clipShape(RoundedRectangle(cornerRadius: 10.0))
+                            .onTapGesture {
+                                withAnimation {
+                                    selectedAirport = airport
+                                }
                             }
                         }
                     }
-                }
                 if showMapForSelection {
                     ZStack(alignment: .topLeading) {
                         Map(position: $cameraPosition) {
