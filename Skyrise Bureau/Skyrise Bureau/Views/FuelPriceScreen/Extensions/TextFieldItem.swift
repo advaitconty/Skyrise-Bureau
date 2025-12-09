@@ -17,17 +17,17 @@ extension FuelPriceView {
                 .multilineTextAlignment(.trailing)
                 .textFieldStyle(.roundedBorder)
                 .onChange(of: amountOfFuelUserWantsToPurchase) {
-                    if userData.wrappedValue.maxFuelHoldable < userData.wrappedValue.currentlyHoldingFuel + Int(amountOfFuelUserWantsToPurchase) && userData.wrappedValue.accountBalance - userData.wrappedValue.currentFuelPrice/1000 * amountOfFuelUserWantsToPurchase < 0 {
+                    if userData.maxFuelHoldable < userData.currentlyHoldingFuel + Int(amountOfFuelUserWantsToPurchase) && userData.accountBalance - userData.currentFuelPrice/1000 * amountOfFuelUserWantsToPurchase < 0 {
                         withAnimation {
                             exceedMax = true
                             notEnoughBalance = true
                         }
                     } else {
-                        if userData.wrappedValue.maxFuelHoldable < userData.wrappedValue.currentlyHoldingFuel + Int(amountOfFuelUserWantsToPurchase) {
+                        if userData.maxFuelHoldable < userData.currentlyHoldingFuel + Int(amountOfFuelUserWantsToPurchase) {
                             withAnimation {
                                 exceedMax = true
                             }
-                        } else if userData.wrappedValue.accountBalance - userData.wrappedValue.currentFuelPrice/1000 * amountOfFuelUserWantsToPurchase < 0 {
+                        } else if userData.accountBalance - userData.currentFuelPrice / 1000 * amountOfFuelUserWantsToPurchase < 0 {
                             withAnimation {
                                 notEnoughBalance = true
                             }

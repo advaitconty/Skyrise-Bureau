@@ -22,6 +22,7 @@ class Clock: ObservableObject {
 
 struct MapManagerView: View {
     @State var airportSelector: Bool = false
+    @State var openFuelWindow: Bool = false
     @Namespace var mapScope
     @Namespace var namespace
     @State var mapType: MapStyle = .standard(elevation: .realistic, pointsOfInterest: .all)
@@ -128,7 +129,7 @@ struct MapManagerView: View {
                                         HStack {
                                             if #available(iOS 26.0, *) {
                                                 Button {
-                                                    
+                                                    openFuelWindow = true
                                                 } label: {
                                                     HStack {
                                                         Spacer()
@@ -178,7 +179,7 @@ struct MapManagerView: View {
                                                 .hoverEffect()
                                             } else {
                                                 Button {
-                                                    
+                                                    openFuelWindow = true
                                                 } label: {
                                                     HStack {
                                                         Spacer()
@@ -302,6 +303,9 @@ struct MapManagerView: View {
                         print("Open")
                     }
             }
+            .fullScreenCover(isPresented: $openFuelWindow) {
+                FuelPriceView(userData: $userData)
+            }
         } else if UIDevice.current.isPhone {
             GeometryReader { reader in
                 // map item
@@ -412,6 +416,9 @@ struct MapManagerView: View {
                     .onAppear {
                         print("Open")
                     }
+            }
+            .fullScreenCover(isPresented: $openFuelWindow) {
+                FuelPriceView(userData: $userData)
             }
         }
     }
