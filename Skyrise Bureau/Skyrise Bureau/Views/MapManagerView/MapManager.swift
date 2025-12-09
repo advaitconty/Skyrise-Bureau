@@ -34,6 +34,7 @@ struct MapManagerView: View {
     @State var showSidebar: Bool = true
     @StateObject var clock = Clock()
     @State var openSettings: Bool = false
+    @State var openUserUpgradeView: Bool = false
     
     var body: some View {
         if UIDevice.current.isPad {
@@ -139,7 +140,8 @@ struct MapManagerView: View {
                                                 .hoverEffect()
                                                 
                                                 Button {
-                                                    
+                                                    print("Open")
+                                                    openUserUpgradeView = true
                                                 } label: {
                                                     HStack {
                                                         Spacer()
@@ -188,7 +190,8 @@ struct MapManagerView: View {
                                                 .hoverEffect()
                                                 
                                                 Button {
-                                                    
+                                                    print("Open")
+                                                    openUserUpgradeView = true
                                                 } label: {
                                                     HStack {
                                                         Spacer()
@@ -292,6 +295,12 @@ struct MapManagerView: View {
                         openSettings = false
                     }
                 })
+            }
+            .fullScreenCover(isPresented: $openUserUpgradeView) {
+                UserUpgradeView(userData: $userData)
+                    .onAppear {
+                        print("Open")
+                    }
             }
         } else if UIDevice.current.isPhone {
             GeometryReader { reader in
@@ -397,6 +406,12 @@ struct MapManagerView: View {
             }
             .sheet(isPresented: $openSettings) {
                 SettingsView(userData: $userData)
+            }
+            .fullScreenCover(isPresented: $openUserUpgradeView) {
+                UserUpgradeView(userData: $userData)
+                    .onAppear {
+                        print("Open")
+                    }
             }
         }
     }
