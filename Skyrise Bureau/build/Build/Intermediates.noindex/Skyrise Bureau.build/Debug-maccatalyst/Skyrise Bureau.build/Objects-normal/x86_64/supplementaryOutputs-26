@@ -1,0 +1,23 @@
+{
+  "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Views/SetupView/ScreenThree.swift" : {
+    "const-values" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/ScreenThree.swiftconstvalues",
+    "dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/ScreenThree.d",
+    "diagnostics" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/ScreenThree.dia",
+    "object" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/ScreenThree.o",
+    "swift-dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/ScreenThree.swiftdeps"
+  },
+  "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Views/SetupView/WelcomeView.swift" : {
+    "const-values" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/WelcomeView.swiftconstvalues",
+    "dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/WelcomeView.d",
+    "diagnostics" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/WelcomeView.dia",
+    "object" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/WelcomeView.o",
+    "swift-dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/WelcomeView.swiftdeps"
+  },
+  "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Views/ShopView/Extensions/LittleSmallBoxThingy.swift" : {
+    "const-values" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/LittleSmallBoxThingy.swiftconstvalues",
+    "dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/LittleSmallBoxThingy.d",
+    "diagnostics" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/LittleSmallBoxThingy.dia",
+    "object" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/LittleSmallBoxThingy.o",
+    "swift-dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/LittleSmallBoxThingy.swiftdeps"
+  }
+}

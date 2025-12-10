@@ -1,0 +1,23 @@
+{
+  "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Views/AirportPicker/SidebarView.swift" : {
+    "const-values" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/SidebarView.swiftconstvalues",
+    "dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/SidebarView.d",
+    "diagnostics" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/SidebarView.dia",
+    "object" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/SidebarView.o",
+    "swift-dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/SidebarView.swiftdeps"
+  },
+  "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Views/FuelPriceScreen/Extensions/ChartView.swift" : {
+    "const-values" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/ChartView.swiftconstvalues",
+    "dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/ChartView.d",
+    "diagnostics" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/ChartView.dia",
+    "object" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/ChartView.o",
+    "swift-dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/ChartView.swiftdeps"
+  },
+  "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Views/FuelPriceScreen/Extensions/ErrorInfoScreen.swift" : {
+    "const-values" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/ErrorInfoScreen.swiftconstvalues",
+    "dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/ErrorInfoScreen.d",
+    "diagnostics" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/ErrorInfoScreen.dia",
+    "object" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/ErrorInfoScreen.o",
+    "swift-dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/ErrorInfoScreen.swiftdeps"
+  }
+}

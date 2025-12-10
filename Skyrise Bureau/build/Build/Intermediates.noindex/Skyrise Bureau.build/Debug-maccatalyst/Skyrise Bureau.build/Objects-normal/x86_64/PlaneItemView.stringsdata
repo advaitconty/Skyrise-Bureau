@@ -1,0 +1,24 @@
+{
+  "source": "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Views/ShopView/Extensions/PlaneItemView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "%@\n",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 24
+        }
+      },
+      {
+        "comment": "",
+        "key": "$%@",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 27
+        }
+      }
+    ]
+  },
+  "version": 1
+}

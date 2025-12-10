@@ -1,0 +1,80 @@
+{
+  "source": "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Views/FuelPriceScreen/FuelPriceScreen.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Purchase Fuel",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 41
+        }
+      },
+      {
+        "comment": "",
+        "key": "CURRENT BALANCE:\n",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 46
+        }
+      },
+      {
+        "comment": "",
+        "key": "$%@",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 50
+        }
+      },
+      {
+        "comment": "",
+        "key": "CURRENT PRICE:",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 73
+        }
+      },
+      {
+        "comment": "",
+        "key": "$%lld",
+        "location": {
+          "startingColumn": 35,
+          "startingLine": 77
+        }
+      },
+      {
+        "comment": "",
+        "key": "\nfor 1000 kilos",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 81
+        }
+      },
+      {
+        "comment": "",
+        "key": "Execute fuel trade",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 103
+        }
+      },
+      {
+        "comment": "",
+        "key": "CURRENT \nFUEL HOLD:\n",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 115
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@kg/%@kg",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 119
+        }
+      }
+    ]
+  },
+  "version": 1
+}

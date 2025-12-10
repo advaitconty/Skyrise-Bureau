@@ -1,0 +1,32 @@
+{
+  "source": "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Views/UserUpgradeView/Extensions/PlaneStatsViewForUpgrades.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "%@h flown - %@",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 32
+        }
+      },
+      {
+        "comment": "",
+        "key": "Aircraft Name",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 18
+        }
+      },
+      {
+        "comment": "",
+        "key": "Registration",
+        "location": {
+          "startingColumn": 27,
+          "startingLine": 26
+        }
+      }
+    ]
+  },
+  "version": 1
+}

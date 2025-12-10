@@ -91,7 +91,7 @@ extension MapView {
                             showAirportPicker = true
                             selectedPlane = nil
                             indexOfSelectedPlane = -1
-                        }
+                        }   
                     } label: {
                         Text("Arrival")
                             .fontWidth(.condensed)

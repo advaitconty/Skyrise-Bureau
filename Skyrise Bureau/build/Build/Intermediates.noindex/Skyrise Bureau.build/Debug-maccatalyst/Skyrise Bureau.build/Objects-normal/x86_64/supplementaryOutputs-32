@@ -1,0 +1,23 @@
+{
+  "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Skyrise_BureauApp.swift" : {
+    "const-values" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/Skyrise_BureauApp.swiftconstvalues",
+    "dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/Skyrise_BureauApp.d",
+    "diagnostics" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/Skyrise_BureauApp.dia",
+    "object" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/Skyrise_BureauApp.o",
+    "swift-dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/Skyrise_BureauApp.swiftdeps"
+  },
+  "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/TestUserData.swift" : {
+    "const-values" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/TestUserData.swiftconstvalues",
+    "dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/TestUserData.d",
+    "diagnostics" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/TestUserData.dia",
+    "object" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/TestUserData.o",
+    "swift-dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/TestUserData.swiftdeps"
+  },
+  "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/GeneratedAssetSymbols.dia",
+    "object" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/Skyrise Bureau.build/Debug-maccatalyst/Skyrise Bureau.build/Objects-normal/x86_64/GeneratedAssetSymbols.swiftdeps"
+  }
+}

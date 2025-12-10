@@ -1,0 +1,32 @@
+{
+  "source": "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Views/FuelPriceScreen/Extensions/TextFieldItem.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Amount to order:",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 13
+        }
+      },
+      {
+        "comment": "",
+        "key": "kg",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 42
+        }
+      },
+      {
+        "comment": "",
+        "key": "1000",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 15
+        }
+      }
+    ]
+  },
+  "version": 1
+}

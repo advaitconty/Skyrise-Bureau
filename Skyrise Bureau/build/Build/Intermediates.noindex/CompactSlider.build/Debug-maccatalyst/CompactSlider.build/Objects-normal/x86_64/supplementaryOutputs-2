@@ -1,0 +1,37 @@
+{
+  "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/SourcePackages/checkouts/CompactSlider/Sources/CompactSlider/CompactSliderAnimations.swift" : {
+    "const-values" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderAnimations.swiftconstvalues",
+    "dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderAnimations.d",
+    "diagnostics" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderAnimations.dia",
+    "object" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderAnimations.o",
+    "swift-dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderAnimations.swiftdeps"
+  },
+  "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/SourcePackages/checkouts/CompactSlider/Sources/CompactSlider/CompactSliderOnChangeAction.swift" : {
+    "const-values" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderOnChangeAction.swiftconstvalues",
+    "dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderOnChangeAction.d",
+    "diagnostics" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderOnChangeAction.dia",
+    "object" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderOnChangeAction.o",
+    "swift-dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderOnChangeAction.swiftdeps"
+  },
+  "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/SourcePackages/checkouts/CompactSlider/Sources/CompactSlider/CompactSliderOption.swift" : {
+    "const-values" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderOption.swiftconstvalues",
+    "dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderOption.d",
+    "diagnostics" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderOption.dia",
+    "object" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderOption.o",
+    "swift-dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderOption.swiftdeps"
+  },
+  "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/SourcePackages/checkouts/CompactSlider/Sources/CompactSlider/CompactSliderPoint.swift" : {
+    "const-values" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderPoint.swiftconstvalues",
+    "dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderPoint.d",
+    "diagnostics" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderPoint.dia",
+    "object" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderPoint.o",
+    "swift-dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderPoint.swiftdeps"
+  },
+  "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/SourcePackages/checkouts/CompactSlider/Sources/CompactSlider/CompactSliderPolarPoint.swift" : {
+    "const-values" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderPolarPoint.swiftconstvalues",
+    "dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderPolarPoint.d",
+    "diagnostics" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderPolarPoint.dia",
+    "object" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderPolarPoint.o",
+    "swift-dependencies" : "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/build/Build/Intermediates.noindex/CompactSlider.build/Debug-maccatalyst/CompactSlider.build/Objects-normal/x86_64/CompactSliderPolarPoint.swiftdeps"
+  }
+}

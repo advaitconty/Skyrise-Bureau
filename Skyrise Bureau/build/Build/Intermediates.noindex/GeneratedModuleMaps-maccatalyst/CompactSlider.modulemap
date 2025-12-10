@@ -1,0 +1,4 @@
+module CompactSlider {
+header "CompactSlider-Swift.h"
+export *
+}

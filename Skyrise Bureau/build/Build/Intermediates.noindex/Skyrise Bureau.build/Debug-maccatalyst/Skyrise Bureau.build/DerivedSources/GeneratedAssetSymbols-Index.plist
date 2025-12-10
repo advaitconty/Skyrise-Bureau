@@ -1,0 +1,594 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>colors</key>
+	<array>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACColorNameAccentColor</string>
+			<key>relativePath</key>
+			<string>./AccentColor.colorset</string>
+			<key>swiftSymbol</key>
+			<string>accent</string>
+		</dict>
+	</array>
+	<key>images</key>
+	<array>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_A_220_300</string>
+			<key>relativePath</key>
+			<string>./A220-300.imageset</string>
+			<key>swiftSymbol</key>
+			<string>A_220_300</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_A_318</string>
+			<key>relativePath</key>
+			<string>./A318.imageset</string>
+			<key>swiftSymbol</key>
+			<string>A_318</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_A_319</string>
+			<key>relativePath</key>
+			<string>./A319.imageset</string>
+			<key>swiftSymbol</key>
+			<string>A_319</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageNameA319Neo</string>
+			<key>relativePath</key>
+			<string>./A319neo.imageset</string>
+			<key>swiftSymbol</key>
+			<string>a319Neo</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_A_320</string>
+			<key>relativePath</key>
+			<string>./A320.imageset</string>
+			<key>swiftSymbol</key>
+			<string>A_320</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageNameA320Neo</string>
+			<key>relativePath</key>
+			<string>./A320neo.imageset</string>
+			<key>swiftSymbol</key>
+			<string>a320Neo</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_A_321</string>
+			<key>relativePath</key>
+			<string>./A321.imageset</string>
+			<key>swiftSymbol</key>
+			<string>A_321</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageNameA321Neo</string>
+			<key>relativePath</key>
+			<string>./A321neo.imageset</string>
+			<key>swiftSymbol</key>
+			<string>a321Neo</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_A_330_300</string>
+			<key>relativePath</key>
+			<string>./A330-300.imageset</string>
+			<key>swiftSymbol</key>
+			<string>A_330_300</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageNameA330Neo900</string>
+			<key>relativePath</key>
+			<string>./A330neo-900.imageset</string>
+			<key>swiftSymbol</key>
+			<string>a330Neo900</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_A_340_300</string>
+			<key>relativePath</key>
+			<string>./A340-300.imageset</string>
+			<key>swiftSymbol</key>
+			<string>A_340_300</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_A_340_600</string>
+			<key>relativePath</key>
+			<string>./A340-600.imageset</string>
+			<key>swiftSymbol</key>
+			<string>A_340_600</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_A_350_1000</string>
+			<key>relativePath</key>
+			<string>./A350-1000.imageset</string>
+			<key>swiftSymbol</key>
+			<string>A_350_1000</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_A_350_900</string>
+			<key>relativePath</key>
+			<string>./A350-900.imageset</string>
+			<key>swiftSymbol</key>
+			<string>A_350_900</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_A_380_800</string>
+			<key>relativePath</key>
+			<string>./A380-800.imageset</string>
+			<key>swiftSymbol</key>
+			<string>A_380_800</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_ATR_42</string>
+			<key>relativePath</key>
+			<string>./ATR42.imageset</string>
+			<key>swiftSymbol</key>
+			<string>ATR_42</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_ATR_72</string>
+			<key>relativePath</key>
+			<string>./ATR72.imageset</string>
+			<key>swiftSymbol</key>
+			<string>ATR_72</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageNameAboutIcon</string>
+			<key>relativePath</key>
+			<string>./AboutIcon.imageset</string>
+			<key>swiftSymbol</key>
+			<string>aboutIcon</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_B_707_320_C</string>
+			<key>relativePath</key>
+			<string>./B707-320C.imageset</string>
+			<key>swiftSymbol</key>
+			<string>B_707_320_C</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_B_717_200</string>
+			<key>relativePath</key>
+			<string>./B717-200.imageset</string>
+			<key>swiftSymbol</key>
+			<string>B_717_200</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_B_727_200</string>
+			<key>relativePath</key>
+			<string>./B727-200.imageset</string>
+			<key>swiftSymbol</key>
+			<string>B_727_200</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_B_737_200_ADV</string>
+			<key>relativePath</key>
+			<string>./B737-200ADV.imageset</string>
+			<key>swiftSymbol</key>
+			<string>B_737_200_ADV</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_B_737_300</string>
+			<key>relativePath</key>
+			<string>./B737-300.imageset</string>
+			<key>swiftSymbol</key>
+			<string>B_737_300</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_B_737_800_NG</string>
+			<key>relativePath</key>
+			<string>./B737-800NG.imageset</string>
+			<key>swiftSymbol</key>
+			<string>B_737_800_NG</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_B_737_MAX_8</string>
+			<key>relativePath</key>
+			<string>./B737MAX8.imageset</string>
+			<key>swiftSymbol</key>
+			<string>B_737_MAX_8</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_B_737_MAX_9</string>
+			<key>relativePath</key>
+			<string>./B737MAX9.imageset</string>
+			<key>swiftSymbol</key>
+			<string>B_737_MAX_9</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_B_747_100</string>
+			<key>relativePath</key>
+			<string>./B747-100.imageset</string>
+			<key>swiftSymbol</key>
+			<string>B_747_100</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_B_747_200_C</string>
+			<key>relativePath</key>
+			<string>./B747-200C.imageset</string>
+			<key>swiftSymbol</key>
+			<string>B_747_200_C</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_B_747_400</string>
+			<key>relativePath</key>
+			<string>./B747-400.imageset</string>
+			<key>swiftSymbol</key>
+			<string>B_747_400</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_B_747_8_I</string>
+			<key>relativePath</key>
+			<string>./B747-8I.imageset</string>
+			<key>swiftSymbol</key>
+			<string>B_747_8_I</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_B_757_200</string>
+			<key>relativePath</key>
+			<string>./B757-200.imageset</string>
+			<key>swiftSymbol</key>
+			<string>B_757_200</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_B_767_300_ER</string>
+			<key>relativePath</key>
+			<string>./B767-300ER.imageset</string>
+			<key>swiftSymbol</key>
+			<string>B_767_300_ER</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_B_777_300_ER</string>
+			<key>relativePath</key>
+			<string>./B777-300ER.imageset</string>
+			<key>swiftSymbol</key>
+			<string>B_777_300_ER</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_B_777_X_9</string>
+			<key>relativePath</key>
+			<string>./B777X-9.imageset</string>
+			<key>swiftSymbol</key>
+			<string>B_777_X_9</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_B_787_10</string>
+			<key>relativePath</key>
+			<string>./B787-10.imageset</string>
+			<key>swiftSymbol</key>
+			<string>B_787_10</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_B_787_9</string>
+			<key>relativePath</key>
+			<string>./B787-9.imageset</string>
+			<key>swiftSymbol</key>
+			<string>B_787_9</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageNameCONCORDE</string>
+			<key>relativePath</key>
+			<string>./CONCORDE.imageset</string>
+			<key>swiftSymbol</key>
+			<string>CONCORDE</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_CRJ_900</string>
+			<key>relativePath</key>
+			<string>./CRJ900.imageset</string>
+			<key>swiftSymbol</key>
+			<string>CRJ_900</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_DC_10_30</string>
+			<key>relativePath</key>
+			<string>./DC10-30.imageset</string>
+			<key>swiftSymbol</key>
+			<string>DC_10_30</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_DC_9_31</string>
+			<key>relativePath</key>
+			<string>./DC9-31.imageset</string>
+			<key>swiftSymbol</key>
+			<string>DC_9_31</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_DHC_6</string>
+			<key>relativePath</key>
+			<string>./DHC6.imageset</string>
+			<key>swiftSymbol</key>
+			<string>DHC_6</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_DHC_8</string>
+			<key>relativePath</key>
+			<string>./DHC8.imageset</string>
+			<key>swiftSymbol</key>
+			<string>DHC_8</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_E_175_E_2</string>
+			<key>relativePath</key>
+			<string>./E175E2.imageset</string>
+			<key>swiftSymbol</key>
+			<string>E_175_E_2</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_E_190_E_2</string>
+			<key>relativePath</key>
+			<string>./E190E2.imageset</string>
+			<key>swiftSymbol</key>
+			<string>E_190_E_2</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_ERJ_145</string>
+			<key>relativePath</key>
+			<string>./ERJ145.imageset</string>
+			<key>swiftSymbol</key>
+			<string>ERJ_145</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_ERJ_170</string>
+			<key>relativePath</key>
+			<string>./ERJ170.imageset</string>
+			<key>swiftSymbol</key>
+			<string>ERJ_170</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_ERJ_190</string>
+			<key>relativePath</key>
+			<string>./ERJ190.imageset</string>
+			<key>swiftSymbol</key>
+			<string>ERJ_190</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageNameGithubLogo</string>
+			<key>relativePath</key>
+			<string>./GithubLogo.imageset</string>
+			<key>swiftSymbol</key>
+			<string>githubLogo</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_IL_96_400_M</string>
+			<key>relativePath</key>
+			<string>./IL96-400M.imageset</string>
+			<key>swiftSymbol</key>
+			<string>IL_96_400_M</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_MC_21_300</string>
+			<key>relativePath</key>
+			<string>./MC21-300.imageset</string>
+			<key>swiftSymbol</key>
+			<string>MC_21_300</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_MD_11</string>
+			<key>relativePath</key>
+			<string>./MD11.imageset</string>
+			<key>swiftSymbol</key>
+			<string>MD_11</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_MD_82</string>
+			<key>relativePath</key>
+			<string>./MD82.imageset</string>
+			<key>swiftSymbol</key>
+			<string>MD_82</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageNameNormal</string>
+			<key>relativePath</key>
+			<string>./Normal.imageset</string>
+			<key>swiftSymbol</key>
+			<string>normal</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_SSJ_100</string>
+			<key>relativePath</key>
+			<string>./SSJ100.imageset</string>
+			<key>swiftSymbol</key>
+			<string>SSJ_100</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageNameSatelite</string>
+			<key>relativePath</key>
+			<string>./Satelite.imageset</string>
+			<key>swiftSymbol</key>
+			<string>satelite</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_TU_144</string>
+			<key>relativePath</key>
+			<string>./TU144.imageset</string>
+			<key>swiftSymbol</key>
+			<string>TU_144</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageName_TU_204_SM</string>
+			<key>relativePath</key>
+			<string>./TU204SM.imageset</string>
+			<key>swiftSymbol</key>
+			<string>TU_204_SM</string>
+		</dict>
+	</array>
+	<key>symbols</key>
+	<array/>
+</dict>
+</plist>
