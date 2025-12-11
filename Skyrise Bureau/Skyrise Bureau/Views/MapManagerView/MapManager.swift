@@ -36,9 +36,11 @@ struct MapManagerView: View {
     @StateObject var clock = Clock()
     @State var openSettings: Bool = false
     @State var openUserUpgradeView: Bool = false
+    @State var takeoffItems: DepartureDoneSuccessfullyItemsToShow? = nil
+    @State var showTakeoffPopup: Bool = false
     
     var body: some View {
-        if UIDevice.current.isPad {
+        ZStack {
             GeometryReader { reader in
                 // map item
                 ZStack(alignment: .bottomLeading) {
@@ -93,6 +95,60 @@ struct MapManagerView: View {
                                     }
                                     
                                     ScrollView {
+                                        if amountOfNotDepartedPlanes(userData) > 0 {
+                                            Button {
+                                                var jetsDepartedSuccessfully: [DepartureDoneSuccessfullyItems] = []
+                                                for (index, plane) in userData.planes.enumerated() {
+                                                    if !plane.isAirborne {
+                                                        var attempt = userData.planes[index].departJet($userData)
+                                                        if attempt.departedSuccessfully {
+                                                            attempt.planeInfo = userData.planes[index]
+                                                            jetsDepartedSuccessfully.append(attempt)
+                                                        }
+                                                    }
+                                                }
+                                                print(jetsDepartedSuccessfully)
+                                                var planesTakenOff: [FleetItem] = []
+                                                var economyPassengersServed: Int = 0
+                                                var premiumEconomyPassengersServed: Int = 0
+                                                var businessPassengersServed: Int = 0
+                                                var firstPassengersServed: Int = 0
+                                                
+                                                var maxEconomyPassengersServed: Int = 0
+                                                var maxPremiumEconomyPassengersServed: Int = 0
+                                                var maxBusinessPassengersServed: Int = 0
+                                                var maxFirstPassengersServed: Int = 0
+                                                
+                                                var totalMoneyMade: Double = 0
+                                                
+                                                for jetDepartedSuccessfully in jetsDepartedSuccessfully {
+                                                    planesTakenOff.append(jetDepartedSuccessfully.planeInfo ?? FleetItem(aircraftID: "somethong", aircraftname: "goasngo", registration: "gaogns", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 4, premiumEconomy: 41, business: 414, first: 41), kilometersTravelledSinceLastMaintainence: 4))
+                                                    economyPassengersServed += jetDepartedSuccessfully.seatsUsedInPlane!.economy
+                                                    premiumEconomyPassengersServed += jetDepartedSuccessfully.seatsUsedInPlane!.premiumEconomy
+                                                    businessPassengersServed += jetDepartedSuccessfully.seatsUsedInPlane!.business
+                                                    firstPassengersServed += jetDepartedSuccessfully.seatsUsedInPlane!.first
+                                                    maxEconomyPassengersServed += jetDepartedSuccessfully.seatingConfigOfJet!.economy
+                                                    maxPremiumEconomyPassengersServed += jetDepartedSuccessfully.seatingConfigOfJet!.premiumEconomy
+                                                    maxBusinessPassengersServed += jetDepartedSuccessfully.seatingConfigOfJet!.business
+                                                    maxFirstPassengersServed += jetDepartedSuccessfully.seatingConfigOfJet!.first
+                                                    totalMoneyMade += jetDepartedSuccessfully.moneyMade!
+                                                }
+                                                
+                                                takeoffItems = DepartureDoneSuccessfullyItemsToShow(planesTakenOff: planesTakenOff, economyPassenegersServed: economyPassengersServed, premiumEconomyPassenegersServed: premiumEconomyPassengersServed, businessPassengersServed: businessPassengersServed, firstClassPassengersServed: firstPassengersServed, maxEconomyPassenegersServed: maxEconomyPassengersServed, maxPremiumEconomyPassenegersServed: maxPremiumEconomyPassengersServed, maxBusinessPassengersServed: maxBusinessPassengersServed, maxFirstClassPassengersServed: maxFirstPassengersServed, moneyMade: totalMoneyMade)
+                                                withAnimation {
+                                                    showTakeoffPopup = true
+                                                }
+                                            } label: {
+                                                HStack {
+                                                    Spacer()
+                                                    Text("Depart all (\(amountOfNotDepartedPlanes(userData)) to depart)")
+                                                        .fontWidth(.condensed)
+                                                    Spacer()
+                                                }
+                                            }
+                                            .adaptiveProminentButtonStyle()
+                                        }
+                                        
                                         ForEach(userData.planes, id: \.id) { plane in
                                             Button {
                                                 withAnimation {
@@ -273,153 +329,43 @@ struct MapManagerView: View {
                 }
                 .padding()
             }
-            .statusBarHidden(true)
-            .ignoresSafeArea()
-            .sheet(isPresented: $openSettings) {
-                SettingsView(userData: $userData)
+            
+            if showTakeoffPopup {
+                ShowDepartureDonePopupView(showDeparturePopupView: $showTakeoffPopup, departureDoneSuccessfullyItemsToShow: takeoffItems)
             }
-            .fullScreenCover(isPresented: $airportSelector) {
-                AirportPickerView(airportSelected: Binding {
-                    return userData.planes[selectedJet!].assignedRoute!.arrivalAirport
-                } set: {
-                    userData.planes[selectedJet!].assignedRoute!.arrivalAirport = $0
-                }, airportSelectionText: "Select your destination airport",
-                                  userData: userData,
-                                  maxRange: AircraftDatabase.shared.allAircraft.first(where: { $0.id == $userData.wrappedValue.planes[selectedJet!].aircraftID })!.maxRange,
-                                  startAirport: userData.planes[selectedJet!].currentAirportLocation,
-                                  finishedPickingScreen: Binding {
-                    return !openSettings
-                } set: {
-                    print($0)
-                    if $0 {
-                        print("check")
-                        openSettings = false
-                    }
-                })
-            }
-            .fullScreenCover(isPresented: $openUserUpgradeView) {
-                UserUpgradeView(userData: $userData)
-                    .onAppear {
-                        print("Open")
-                    }
-            }
-            .fullScreenCover(isPresented: $openFuelWindow) {
-                FuelPriceView(userData: $userData)
-            }
-        } else if UIDevice.current.isPhone {
-            GeometryReader { reader in
-                // map item
-                ZStack(alignment: .bottomLeading) {
-                    Map {
-                        ForEach(AirportDatabase.shared.allAirports, id: \.id) { airport in
-                            airportAnnotation(airport)
-                        }
-                        
-                        ForEach(userData.planes.compactMap { plane -> (FleetItem, Airport)? in
-                            guard let location = plane.currentAirportLocation else { return nil }
-                            return (plane, location)
-                        }, id: \.0.id) { plane, location in
-                            aircraftAnnotation(plane, location: location)
-                            if let route = plane.assignedRoute {
-                                aircraftRouteAnnotation(route)
-                            }
-                        }
-                    }
-                    .onAppear {
-                        print("Loaded view")
-                    }
-                    .mapStyle(mapType)
-                    .mapControls {
-                        MapPitchToggle(scope: mapScope)
-                        MapCompass(scope: mapScope)
-                        MapScaleView(scope: mapScope)
-                    }
+        }
+        .statusBarHidden(true)
+        .ignoresSafeArea()
+        .sheet(isPresented: $openSettings) {
+            SettingsView(userData: $userData)
+        }
+        .fullScreenCover(isPresented: $airportSelector) {
+            AirportPickerView(airportSelected: Binding {
+                return userData.planes[selectedJet!].assignedRoute!.arrivalAirport
+            } set: {
+                userData.planes[selectedJet!].assignedRoute!.arrivalAirport = $0
+            }, airportSelectionText: "Select your destination airport",
+                              userData: userData,
+                              maxRange: AircraftDatabase.shared.allAircraft.first(where: { $0.id == $userData.wrappedValue.planes[selectedJet!].aircraftID })!.maxRange,
+                              startAirport: userData.planes[selectedJet!].currentAirportLocation,
+                              finishedPickingScreen: Binding {
+                return !openSettings
+            } set: {
+                print($0)
+                if $0 {
+                    print("check")
+                    openSettings = false
                 }
-                
-                HStack(spacing: 0) {
-                    VStack {
-                        HStack(spacing: 0) {
-                            if selectedJet == nil {
-                                VStack {
-                                    HStack {
-                                        if #available(iOS 26.0, *) {
-                                            (Text(userData.airlineName)
-                                                .fontWidth(.expanded)
-                                                .font(.title)
-                                             +
-                                             Text("\nmanaged by \(userData.name)")
-                                                .fontWidth(.condensed))
-                                            .containerCornerOffset(.leading, sizeToFit: true)
-                                        } else {
-                                            (Text(userData.airlineName)
-                                                .fontWidth(.expanded)
-                                                .font(.title)
-                                             +
-                                             Text("\nmanaged by \(userData.name)")
-                                                .fontWidth(.condensed))
-                                        }
-                                        Spacer()
-                                    }
-                                    
-                                    ScrollView {
-                                        ForEach(userData.planes, id: \.id) { plane in
-                                            Button {
-                                                withAnimation {
-                                                    selectedJet = userData.planes.firstIndex(where: { $0.id == plane.id })!
-                                                }
-                                            } label: {
-                                                planeItemView(plane)
-                                            }
-                                            .buttonStyle(.plain)
-                                            .hoverEffect()
-                                        }
-                                    }
-                                }
-                                .transition(.move(edge: .leading))
-                            } else {
-                                selectedJetView()
-                                    .transition(.move(edge: .trailing))
-                            }
-                            
-                        }
-                        .padding()
-                        .frame(width: CGFloat(sidebarWidth + 10), height: reader.size.height - 30)
-                        .background(.ultraThinMaterial)
-                        .clipShape(RoundedRectangle(cornerRadius: 20.0))
-                    }
-                    Rectangle()
-                        .frame(width: 10)
-                        .foregroundStyle(.clear)
-                        .contentShape(Rectangle())
-                        .gesture(DragGesture().onChanged { value in
-                            let newWidth = CGFloat(self.sidebarWidth) + value.translation.width
-                            self.sidebarWidth = Float(CGFloat(min(500, max(150, newWidth))))
-                        })
-                        .onChange(of: reader.size.width) {
-                            if sidebarWidth > Float(reader.size.width) - 40 {
-                                sidebarWidth = Float(reader.size.width) - 40
-                            }
-                        }
-                        .onChange(of: sidebarWidth) {
-                            if sidebarWidth > Float(reader.size.width) - 40 {
-                                sidebarWidth = Float(reader.size.width) - 40
-                            }
-                        }
+            })
+        }
+        .fullScreenCover(isPresented: $openUserUpgradeView) {
+            UserUpgradeView(userData: $userData)
+                .onAppear {
+                    print("Open")
                 }
-                .padding()
-            }
-            .sheet(isPresented: $openSettings) {
-                SettingsView(userData: $userData)
-            }
-            .fullScreenCover(isPresented: $openUserUpgradeView) {
-                UserUpgradeView(userData: $userData)
-                    .onAppear {
-                        print("Open")
-                    }
-            }
-            .fullScreenCover(isPresented: $openFuelWindow) {
-                FuelPriceView(userData: $userData)
-            }
+        }
+        .fullScreenCover(isPresented: $openFuelWindow) {
+            FuelPriceView(userData: $userData)
         }
     }
 }
