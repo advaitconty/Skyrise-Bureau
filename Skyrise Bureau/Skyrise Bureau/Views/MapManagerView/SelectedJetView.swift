@@ -200,6 +200,35 @@ extension MapManagerView {
                             .buttonStyle(.borderedProminent)
                             .hoverEffect()
                         }
+                        
+                        HStack {
+                            Text("Depart jet")
+                                .fontWidth(.condensed)
+                            Spacer()
+                            
+                            Button {
+                                let departureStatus = userData.planes[selectedJet!].departJet($userData)
+                                print(departureStatus)
+                                if departureStatus.departedSuccessfully {
+                                    takeoffItems = DepartureDoneSuccessfullyItemsToShow(planesTakenOff: [userData.planes[selectedJet!]],
+                                                                                        economyPassenegersServed: departureStatus.seatsUsedInPlane!.economy,
+                                                                                        premiumEconomyPassenegersServed: departureStatus.seatsUsedInPlane!.premiumEconomy,
+                                                                                        businessPassengersServed: departureStatus.seatsUsedInPlane!.business,
+                                                                                        firstClassPassengersServed: departureStatus.seatsUsedInPlane!.first,
+                                                                                        maxEconomyPassenegersServed: departureStatus.seatingConfigOfJet!.economy,
+                                                                                        maxPremiumEconomyPassenegersServed: departureStatus.seatingConfigOfJet!.premiumEconomy,
+                                                                                        maxBusinessPassengersServed: departureStatus.seatingConfigOfJet!.business,
+                                                                                        maxFirstClassPassengersServed: departureStatus.seatingConfigOfJet!.first,
+                                                                                        moneyMade: departureStatus.moneyMade!)
+                                    withAnimation {
+                                        showTakeoffPopup = true
+                                    }
+                                }
+                            } label: {
+                                Text("Depart")
+                            }
+                            .adaptiveProminentButtonStyle()
+                        }
                     }
                 }
             }
