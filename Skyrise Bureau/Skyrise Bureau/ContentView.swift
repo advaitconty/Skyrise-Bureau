@@ -10,6 +10,10 @@ import SwiftData
 import Foundation
 import Combine
 
+/// Default user data
+/// to be used for initialisation
+let newUserData = UserData(name: "", airlineName: "", airlineIataCode: "", planes: [], xp: 0, levels: 1, airlineReputation: 0.6, reliabilityIndex: 0.7, fuelDiscountMultiplier: 1, lastFuelPrice: 0.75, pilots: 3, flightAttendents: 3, maintainanceCrew: 3, currentlyHoldingFuel: 1_000_000, maxFuelHoldable: 4_000_000, weeklyPilotSalary: 400, weeklyFlightAttendentSalary: 300, weeklyFlightMaintainanceCrewSalary: 250, pilotHappiness: 0.95, flightAttendentHappiness: 0.95, maintainanceCrewHappiness: 0.95, campaignRunning: false, deliveryHubs: [], accountBalance: 0)
+
 struct ContentView: View {
     @State var showWelcome: Bool = false
     @Environment(\.modelContext) var modelContext
@@ -20,9 +24,7 @@ struct ContentView: View {
             if let userData = userData.first {
                 return userData
             } else {
-                let newUserData = UserData(name: "", airlineName: "", airlineIataCode: "", planes: [], xp: 0, levels: 1, airlineReputation: 0.6, reliabilityIndex: 0.7, fuelDiscountMultiplier: 1, lastFuelPrice: 0.75, pilots: 3, flightAttendents: 3, maintainanceCrew: 3, currentlyHoldingFuel: 1_000_000, maxFuelHoldable: 4_000_000, weeklyPilotSalary: 400, weeklyFlightAttendentSalary: 300, weeklyFlightMaintainanceCrewSalary: 250, pilotHappiness: 0.95, flightAttendentHappiness: 0.95, maintainanceCrewHappiness: 0.95, campaignRunning: false, deliveryHubs: [], accountBalance: 0)
                 modelContext.insert(newUserData)
-                showSetupScreen = true
                 return newUserData
             }
         } set: { value in
@@ -64,6 +66,10 @@ struct ContentView: View {
         VStack {
             MapManagerView(userData: modifiableUserData)
                 .onAppear {
+                    if modifiableUserData.wrappedValue.planes.isEmpty {
+                        showSetupScreen = true
+                    }
+                    
                     if !showSetupScreen {
                         /// DEBUG CONTENT:
                         /// DO NOT REMOVE. Ensure all passed through variables are updated accordingly
@@ -185,6 +191,7 @@ struct ContentView: View {
                 }
                 .fullScreenCover(isPresented: $showSetupScreen) {
                     SetupView(userData: modifiableUserData)
+                        .interactiveDismissDisabled(true)
                 }
         }
         .statusBarHidden()

@@ -129,9 +129,9 @@ extension SetupView {
                                         userData.accountBalance = 34000000
                                     }
                                     
+                                    userData.maintainanceCrew = userData.planes.count * 3
                                     /// For the stupid maintainance crew that I can't be bothered to add manually
                                     /// Will do 3 for each jet, based on planes added
-                                    userData.maintainanceCrew = userData.planes.count * 3
                                     
                                     dismiss()
                                 } label: {
