@@ -38,6 +38,7 @@ struct MapManagerView: View {
     @State var openUserUpgradeView: Bool = false
     @State var takeoffItems: DepartureDoneSuccessfullyItemsToShow? = nil
     @State var showTakeoffPopup: Bool = false
+    @State var openShopView: Bool = false
     
     var body: some View {
         ZStack {
@@ -147,6 +148,7 @@ struct MapManagerView: View {
                                                 }
                                             }
                                             .adaptiveProminentButtonStyle()
+                                            .hoverEffect()
                                         }
                                         
                                         ForEach(userData.planes, id: \.id) { plane in
@@ -210,7 +212,7 @@ struct MapManagerView: View {
                                                 .hoverEffect()
                                                 
                                                 Button {
-                                                    
+                                                    openShopView = true
                                                 } label: {
                                                     HStack {
                                                         Spacer()
@@ -260,7 +262,7 @@ struct MapManagerView: View {
                                                 .hoverEffect()
                                                 
                                                 Button {
-                                                    
+                                                    openShopView = true
                                                 } label: {
                                                     HStack {
                                                         Spacer()
@@ -366,6 +368,9 @@ struct MapManagerView: View {
         }
         .fullScreenCover(isPresented: $openFuelWindow) {
             FuelPriceView(userData: $userData)
+        }
+        .fullScreenCover(isPresented: $openShopView) {
+            ShopView(userData: $userData)
         }
     }
 }

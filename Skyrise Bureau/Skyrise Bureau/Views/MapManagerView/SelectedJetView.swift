@@ -226,6 +226,7 @@ extension MapManagerView {
                                 }
                             } label: {
                                 Text("Depart")
+                                    .fontWidth(.condensed)
                             }
                             .adaptiveProminentButtonStyle()
                         }

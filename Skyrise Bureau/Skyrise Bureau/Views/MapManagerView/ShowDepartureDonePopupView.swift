@@ -67,7 +67,7 @@ struct ShowDepartureDonePopupView: View {
                     Spacer()
                         .onReceive(timer) { _ in
                             count = count + 1
-                            if count == 7 {
+                            if count == 3 {
                                 withAnimation {
                                     showDeparturePopupView = false
                                 }

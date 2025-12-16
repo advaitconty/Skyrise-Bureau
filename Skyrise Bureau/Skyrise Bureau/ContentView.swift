@@ -18,13 +18,14 @@ struct ContentView: View {
     @State var showWelcome: Bool = false
     @Environment(\.modelContext) var modelContext
     @Query var userData: [UserData]
-    @State var showSetupScreen: Bool = true
+    @State var showSetupScreen: Bool = false
     var modifiableUserData: Binding<UserData> {
         Binding {
             if let userData = userData.first {
                 return userData
             } else {
                 modelContext.insert(newUserData)
+                showSetupScreen = true
                 return newUserData
             }
         } set: { value in
@@ -66,10 +67,6 @@ struct ContentView: View {
         VStack {
             MapManagerView(userData: modifiableUserData)
                 .onAppear {
-                    if modifiableUserData.wrappedValue.planes.isEmpty {
-                        showSetupScreen = true
-                    }
-                    
                     if !showSetupScreen {
                         /// DEBUG CONTENT:
                         /// DO NOT REMOVE. Ensure all passed through variables are updated accordingly
