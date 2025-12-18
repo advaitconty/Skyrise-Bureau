@@ -22,6 +22,9 @@ struct ContentView: View {
     var modifiableUserData: Binding<UserData> {
         Binding {
             if let userData = userData.first {
+                if userData.planes.isEmpty {
+                    showSetupScreen = true
+                }
                 return userData
             } else {
                 modelContext.insert(newUserData)
