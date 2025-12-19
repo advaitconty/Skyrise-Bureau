@@ -1,0 +1,9 @@
+Target dependency graph (4 targets)
+Target 'Skyrise Bureau' in project 'Skyrise Bureau'
+➜ Explicit dependency on target 'CompactSlider' in project 'CompactSlider'
+Target 'CompactSlider' in project 'CompactSlider'
+➜ Explicit dependency on target 'CompactSlider' in project 'CompactSlider'
+➜ Explicit dependency on target 'CompactSlider_CompactSlider' in project 'CompactSlider'
+Target 'CompactSlider' in project 'CompactSlider'
+➜ Explicit dependency on target 'CompactSlider_CompactSlider' in project 'CompactSlider'
+Target 'CompactSlider_CompactSlider' in project 'CompactSlider' (no dependencies)

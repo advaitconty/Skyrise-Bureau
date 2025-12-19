@@ -1,0 +1,24 @@
+{
+  "source": "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Views/AirportPicker/Searchbar.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Some airport name...",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 16
+        }
+      },
+      {
+        "comment": "",
+        "key": "Some airport name...",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 25
+        }
+      }
+    ]
+  },
+  "version": 1
+}

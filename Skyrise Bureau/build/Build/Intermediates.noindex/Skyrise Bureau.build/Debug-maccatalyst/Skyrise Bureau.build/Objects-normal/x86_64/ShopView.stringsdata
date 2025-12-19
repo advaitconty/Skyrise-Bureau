@@ -1,0 +1,48 @@
+{
+  "source": "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Views/ShopView/ShopView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Jet Set Emporium\n",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 35
+        }
+      },
+      {
+        "comment": "",
+        "key": "Current account balance: $%@",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 39
+        }
+      },
+      {
+        "comment": "",
+        "key": "Search for planes",
+        "location": {
+          "startingColumn": 43,
+          "startingLine": 84
+        }
+      },
+      {
+        "comment": "",
+        "key": "Search for planes",
+        "location": {
+          "startingColumn": 43,
+          "startingLine": 95
+        }
+      },
+      {
+        "comment": "",
+        "key": "Select a plane to get more information on it.",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 107
+        }
+      }
+    ]
+  },
+  "version": 1
+}

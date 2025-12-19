@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "LAM_Boeing_737-200Adv_C9-BAK_JNB_2005-12-2.jpeg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "compression-type" : "lossless"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "source": "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Views/SetupView/ScreenThree.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Select your starter pack",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 16
+        }
+      },
+      {
+        "comment": "",
+        "key": "Finish setup!",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 77
+        }
+      },
+      {
+        "comment": "",
+        "key": "Finish setup!",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 139
+        }
+      }
+    ]
+  },
+  "version": 1
+}

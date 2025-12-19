@@ -1,0 +1,24 @@
+{
+  "source": "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Views/SetupView/Extras/PlaneOptions.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Starting fleet",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 25
+        }
+      },
+      {
+        "comment": "",
+        "key": "Starting capital",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 38
+        }
+      }
+    ]
+  },
+  "version": 1
+}

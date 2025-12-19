@@ -1,0 +1,80 @@
+{
+  "source": "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Views/FuelPriceScreen/Extensions/ChartView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Price over last 20 hours",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 15
+        }
+      },
+      {
+        "comment": "",
+        "key": "Fuel",
+        "location": {
+          "startingColumn": 36,
+          "startingLine": 21
+        }
+      },
+      {
+        "comment": "",
+        "key": "Fuel Price",
+        "location": {
+          "startingColumn": 67,
+          "startingLine": 21
+        }
+      },
+      {
+        "comment": "",
+        "key": "MAX:\n",
+        "location": {
+          "startingColumn": 27,
+          "startingLine": 28
+        }
+      },
+      {
+        "comment": "",
+        "key": "$%@",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 32
+        }
+      },
+      {
+        "comment": "",
+        "key": "MIN:\n",
+        "location": {
+          "startingColumn": 27,
+          "startingLine": 42
+        }
+      },
+      {
+        "comment": "",
+        "key": "$%@",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 46
+        }
+      },
+      {
+        "comment": "",
+        "key": "VOLATILITY:\n",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 53
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@%%",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 57
+        }
+      }
+    ]
+  },
+  "version": 1
+}

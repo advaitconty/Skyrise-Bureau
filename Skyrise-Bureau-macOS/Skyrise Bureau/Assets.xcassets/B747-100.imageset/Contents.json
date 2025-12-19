@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "image1 Large.jpeg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "compression-type" : "lossless"
+  }
+}

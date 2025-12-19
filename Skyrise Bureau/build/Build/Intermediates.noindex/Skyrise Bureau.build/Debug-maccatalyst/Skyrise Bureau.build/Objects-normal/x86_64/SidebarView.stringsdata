@@ -1,0 +1,56 @@
+{
+  "source": "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Views/AirportPicker/SidebarView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "%@ (%@)",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 29
+        }
+      },
+      {
+        "comment": "",
+        "key": "Max Runway length: %@m",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 36
+        }
+      },
+      {
+        "comment": "",
+        "key": "Elevation: %lldm",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 39
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@ (%@)",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 62
+        }
+      },
+      {
+        "comment": "",
+        "key": "Max Runway length: %@m",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 69
+        }
+      },
+      {
+        "comment": "",
+        "key": "Elevation: %lldm",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 72
+        }
+      }
+    ]
+  },
+  "version": 1
+}

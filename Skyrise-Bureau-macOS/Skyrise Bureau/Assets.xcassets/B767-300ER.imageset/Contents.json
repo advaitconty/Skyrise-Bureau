@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "Delta_Air_Lines_B767-332_N130DL Large.jpeg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "compression-type" : "lossless"
+  }
+}

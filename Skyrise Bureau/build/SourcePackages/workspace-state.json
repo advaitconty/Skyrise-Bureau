@@ -1,0 +1,30 @@
+{
+  "object" : {
+    "artifacts" : [
+
+    ],
+    "dependencies" : [
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "compactslider",
+          "kind" : "remoteSourceControl",
+          "location" : "https://github.com/buh/CompactSlider.git",
+          "name" : "CompactSlider"
+        },
+        "state" : {
+          "checkoutState" : {
+            "revision" : "52a01bd09156152881c53ba235c862e3bf5690b1",
+            "version" : "2.1.0"
+          },
+          "name" : "sourceControlCheckout"
+        },
+        "subpath" : "CompactSlider"
+      }
+    ],
+    "prebuilts" : [
+
+    ]
+  },
+  "version" : 7
+}

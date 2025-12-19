@@ -1,0 +1,80 @@
+{
+  "source": "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Views/UserUpgradeView/Extensions/UpgradeView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "UPGRADES",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 14
+        }
+      },
+      {
+        "comment": "",
+        "key": "HOLDING FUEL TANK UPGRADE\n",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 21
+        }
+      },
+      {
+        "comment": "",
+        "key": "Increase your maximum fuel capacity. Your current maximum is %@kg. Upgrading lets you buy and store more fuel when prices are cheap.",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 24
+        }
+      },
+      {
+        "comment": "",
+        "key": "+1,000,000kg",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 37
+        }
+      },
+      {
+        "comment": "",
+        "key": "$%@ and %lld XP Point%@",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 39
+        }
+      },
+      {
+        "comment": "",
+        "key": "PERMENANT REPUTATION BOOST\n",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 56
+        }
+      },
+      {
+        "comment": "",
+        "key": "Permenantly increase your base reputation, allowing you to attract more passengers on your flight without having to consistently keep an active marketing campaign. Current base reputation: %@%%.",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 59
+        }
+      },
+      {
+        "comment": "",
+        "key": "+5%",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 75
+        }
+      },
+      {
+        "comment": "",
+        "key": "$%@ and %@ XP Point%@",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 77
+        }
+      }
+    ]
+  },
+  "version": 1
+}

@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "McDonnell_Douglas_DC-10-30,_Thai_Airways_International_AN0604188 Large.jpeg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "compression-type" : "lossless"
+  }
+}

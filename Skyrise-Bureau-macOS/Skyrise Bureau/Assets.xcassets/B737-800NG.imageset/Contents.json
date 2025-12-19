@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "Delta_Boeing_737-800_N371DA_departing_Boston_June_2025.jpeg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "compression-type" : "lossless"
+  }
+}

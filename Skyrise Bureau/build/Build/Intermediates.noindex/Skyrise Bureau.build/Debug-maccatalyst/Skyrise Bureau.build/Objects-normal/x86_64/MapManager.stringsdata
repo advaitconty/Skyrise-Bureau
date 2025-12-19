@@ -1,0 +1,72 @@
+{
+  "source": "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Views/MapManagerView/MapManager.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "\nmanaged by %@",
+        "location": {
+          "startingColumn": 51,
+          "startingLine": 82
+        }
+      },
+      {
+        "comment": "",
+        "key": "\nmanaged by %@",
+        "location": {
+          "startingColumn": 51,
+          "startingLine": 90
+        }
+      },
+      {
+        "comment": "",
+        "key": "Level %lld",
+        "location": {
+          "startingColumn": 54,
+          "startingLine": 114
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld XP to next level",
+        "location": {
+          "startingColumn": 54,
+          "startingLine": 117
+        }
+      },
+      {
+        "comment": "",
+        "key": "Balance: $%@",
+        "location": {
+          "startingColumn": 50,
+          "startingLine": 122
+        }
+      },
+      {
+        "comment": "",
+        "key": "Reputation: %@%%",
+        "location": {
+          "startingColumn": 50,
+          "startingLine": 125
+        }
+      },
+      {
+        "comment": "",
+        "key": "\nmanaged by %@",
+        "location": {
+          "startingColumn": 51,
+          "startingLine": 350
+        }
+      },
+      {
+        "comment": "",
+        "key": "\nmanaged by %@",
+        "location": {
+          "startingColumn": 51,
+          "startingLine": 358
+        }
+      }
+    ]
+  },
+  "version": 1
+}

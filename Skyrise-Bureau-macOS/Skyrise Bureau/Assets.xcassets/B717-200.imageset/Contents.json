@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "delta-boeing-717-in-the-sky.png.jpg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "compression-type" : "lossless"
+  }
+}

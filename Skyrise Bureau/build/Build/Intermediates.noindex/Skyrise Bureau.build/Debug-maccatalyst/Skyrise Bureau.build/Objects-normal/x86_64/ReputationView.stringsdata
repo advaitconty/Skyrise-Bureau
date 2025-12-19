@@ -1,0 +1,48 @@
+{
+  "source": "/Users/mcontrac/Documents/skyrise-bureau/Skyrise Bureau/Skyrise Bureau/Views/UserUpgradeView/Extensions/ReputationView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "REPUTATION",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 14
+        }
+      },
+      {
+        "comment": "",
+        "key": "CURRENT REPUTATION: %@%%",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 18
+        }
+      },
+      {
+        "comment": "",
+        "key": "Temporary Marketing Campagin (10-25% increase)",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 28
+        }
+      },
+      {
+        "comment": "",
+        "key": "Eco-friendly Marketing Campaign (5-15%) increase",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 46
+        }
+      },
+      {
+        "comment": "",
+        "key": "A reputation campaign is already running, and has given you a %@%% boost in your airline's reputation, and will last for the next %@.",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 64
+        }
+      }
+    ]
+  },
+  "version": 1
+}
